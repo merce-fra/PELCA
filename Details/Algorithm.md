@@ -1,4 +1,6 @@
-| Colonne 1 | Colonne 2 |
-|-----------|-----------|
-| Valeur 1  | Valeur 2  |
-| Valeur 3  | Valeur 4  |
+| Colonne 1 | <p align="center">
+    <img src="Images/staircase_black.png?raw=true" alt="Staircase Curve" width="600"/>
+</p>
+<p align="center">
+    Fig 1. Staircase curve.
+ </p>  |
