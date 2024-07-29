@@ -2,7 +2,7 @@
 
 ## Table of Contents
 - [General](#General)
-- [General](#[Manufacture: quantifying Impacts])
+- [General](#Manufacture:_quantifying_Impacts)
 - [General](#General)
 - [General](#General)
 - [General](#General)
