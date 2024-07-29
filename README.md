@@ -1,16 +1,15 @@
 ![](Images/first_image.png?raw=true)
-PELCA (Power Electronics Life Cycle Assessment) est un projet open-source pour la quantification environnementale sur cycle de vie des systèmes d'électronique de puissance modulaire et diagnosticables. l’intégration de la modularité et de la diagnosticabilité s’inscrit dans une démarche d’économie circulaire, favorisant des pratiques telles que la réparation et le réemploi
-. Ce projet fourni un outil qui permet de caculer les impacts environnementaux de la fabrication, de l'utilisation et d'u remplacement d'un produit d'électronique de puissance.
-Ce travail a démarré dans le cadre de la thèse :
+PELCA (Power Electronics Life Cycle Assessment) is an open-source project aimed at assessing the environmental impact over the life cycle of modular and diagnosable power electronics systems. The integration of modularity and diagnosability aligns with circular economy principles, promoting practices such as repair and reuse. This project provides a tool to calculate the environmental impacts associated with the manufacturing, usage, and replacement of power electronics products.
+
+This work began as part of the PhD thesis:
 Baudais, Briac. *Eco-design in power electronics. Impacts of sizing,
 modularity, and diagnosticability*. Electronique. Université Paris-Saclay, 2024. Français. ⟨NNT : 2024UPAST092⟩. ⟨tel-04659788⟩.
-[Consulter la thèse](https://theses.hal.science/tel-04659788)
+[Consult the thesis](https://theses.hal.science/tel-04659788)
 
-
-L’évolution des IE en fonction du temps peut être représentée comme ceci, appelé courbe en escalier:
+The evolution of environmental impacts over time can be illustrated with a staircase curve:
 ![](Images/staircase_black.png?raw=true)
-A t=0, il y a les IE à la fabrication du produit. Ensuite, la pente représente les IE à l’utilisation, c’est-à-dire les pertes à l’usage. Pour continuer, lors d’un défaut, les IE augmentent, cela correspond au remplacement de la partie défaillante. Le diagnostic et l’architecture (modularité) qui sont maintenant ajoutés influencent ce saut. Plus le diagnostic est précis et sélectif, plus le remplacement se fait uniquement sur le composant touché par le défaut, à condition d’avoir une modularité le permettant. Une architecture intégrée ne permet pas de séparer le composant en défaut du reste.
-
+Initially, the curve shows the environmental impacts associated with the manufacturing of the product. The slope of the curve represents the impacts during usage, specifically the operational losses incurred. When a failure occurs, the impacts rise, reflecting the need to replace the faulty component. This increase is influenced by the accuracy of diagnostics and the system's architecture (modularity). More precise and selective diagnostics allow for more targeted replacements, assuming the modularity supports it. In contrast, an integrated architecture does not facilitate the separation of the faulty component from the rest of the system.
+The impact of diagnostics and modularity can be explained by the Replacement Rate (RR). An RR of 100% indicates a low-precision diagnosis, which provides no specific information when a fault occurs, leading to the replacement of the entire system or also no modularity. Conversely, an RR of 10% represents a more precise and selective diagnosis, where only 10% of the system is replaced. Thus, RR is directly related to the type of diagnostics and modularity.
 
 ## Table of Contents
 - [Installation](#installation)
