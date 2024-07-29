@@ -7,7 +7,7 @@ modularity, and diagnosticability*. Electronique. Université Paris-Saclay, 2024
 [Consult the thesis](https://theses.hal.science/tel-04659788)
 
 The evolution of environmental impacts over time can be illustrated with a staircase curve:
-![Staircase curve]<img src="Images/staircase_black.png?raw=true" alt="Staircase Curve" width="400"/>
+![Staircase curve](<img src="Images/staircase_black.png?raw=true" alt="Staircase Curve" width="400"/>)
 Initially, the curve shows the environmental impacts associated with the manufacturing of the product. The slope of the curve represents the impacts during usage, specifically the operational losses incurred. When a failure occurs, the impacts rise, reflecting the need to replace the faulty component. This increase is influenced by the accuracy of diagnostics and the system's architecture (modularity). More precise and selective diagnostics allow for more targeted replacements, assuming the modularity supports it. In contrast, an integrated architecture does not facilitate the separation of the faulty component from the rest of the system.
 The impact of diagnostics and modularity can be explained by the Replacement Rate (RR). An RR of 100% indicates a low-precision diagnosis, which provides no specific information when a fault occurs, leading to the replacement of the entire system or also no modularity. Conversely, an RR of 10% represents a more precise and selective diagnosis, where only 10% of the system is replaced. Thus, RR is directly related to the type of diagnostics and modularity.
 
