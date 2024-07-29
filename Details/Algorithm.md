@@ -1,8 +1,8 @@
 # Explanation of the algorithm
 
 ## Table of Contents
-- [General](#General)
-- [Manufacture: quantifying Impacts](#manufacture:-quantifying-Impacts)
+- [General](#general)
+- [Manufacture: quantifying Impacts](#manufacture-quantifying-impacts)
 - [General](#General)
 - [General](#General)
 - [General](#General)
