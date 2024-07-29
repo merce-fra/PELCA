@@ -1,2 +1,2 @@
 # PELCA (Power Electronics Life Cycle Assessment)
-![alt text](Images/logo.png?raw=true)
+![](Images/first_image.png?raw=true)
