@@ -1,3 +1,4 @@
+| Colonne 1 | Colonne 2 |
 |-----------|-----------|
 | Contenu 1 | <div align="center">
     <img src="../Images/staircase_black.png" alt="Staircase Curve" width="600"/>
