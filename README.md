@@ -12,7 +12,7 @@ The evolution of environmental impacts over time can be illustrated with a stair
 </p>
 
 <p align="center">
-    Staircase curve.
+    Fig 1. Staircase curve.
  </p> 
   represents the impacts during usage, specifically the operational losses incurred. When a failure occurs, the impacts rise, reflecting the need to replace the faulty component. The extent of this increase is influenced by the accuracy of diagnostics and the system's architecture (modularity). More precise and selective diagnostics allow for more targeted replacements, assuming the modularity supports it. In contrast, an integrated architecture does not facilitate the separation of the faulty component from the rest of the system.*
 </p>
