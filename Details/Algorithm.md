@@ -29,7 +29,7 @@ This allows the calculation of the environmental impacts at the replacement of t
     <p>Fig 2. Product life modelling with replacement and diagnostic.
 </div>
 
-## Manufacture and Use: quantifying Impacts
+## Manufacture & Use: quantifying Impacts
 
 ## Fault model
 
