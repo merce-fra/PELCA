@@ -2,6 +2,12 @@
 
 ## Table of Contents
 - [General](#General)
+- [General](#Manufacture)
+- [General](#General)
+- [General](#General)
+- [General](#General)
+- [General](#General)
+- [General](#General)
 
 ## General
 In order to make the method more accessible, the general algorithm is presented in Figure 2. The parts colored in blue are developed in detail later.
@@ -21,5 +27,18 @@ This allows the calculation of the environmental impacts at the replacement of t
 <div align="center">
     <img src="../Images/Algorithm.png" width="400"/>
     <p>Fig 2. Product life modelling with replacement and diagnostic.
-</div> 
+</div>
+
+##  Manufacture: quantifying Impacts
+
+##  Use: quantifying Impacts
+
+## Fault model
+
+##  Diagnosis: replacement matrix (RM)
+
+##  Fault generation
+
+##  Replacement: quantifying Impacts
+
 
