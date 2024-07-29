@@ -8,7 +8,7 @@ modularity, and diagnosticability*. Electronique. Université Paris-Saclay, 2024
 
 
 L’évolution des IE en fonction du temps peut être représentée comme ceci, appelé courbe en escalier:
-![](Images/staircase.png?raw=true)
+![](Images/staircase_black.png?raw=true)
 A t=0, il y a les IE à la fabrication du produit. Ensuite, la pente représente les IE à l’utilisation, c’est-à-dire les pertes à l’usage. Pour continuer, lors d’un défaut, les IE augmentent, cela correspond au remplacement de la partie défaillante. Le diagnostic et l’architecture (modularité) qui sont maintenant ajoutés influencent ce saut. Plus le diagnostic est précis et sélectif, plus le remplacement se fait uniquement sur le composant touché par le défaut, à condition d’avoir une modularité le permettant. Une architecture intégrée ne permet pas de séparer le composant en défaut du reste.
 
 
