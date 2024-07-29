@@ -1,29 +1,10 @@
 ![](Images/first_image.png?raw=true)
 PELCA (Power Electronics Life Cycle Assessment) est un projet open-source pour la quantification environnementale sur cycle de vie des systèmes d'électronique de puissance modulaire et diagnosticables. Ce projet fourni un outil qui permet de caculer les impacts environnementaux de la fabrication, de l'utilisation et d'u remplacement d'un produit d'électronique de puissance.
-Ce travail a démarré dans le cadre de la thèse nommée " Eco-design in power electronics. Impacts of sizing,
-modularity, and diagnosticability", 
-### Citation
-
-Baudais, Briac. *Écoconception en électronique de puissance. Impacts du dimensionnement, de la modularité et de la diagnosticabilité*. Electronique. Université Paris-Saclay, 2024. Français. ⟨NNT : 2024UPAST092⟩. ⟨tel-04659788⟩.
-
+Ce travail a démarré dans le cadre de la thèse :
+Baudais, Briac. *Eco-design in power electronics. Impacts of sizing,
+modularity, and diagnosticability*. Electronique. Université Paris-Saclay, 2024. Français. ⟨NNT : 2024UPAST092⟩. ⟨tel-04659788⟩.
 [Consulter la thèse](https://theses.hal.science/tel-04659788)
 
-#### BibTeX
-```bibtex
-@phdthesis{baudais:tel-04659788,
-  TITLE = {{{\'E}coconception en {\'e}lectronique de puissance. Impacts du dimensionnement, de la modularit{\'e} et de la diagnosticabilit{\'e}}},
-  AUTHOR = {Baudais, Briac},
-  URL = {https://theses.hal.science/tel-04659788},
-  NUMBER = {2024UPAST092},
-  SCHOOL = {{Universit{\'e} Paris-Saclay}},
-  YEAR = {2024},
-  MONTH = Jul,
-  KEYWORDS = {Eco-Design ; Power electronics ; Circularity ; Modularity ; Diagnosability ; Environmental impact ; {\'E}coconception ; {\'E}lectronique de puissance ; Circularit{\'e} ; Modularit{\'e} ; Diagnosticabilit{\'e} ; Impact environnemental},
-  TYPE = {Theses},
-  PDF = {https://theses.hal.science/tel-04659788/file/136280_BAUDAIS_2024_archivage.pdf},
-  HAL_ID = {tel-04659788},
-  HAL_VERSION = {v1},
-}
 
 L’évolution des IE en fonction du temps peut être représentée comme ceci, appelé courbe en escalier:
 ![](Images/staircase.png?raw=true)
