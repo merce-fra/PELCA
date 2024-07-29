@@ -1,4 +1,1 @@
-| Colonne 1 | <div align="center">
-    <img src="../images/staircase_black.png" alt="Staircase Curve" width="600"/>
-    <p>Fig 1. Staircase curve.</p>
-</div> |
+| Colonne 1 | ![Staircase Curve](../images/staircase_black.png)|
