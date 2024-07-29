@@ -4,8 +4,8 @@
 - [General](#general)
 - [Manufacture: quantifying Impacts](#manufacture-quantifying-impacts)
 - [Use: quantifying Impacts](#use-quantifying-impacts)
-- [Fault model](#fault_model)
-- [Diagnosis: replacement matrix (RM)](#Diagnosis-replacement-matrix-(RM))
+- [Fault model](#fault-model)
+- [Diagnosis: replacement matrix (RM)](#Diagnosis-replacement-matrix-RM)
 - [Fault generation](#Fault-generation)
 - [Replacement: quantifying Impacts](#Replacement-quantifying-Impacts)
 
