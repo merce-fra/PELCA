@@ -10,7 +10,7 @@ In the time loop, if at a given moment ti equals t, this means a fault appears. 
 This allows the calculation of the environmental impacts at the replacement of the faulty RUi. Next, the impacts during use over the period are calculated. Finally, the time advances to t + 1. This loop is repeated until the end of the chosen usage period, with a Monte Carlo sub-loop until the final number of iterations is reached.
 
 <div align="center">
-    <img src="../Images/Algorithm.png" alt="Staircase Curve" width="600"/>
+    <img src="../Images/Algorithm.png" alt="Staircase Curve" width="400"/>
     <p>Fig 1. Product life modelling with replacement and diagnostic.
 </div> 
 
