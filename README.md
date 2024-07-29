@@ -8,11 +8,11 @@ modularity, and diagnosticability*. Electronique. Université Paris-Saclay, 2024
 
 The evolution of environmental impacts over time can be illustrated with a staircase curve:
 <p align="center">
-    <img src="Images/staircase_black.png?raw=true" alt="Staircase Curve" width="400"/>
+    <img src="Images/staircase_black.png?raw=true" alt="Staircase Curve" width="600"/>
 </p>
 
 <p align="center">
-    Fig 1. Staircase curve.
+    *Fig 1. Staircase curve.*
  </p> 
   represents the impacts during usage, specifically the operational losses incurred. When a failure occurs, the impacts rise, reflecting the need to replace the faulty component. The extent of this increase is influenced by the accuracy of diagnostics and the system's architecture (modularity). More precise and selective diagnostics allow for more targeted replacements, assuming the modularity supports it. In contrast, an integrated architecture does not facilitate the separation of the faulty component from the rest of the system.*
 </p>
