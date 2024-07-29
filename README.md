@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="Images/first_image.png?raw=true" alt="Staircase Curve" width="800"/>
+    <img src="Images/first_image.png?raw=true" alt="Staircase Curve" width="600"/>
 </p>
 PELCA (Power Electronics Life Cycle Assessment) is an open-source project aimed at assessing the environmental impact over the life cycle of modular and diagnosable power electronics systems. The integration of modularity and diagnosability aligns with circular economy principles, promoting practices such as repair and reuse. This project provides a tool to calculate the environmental impacts associated with the manufacturing, usage, and replacement of power electronics products.
 
