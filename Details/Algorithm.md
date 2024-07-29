@@ -2,7 +2,7 @@
 
 ## Table of Contents
 - [General](#general)
-- [Manufacture & Use: quantifying Impacts](#manufacture-&-use-quantifying-impacts)
+- [Manufacture & Use: quantifying Impacts](#manufacture-and-use-quantifying-impacts)
 - [Use: quantifying Impacts](#use-quantifying-impacts)
 - [Fault model](#fault-model)
 - [Diagnosis: replacement matrix (RM)](#Diagnosis-replacement-matrix-RM)
@@ -29,7 +29,7 @@ This allows the calculation of the environmental impacts at the replacement of t
     <p>Fig 2. Product life modelling with replacement and diagnostic.
 </div>
 
-## Manufacture & Use: quantifying Impacts
+## Manufacture and Use: quantifying Impacts
 
 ## Fault model
 
