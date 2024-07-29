@@ -1,2 +1,2 @@
 # PELCA (Power Electronics Life Cycle Assessment)
-![alt text](https://github.com/Briacbaudais/PELCA/Images/logo.png?raw=true)
+![alt text](Images/logo.png?raw=true)
