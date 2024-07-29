@@ -2,7 +2,7 @@
 
 ## Table of Contents
 - [General](#General)
-- [General](#Manufacture:_quantifying_Impacts)
+- [Manufacture: quantifying Impacts](#Manufacture:-quantifying-Impacts)
 - [General](#General)
 - [General](#General)
 - [General](#General)
@@ -29,7 +29,7 @@ This allows the calculation of the environmental impacts at the replacement of t
     <p>Fig 2. Product life modelling with replacement and diagnostic.
 </div>
 
-##  Manufacture: quantifying Impacts
+## Manufacture: quantifying Impacts
 
 ##  Use: quantifying Impacts
 
