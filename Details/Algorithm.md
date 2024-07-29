@@ -3,11 +3,11 @@
 ## Table of Contents
 - [General](#general)
 - [Manufacture: quantifying Impacts](#manufacture-quantifying-impacts)
-- [General](#General)
-- [General](#General)
-- [General](#General)
-- [General](#General)
-- [General](#General)
+- [Use: quantifying Impacts](#use-quantifying-impacts)
+- [Fault model](#fault_model)
+- [Diagnosis: replacement matrix (RM)](#Diagnosis-replacement-matrix-(RM))
+- [Fault generation](#Fault-generation)
+- [Replacement: quantifying Impacts](#Replacement-quantifying-Impacts)
 
 ## General
 In order to make the method more accessible, the general algorithm is presented in Figure 2. The parts colored in blue are developed in detail later.
