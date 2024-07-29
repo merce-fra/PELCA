@@ -30,6 +30,9 @@ This allows the calculation of the environmental impacts at the replacement of t
 </div>
 
 ## Manufacture & Use: quantifying Impacts
+Pour la quantification des impacts liés à la fabrication et à l'utilisation, un inventaire des deux parties est alors à fournir
+
+Comme présenté dans README.md, l'outil a été développé à l'aide de la bibliothèque python Brightway2.
 
 ## Fault model
 
