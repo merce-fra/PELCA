@@ -1,2 +1,2 @@
 ![](Images/first_image.png?raw=true)
-# PELCA (Power Electronics Life Cycle Assessment)
+PELCA (Power Electronics Life Cycle Assessment) est un projet open-source pour la quantification environnementale sur cycle de vie des systèmes d'électronique de puissance modulaire et diagnosticables. Ce projet fourni un outil qui permet de caculer les impacts environnementaux de la fabrication, de l'utilisation et d'u remplacement d'un produit d'électronique de puissance
