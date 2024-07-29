@@ -1,7 +1,7 @@
 # Explanation of the algorithm
 
 ## Table of Contents
-- [General](## General)
+- [General](#General)
 
 ## General
 In order to make the method more accessible, the general algorithm is presented in Figure 1. The parts colored in blue are developed in detail later.
