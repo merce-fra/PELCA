@@ -47,6 +47,7 @@ Pour évaluer la fiabilité des composants, des lois statistiques sont courammen
     <img src="../Images/ERW.png" width="400"/>
     <p>Fig 4. Modélisation de la courbe en baignoire à partir de trois fonctions défaut..
 </div>
+
 ##  Diagnosis: replacement matrix (RM)
 
 ##  Fault generation
