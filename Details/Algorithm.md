@@ -42,8 +42,7 @@ Il a été remarqué que la dynamique du taux de défaillance dans le domaine de
     <img src="../Images/bathcurve.png" width="400"/>
     <p>Fig 3. Bathtub curve.
 </div>
-Pour évaluer la fiabilité des composants, des lois statistiques sont couramment utilisées. La fonction de Weibull est celle sélectionnée dans l'outil, car elle permet de reproduire la "courbe en baignoire", ses expressions sont rappelées tableau \ref{weibull55}.
-Elle est définie par deux paramètres $\sigma$ et $\beta$ le paramètre de forme. Le paramètre $\beta$ est lié à une période de la vie du composant. C’est-à-dire, les défaillances liées à la jeunesse ont un paramètre $\beta<1$, les défaillances aléatoires $\beta=1$, et les défaillances fin de vie $\beta>1$, figure \ref{weibull}. L’addition des trois fonctions de Weibull correspondant aux défauts jeunesse, de vie utile et de fin de vie permet de recréer la courbe en baignoire comme illustrée dans la figure \ref{ERW}
+Pour évaluer la fiabilité des composants, des lois statistiques sont couramment utilisées. La fonction de Weibull est celle sélectionnée dans l'outil, car elle permet de reproduire la "courbe en baignoire". Elle est définie par deux paramètres σ and β le paramètre de forme. Le paramètre $\beta$ est lié à une période de la vie du composant. C’est-à-dire, les défaillances liées à la jeunesse ont un paramètre $\beta<1$, les défaillances aléatoires $\beta=1$, et les défaillances fin de vie $\beta>1$, figure \ref{weibull}. L’addition des trois fonctions de Weibull correspondant aux défauts jeunesse, de vie utile et de fin de vie permet de recréer la courbe en baignoire comme illustrée dans la figure \ref{ERW}
 <div align="center">
     <img src="../Images/ERW.png" width="400"/>
     <p>Fig 3. Modélisation de la courbe en baignoire à partir de trois fonctions défaut..
