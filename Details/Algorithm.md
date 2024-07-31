@@ -47,9 +47,12 @@ Pour évaluer la fiabilité des composants, des lois statistiques sont courammen
     <img src="../Images/ERW.png" width="400"/>
     <p>Fig 4. Modélisation de la courbe en baignoire à partir de trois fonctions défaut..
 </div>
-
+Chaque RU a donc 3 fonctions de défaut, les paramètres à sélectionnés sont dans la feuille "Faults".
+    
 ##  Diagnosis: replacement matrix (RM)
-
+L'objectif de cette partie est de créer des scénarios de remplacement, c'est-à-dire pour chaque défaut, quel choix de remplacement le diagnostic permet de faire. Pour cela, nous génèrerons une matrice appelée "matrice de remplacement" [$MR$].\par
+ La matrice de remplacement est remplie de 0 et de 1, où 0 signifie qu'aucun changement n'est effectué et 1 indique un remplacement. Par exemple, dans la matrice \ref{matrempgéné}, si le défaut $d_{1,1}$ se produit sur $UR_1$, seule $UR_1$ est remplacée, ce qui indique une précision de diagnostic élevée pour ce défaut spécifique. Cependant, si le défaut $d_{2,1}$ se produit sur $UR_1$, le diagnostic est moins précis, et à la fois $UR_1$ et $UR_2$ sont remplacées.\par
+Chaque technique de diagnostic a sa propre matrice de remplacement ; elles n'ont pas toutes la même précision, certaines peuvent mieux cibler la panne et entraîner moins de remplacements pour la réparation.
 ##  Fault generation
 
 ##  Replacement: quantifying Impacts
