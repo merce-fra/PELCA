@@ -3,7 +3,6 @@
 ## Table of Contents
 - [General](#general)
 - [Manufacture & Use: quantifying Impacts](#manufacture-and-use-quantifying-impacts)
-- [Use: quantifying Impacts](#use-quantifying-impacts)
 - [Fault model](#fault-model)
 - [Diagnosis: replacement matrix (RM)](#Diagnosis-replacement-matrix-RM)
 - [Fault generation](#Fault-generation)
