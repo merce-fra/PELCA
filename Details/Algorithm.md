@@ -50,10 +50,13 @@ Pour évaluer la fiabilité des composants, des lois statistiques sont courammen
 Chaque RU a donc 3 fonctions de défaut, les paramètres à sélectionnés sont dans la feuille "Faults".
     
 ##  Diagnosis: replacement matrix (RM)
-L'objectif de cette partie est de créer des scénarios de remplacement, c'est-à-dire pour chaque défaut, quel choix de remplacement le diagnostic permet de faire. Pour cela, nous génèrerons une matrice appelée "matrice de remplacement" [$MR$].\par
- La matrice de remplacement est remplie de 0 et de 1, où 0 signifie qu'aucun changement n'est effectué et 1 indique un remplacement. Par exemple, dans la matrice \ref{matrempgéné}, si le défaut $d_{1,1}$ se produit sur $UR_1$, seule $UR_1$ est remplacée, ce qui indique une précision de diagnostic élevée pour ce défaut spécifique. Cependant, si le défaut $d_{2,1}$ se produit sur $UR_1$, le diagnostic est moins précis, et à la fois $UR_1$ et $UR_2$ sont remplacées.\par
-Chaque technique de diagnostic a sa propre matrice de remplacement ; elles n'ont pas toutes la même précision, certaines peuvent mieux cibler la panne et entraîner moins de remplacements pour la réparation.
+The tool allows models the diagnosis associated with the system, specifically detailing the replacement scenarios when a fault occurs. This includes identifying what components are replaced within the system, To achieve this, this sheet constructs the Replacement Matrix (RM). The numbers in the matrix represent the average proportion of each component replaced when a fault occurs in a specific RU, with values ranging from 0 to 1. Row indices represent faults in a specific RU (e.g., Fault RU1), while column indices represent the RUs to be replaced (e.g., RU1).
+To clarify, consider an example with 2 RUs, resulting in a 2x2 matrix. In this example, if the value in the first row, first column (Fault RU1 ; RU1) is 1, and the value in the first row, second column (Fault RU1 ; RU2) is 0.6, this means that when a fault occurs in RU1, 100% of RU1 and 60% of RU2 are replaced according to the diagnosis.
+
 ##  Fault generation
+
+Dans cette section, nous allons détailler comment nous déterminons à la fois le moment d'apparition des défauts et le type de défaut pour chaque $UR$ avec les défauts du vecteur $(d)$.
+
 
 ##  Replacement: quantifying Impacts
 
