@@ -57,8 +57,9 @@ To clarify, consider an example with 2 RUs, resulting in a 2x2 matrix. In this e
 
 Dans cette section, nous allons détailler comment nous déterminons à la fois le moment d'apparition des défauts et le type de défaut pour chaque $RU$ avec les défauts du vecteur $(d)$.
 La figure \ref{algodiag} illustre l'algorithme de détermination du type de défaut, cela se fait en deux étapes principales, la génération d'un défaut et la sélection du type de défaut. La génération du défaut reprend les mêmes principes qu'au chapitre \ref{ch3}, figure \ref{genedef7}.\par
+
 <div align="center">
-    <img src="../Images/ERW.png" width="400"/>
+    <img src="../Images/algo_fault.png" width="400"/>
     <p>Fig 5.  Algorithme de génération des défauts et de sélection du type de défaut.
 </div>
 Dans un premier temps, il faut trouver la fonction de répartition globale de l'UR.  Il est nécessaire d'associer les défauts au sein d'une unité de remplacement. Les défauts peuvent être associés comme au chapitre \ref{ch3}, c'est-à-dire association série ; tous les sous-systèmes doivent fonctionner pour que le système global soit opérationnel. L'équation \ref{eq_serie_def} donne la fonction de répartition d'une UR.\par
