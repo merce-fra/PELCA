@@ -61,14 +61,11 @@ La figure 5 illustre l'algorithme de détermination du type de défaut, cela se 
     <img src="../Images/algo_fault.png" width="800"/>
     <p>Fig 5.  Algorithme de génération des défauts et de sélection du type de défaut.
 </div>
-Dans un premier temps, il faut trouver la fonction de répartition globale de l'UR.  Il est nécessaire d'associer les défauts au sein d'une unité de remplacement. Les défauts peuvent être associés en association série, c'est à dire tous les sous-systèmes doivent fonctionner pour que le système global soit opérationnel. L'équation suivante donne la fonction de répartition d'une UR.
-$$
-F_{i}(t) = 1 - \prod_{k=1}^{\textrm{n}}(1 - f_{k\textrm{, }i}(t))
-$$
-Avec $f_{k\textrm{, }i}$ la fonction de répartition du défaut $k$ de l'UR $i$ et $n$ le nombre de défauts total pour l'UR.\par
-Une fois la fonction de répartition établie, elle est comparée à un nombre aléatoire compris entre 0 et 1, généré selon une distribution uniforme. Cela permet de déterminer le temps du défaut ($t_i^*$) de l'$UR_i$, si ce nombre est inférieur à la fonction de répartition, cela indique le temps du défaut $t_i^*$.\par
-Ensuite, un second nombre aléatoire est employé pour sélectionner le type de défaut ($d_{k,i}^*=d_{j}^*$), en fonction des probabilités associées à chaque défaut à l'instant $t_i^*$ où a lieu le défaut.\par
-Cet algorithme permet pour chaque UR, à la fois de déterminer le temps pour lequel un défaut a lieu ($t^*_i$) mais aussi, quel est le type de défaut ($d^*_i$). Cela permet de générer deux vecteurs $t^*$ et $d^*$ de taille $m$ représentant respectivement les temps d'apparition d'un et le type de défaut pour chaque UR.
+Dans un premier temps, il faut trouver la fonction de répartition globale de l'UR.  Il est nécessaire d'associer les défauts au sein d'une unité de remplacement. Les défauts peuvent être associés en association série, c'est à dire tous les sous-systèmes doivent fonctionner pour que le système global soit opérationnel.
+Une fois la fonction de répartition établie, elle est comparée à un nombre aléatoire compris entre 0 et 1, généré selon une distribution uniforme. Cela permet de déterminer le temps du défaut ($t_i^*$) de l'$UR_i$, si ce nombre est inférieur à la fonction de répartition, cela indique le temps du défaut $t_i^*$.
+Ensuite, un second nombre aléatoire est employé pour sélectionner le type de défaut, en fonction des probabilités associées à chaque défaut à l'instant $t_i^*$ où a lieu le défaut.
+Cet algorithme permet pour chaque UR, à la fois de déterminer le temps pour lequel un défaut a lieu ($t^*_i$) mais aussi, quel est le type de défaut ($d^*_i$). 
+
 ##  Replacement: quantifying Impacts
 
 
