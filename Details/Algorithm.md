@@ -30,9 +30,12 @@ This allows the calculation of the environmental impacts at the replacement of t
 </div>
 
 ## Manufacture & Use: quantifying Impacts
-Pour la quantification des impacts liés à la fabrication et à l'utilisation, un inventaire des deux parties est alors à fournir
+To quantify the impacts related to both manufacturing and use, an inventory for both aspects must be provided. As outlined in the README.md, the tool has been developed using the Python library Brightway2. Therefore, the input Excel file must follow a specific template for the inventory sections (sheets "Inventory - Manufacturing" and "Inventory - Use"). This template is the Brightway template; for more details, please refer to the specific library documentation.
 
-Comme présenté dans README.md, l'outil a été développé à l'aide de la bibliothèque python Brightway2.
+For each inventory sheet, you need to create as many activities as there are unit processes (RUs). For instance, in the "Inventory - Manufacturing" sheet, the first activity represents the manufacturing of RU1, contructed with the "exchanges" flows. In the "Inventory - Use" sheet, each activity corresponds to the energy consumption of each RU during 1 hour of operation.
+
+The tool, using the Brightway library, then enables the environmental impact quantification based on the selected impacts in the "LCIA" sheet.
+
 
 ## Fault model
 
