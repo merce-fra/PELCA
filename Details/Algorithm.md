@@ -53,7 +53,7 @@ Each Reliability Unit (RU) thus has three failure functions, and the parameters 
 ##  Diagnosis: replacement matrix (RM)
 The tool allows models the diagnosis associated with the system, specifically detailing the replacement scenarios when a fault occurs. This includes identifying what components are replaced within the system, To achieve this, this sheet constructs the Replacement Matrix (RM). 
 To develop the Replacement Matrix, it is necessary to model the diagnostic observation for each type of fault (Early, Random, and Wearout). Depending on the type of fault detected, the diagnosis can infer the location of the failure. The inferred part is then replaced, forming a replacement scenario. Understanding the consequences of the mentioned faults and the diagnostic perspective is crucial. A fault tree can be constructed to link the fault, its effects, observations of these effects, and the replacement scenario.
-The numbers in the matrix represent the average proportion of each component replaced when a fault occurs in a specific Reliability Unit (RU), with values ranging from 0 to 1. The Replacement Matrix `[RM]` specific to a diagnostic technique `(l)` can be constructed as shown in Figure 5. `RU_i` represents the replacement unit `i`, ranging from 1 to `m`, and `d_{k}` represents fault `k` of the replacement unit `i`. The columns of the matrix are labeled `i` and represent the RUs to be replaced (e.g., RU1), while the rows `k` represent faults in a specific RU (e.g., Fault RU1).
+The numbers in the matrix represent the average proportion of each component replaced when a fault occurs in a specific Reliability Unit (RU), with values ranging from 0 to 1. The Replacement Matrix `[RM]` specific to a diagnostic technique `(l)` can be constructed as shown in Figure 5. `RUi` represents the replacement unit `i`, ranging from 1 to `m`, and `d_{k}` represents fault `k` of the replacement unit `i`. The columns of the matrix are labeled `i` and represent the RUs to be replaced (e.g., RU1), while the rows `k` represent faults in a specific RU (e.g., Fault RU1).
 
 <div align="center">
     <img src="../Images/RM.png" width="400"/>
@@ -67,13 +67,15 @@ For clarity, consider an example with 2 RUs, resulting in a 2x2 matrix, as shown
 </div>
 
 ##  Fault generation
-Dans cette section, nous allons détailler comment nous déterminons à la fois le moment d'apparition des défauts pour chaque $RU$. La figure 7 illustre l'algorithme de détermination du type de défaut.
+In this section, we will detail how we determine the occurrence time of faults for each $RU$. Figure 7 illustrates the algorithm for determining the type of fault.
+
 <div align="center">
     <img src="../Images/algo_fault.png" width="600"/>
-    <p>Fig 7.  Algorithme de génération des défauts et de sélection du type de défaut.
+    <p>Fig 7. Fault generation algorithm.</p>
 </div>
-Dans un premier temps, il faut trouver la fonction de répartition globale de l'UR.  Il est nécessaire d'associer les défauts au sein d'une unité de remplacement. Les défauts peuvent être associés en association série, c'est à dire tous les sous-systèmes doivent fonctionner pour que le système global soit opérationnel.
-Une fois la fonction de répartition établie, elle est comparée à un nombre aléatoire compris entre 0 et 1, généré selon une distribution uniforme. Cela permet de déterminer le temps du défaut ($t_i^*$) de l'$UR_i$, si ce nombre est inférieur à la fonction de répartition, cela indique le temps du défaut $t_i^*$.
+
+Initially, the global distribution function of the RU must be found. It is necessary to associate faults within a replacement unit. Faults can be associated in series, meaning all subsystems must function for the overall system to be operational.
+Once the distribution function is established, it is compared to a random number between 0 and 1, generated according to a uniform distribution. This comparison helps determine the fault time (`ti*`) for the `RUi`. If the random number is less than the distribution function, it indicates the fault time `ti*`.
 
 ##  Replacement: quantifying Impacts
 The previous sections describe, on one hand, the creation of the replacement matrix based on faults and diagnostics for the input data, and on the other hand, the fault generation.
