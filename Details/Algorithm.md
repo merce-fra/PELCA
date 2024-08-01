@@ -62,18 +62,15 @@ To clarify, consider an example with 2 RUs, resulting in a 2x2 matrix, figure 6.
     <img src="../Images/RM_exemple.png" width="400"/>
     <p>Fig 6. Example with 2 RU, Replacement Matrix [RM] of a specific diagnosis (l).
 </div>
-##  Fault generation
 
-Dans cette section, nous allons détailler comment nous déterminons à la fois le moment d'apparition des défauts et le type de défaut pour chaque $RU$.
-La figure 5 illustre l'algorithme de détermination du type de défaut, cela se fait en deux étapes principales, la génération d'un défaut et la sélection du type de défaut.
+##  Fault generation
+Dans cette section, nous allons détailler comment nous déterminons à la fois le moment d'apparition des défauts pour chaque $RU$. La figure 5 illustre l'algorithme de détermination du type de défaut.
 <div align="center">
     <img src="../Images/algo_fault.png" width="600"/>
     <p>Fig 5.  Algorithme de génération des défauts et de sélection du type de défaut.
 </div>
 Dans un premier temps, il faut trouver la fonction de répartition globale de l'UR.  Il est nécessaire d'associer les défauts au sein d'une unité de remplacement. Les défauts peuvent être associés en association série, c'est à dire tous les sous-systèmes doivent fonctionner pour que le système global soit opérationnel.
 Une fois la fonction de répartition établie, elle est comparée à un nombre aléatoire compris entre 0 et 1, généré selon une distribution uniforme. Cela permet de déterminer le temps du défaut ($t_i^*$) de l'$UR_i$, si ce nombre est inférieur à la fonction de répartition, cela indique le temps du défaut $t_i^*$.
-Ensuite, un second nombre aléatoire est employé pour sélectionner le type de défaut, en fonction des probabilités associées à chaque défaut à l'instant $t_i^*$ où a lieu le défaut.
-Cet algorithme permet pour chaque UR, à la fois de déterminer le temps pour lequel un défaut a lieu ($t^*_i$) mais aussi, quel est le type de défaut ($d^*_i$). 
 
 ##  Replacement: quantifying Impacts
 
