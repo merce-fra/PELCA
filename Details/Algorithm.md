@@ -50,7 +50,13 @@ Pour évaluer la fiabilité des composants, des lois statistiques sont courammen
 Chaque RU a donc 3 fonctions de défaut, les paramètres à sélectionnés sont dans la feuille "Faults".
     
 ##  Diagnosis: replacement matrix (RM)
-The tool allows models the diagnosis associated with the system, specifically detailing the replacement scenarios when a fault occurs. This includes identifying what components are replaced within the system, To achieve this, this sheet constructs the Replacement Matrix (RM). The numbers in the matrix represent the average proportion of each component replaced when a fault occurs in a specific RU, with values ranging from 0 to 1. Row indices represent faults in a specific RU (e.g., Fault RU1), while column indices represent the RUs to be replaced (e.g., RU1).
+The tool allows models the diagnosis associated with the system, specifically detailing the replacement scenarios when a fault occurs. This includes identifying what components are replaced within the system, To achieve this, this sheet constructs the Replacement Matrix (RM). 
+Pour élaborer la matrice de remplacement, il faut modéliser l'observation du diagnostic pour chaque type de défaut (Early, Random et Wearout). En fonction du type de défaut détecté, le diagnostic peut déduire l'emplacement de la défaillance, et la partie déduite est alors remplacée, formant ainsi un scénario de remplacement. Il est essentiel de comprendre les conséquences des défauts mentionnés précédemment, ainsi que la perspective du diagnostic. Un arbre des défaillances peut être construit pour lier le défaut, les effets, les observations des effets et le scénario de remplacement.
+The numbers in the matrix represent the average proportion of each component replaced when a fault occurs in a specific RU, with values ranging from 0 to 1. La matrice de remplacement $[RM]$ spécifique à une technique de diagnostic $(l)$ suivante peut alors être construite figure 5. $RU_i$ représente l'unité de remplacement $i$ allant de 1 à $m$ et $d_{k,i}$ le défaut $k$ de l'unité de remplacement $i$. Les colonnes de la matrice sont notées $i$ et represent faults in a specific RU (e.g., Fault RU1) et les lignes $j=k,i$ et represent the RUs to be replaced (e.g., RU1).
+<div align="center">
+    <img src="../Images/RM.png" width="400"/>
+    <p>Fig 5. Replacement Matrix [RM] of a specific diagnosis (l).
+</div>
 To clarify, consider an example with 2 RUs, resulting in a 2x2 matrix. In this example, if the value in the first row, first column (Fault RU1 ; RU1) is 1, and the value in the first row, second column (Fault RU1 ; RU2) is 0.6, this means that when a fault occurs in RU1, 100% of RU1 and 60% of RU2 are replaced according to the diagnosis.
 
 ##  Fault generation
