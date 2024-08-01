@@ -52,19 +52,22 @@ Chaque RU a donc 3 fonctions de défaut, les paramètres à sélectionnés sont 
 ##  Diagnosis: replacement matrix (RM)
 The tool allows models the diagnosis associated with the system, specifically detailing the replacement scenarios when a fault occurs. This includes identifying what components are replaced within the system, To achieve this, this sheet constructs the Replacement Matrix (RM). 
 Pour élaborer la matrice de remplacement, il faut modéliser l'observation du diagnostic pour chaque type de défaut (Early, Random et Wearout). En fonction du type de défaut détecté, le diagnostic peut déduire l'emplacement de la défaillance, et la partie déduite est alors remplacée, formant ainsi un scénario de remplacement. Il est essentiel de comprendre les conséquences des défauts mentionnés précédemment, ainsi que la perspective du diagnostic. Un arbre des défaillances peut être construit pour lier le défaut, les effets, les observations des effets et le scénario de remplacement.
-The numbers in the matrix represent the average proportion of each component replaced when a fault occurs in a specific RU, with values ranging from 0 to 1. La matrice de remplacement $[RM]$ spécifique à une technique de diagnostic $(l)$ suivante peut alors être construite figure 5. $RU_i$ représente l'unité de remplacement $i$ allant de 1 à $m$ et $d_{k,i}$ le défaut $k$ de l'unité de remplacement $i$. Les colonnes de la matrice sont notées $i$ et represent faults in a specific RU (e.g., Fault RU1) et les lignes $j=k,i$ et represent the RUs to be replaced (e.g., RU1).
+The numbers in the matrix represent the average proportion of each component replaced when a fault occurs in a specific RU, with values ranging from 0 to 1. La matrice de remplacement $[RM]$ spécifique à une technique de diagnostic $(l)$ suivante peut alors être construite figure 5. $RU_i$ représente l'unité de remplacement $i$ allant de 1 à $m$ et $d_{k}$ le défaut $k$ de l'unité de remplacement $i$. Les colonnes de la matrice sont notées $i$ et represent the RUs to be replaced (e.g., RU1) et les lignes $k$ et represent faults in a specific RU (e.g., Fault RU1).
 <div align="center">
     <img src="../Images/RM.png" width="400"/>
     <p>Fig 5. Replacement Matrix [RM] of a specific diagnosis (l).
 </div>
-To clarify, consider an example with 2 RUs, resulting in a 2x2 matrix. In this example, if the value in the first row, first column (Fault RU1 ; RU1) is 1, and the value in the first row, second column (Fault RU1 ; RU2) is 0.6, this means that when a fault occurs in RU1, 100% of RU1 and 60% of RU2 are replaced according to the diagnosis.
-
+To clarify, consider an example with 2 RUs, resulting in a 2x2 matrix, figure 6. In this example, if the value in the first row, first column (Fault RU1 ; RU1) is 1, and the value in the first row, second column (Fault RU1 ; RU2) is 0.6, this means that when a fault occurs in RU1, 100% of RU1 and 60% of RU2 are replaced according to the diagnosis.
+<div align="center">
+    <img src="../Images/RM_exemple.png" width="400"/>
+    <p>Fig 6. Example with 2 RU, Replacement Matrix [RM] of a specific diagnosis (l).
+</div>
 ##  Fault generation
 
 Dans cette section, nous allons détailler comment nous déterminons à la fois le moment d'apparition des défauts et le type de défaut pour chaque $RU$.
 La figure 5 illustre l'algorithme de détermination du type de défaut, cela se fait en deux étapes principales, la génération d'un défaut et la sélection du type de défaut.
 <div align="center">
-    <img src="../Images/algo_fault.png" width="800"/>
+    <img src="../Images/algo_fault.png" width="600"/>
     <p>Fig 5.  Algorithme de génération des défauts et de sélection du type de défaut.
 </div>
 Dans un premier temps, il faut trouver la fonction de répartition globale de l'UR.  Il est nécessaire d'associer les défauts au sein d'une unité de remplacement. Les défauts peuvent être associés en association série, c'est à dire tous les sous-systèmes doivent fonctionner pour que le système global soit opérationnel.
