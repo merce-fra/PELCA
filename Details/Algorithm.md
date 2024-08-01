@@ -67,7 +67,7 @@ For clarity, consider an example with 2 RUs, resulting in a 2x2 matrix, as shown
 </div>
 
 ##  Fault generation
-In this section, we will detail how we determine the occurrence time of faults for each $RU$. Figure 7 illustrates the algorithm for determining the type of fault.
+In this section, we will detail how we determine the occurrence time of faults for each RU. Figure 7 illustrates the algorithm for determining the type of fault.
 
 <div align="center">
     <img src="../Images/algo_fault.png" width="600"/>
@@ -91,3 +91,22 @@ Then, to quantify impact of remplacement (IR) simply perform the matrix calculat
     <p>Fig 8.  Equation to quantify remplacement.
 </div>
 Where $I_{mf}$ representing the environmental impacts during manufacturing.
+
+
+
+The previous sections describe, on one hand, the creation of the replacement matrix based on faults and diagnostics for the input data, and on the other hand, the fault generation. To calculate the Impact related to replacement `(IR)`, it remains to link the two. For this purpose, depending on the fault at a given time `t`, we will generate a replacement vector `(RV)`, which is mathematically expressed as follows:
+<div align="center">
+    <img src="../Images/quanti_remp1.png" width="400"/>
+    <p>Fig 8. Equation to quantify replacement.</p>
+</div>
+
+Where `i*` represents the `RUi` in fault, `d*` the faults at `t`, and `d` the vector of all faults. `RV*` represents the replacement vector when a fault occurs at `t*`, and `RM*(k,:)` is the k-th row of `RM*`.
+
+Then, to quantify the impact of replacement `IR`, simply perform the matrix calculation of the replacement vector with the impact matrix for the manufacturing of each component:
+
+<div align="center">
+    <img src="../Images/quanti_remp2.png" width="400"/>
+    <p>Fig 9. Equation to quantify impact of replacement.</p>
+</div>
+
+Where `Imf` represents the environmental impacts during manufacturing.
