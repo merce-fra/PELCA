@@ -75,8 +75,9 @@ Une fois la fonction de répartition établie, elle est comparée à un nombre a
 ##  Replacement: quantifying Impacts
 The previous sections describe, on one hand, the creation of the replacement matrix based on faults and diagnostics for the input data, and on the other hand, the fault generation.
 To calculate the EI related to replacement, it remains to link the two. For this purpose, depending on the fault at a given time $t$, we will generate a replacement vector this is expressed mathematically as follows:
-
 <div align="center">
-    <img src="../Images/quanti_remp.png" width="600"/>
+    <img src="../Images/quanti_remp.png" width="400"/>
     <p>Fig 8.  Equation to quantify remplacement.
 </div>
+Where $i^*$ represents the $RU_i$ in fault, $d^*$ the faults at $t^*$ and $d$ the vector of all faults. $RV^*$ represents the replacement vector when a fault arrives at $t^*$, and $RM^*(k,:)$ is the $k$-th line of $RM^*$.
+Then, to quantify impact of remplacement simply perform the matrix calculation of the replacement vector with the matrix of impact for the manufacturing of each component. $I_{mf}$ representing the environmental impacts during manufacturing.
