@@ -78,22 +78,6 @@ Initially, the global distribution function of the RU must be found. It is neces
 Once the distribution function is established, it is compared to a random number between 0 and 1, generated according to a uniform distribution. This comparison helps determine the fault time (`ti*`) for the `RUi`. If the random number is less than the distribution function, it indicates the fault time `ti*`.
 
 ##  Replacement: quantifying Impacts
-The previous sections describe, on one hand, the creation of the replacement matrix based on faults and diagnostics for the input data, and on the other hand, the fault generation.
-To calculate the EI related to replacement, it remains to link the two. For this purpose, depending on the fault at a given time $t$, we will generate a replacement vector this is expressed mathematically as follows:
-<div align="center">
-    <img src="../Images/quanti_remp1.png" width="400"/>
-    <p>Fig 8.  Equation to quantify remplacement.
-</div>
-Where $i^*$ represents the $RU_i$ in fault, $d^*$ the faults at $t^*$ and $d$ the vector of all faults. $RV^*$ represents the replacement vector when a fault arrives at $t^*$, and $RM^*(k,:)$ is the $k$-th line of $RM^*$.
-Then, to quantify impact of remplacement (IR) simply perform the matrix calculation of the replacement vector with the matrix of impact for the manufacturing of each component :
-<div align="center">
-    <img src="../Images/quanti_remp2.png" width="400"/>
-    <p>Fig 8.  Equation to quantify remplacement.
-</div>
-Where $I_{mf}$ representing the environmental impacts during manufacturing.
-
-
-
 The previous sections describe, on one hand, the creation of the replacement matrix based on faults and diagnostics for the input data, and on the other hand, the fault generation. To calculate the Impact related to replacement `(IR)`, it remains to link the two. For this purpose, depending on the fault at a given time `t`, we will generate a replacement vector `(RV)`, which is mathematically expressed as follows:
 <div align="center">
     <img src="../Images/quanti_remp1.png" width="400"/>
