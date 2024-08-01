@@ -37,30 +37,33 @@ The tool, using the Brightway library, then enables the environmental impact qua
 
 
 ## Fault model
-Il a été remarqué que la dynamique du taux de défaillance dans le domaine de l'électronique suit une tendance illustrée par ce que l'on nomme communément la "courbe en baignoire", figure 3. Cette courbe caractérise les différentes phases de défaillance au cours de la DDV d'un dispositif, englobant ainsi la phase "jeunesse" (liée à des problèmes de conception ou de fabrication insuffisamment maîtrisés), la période de fonctionnement "vie utile" (où les défaillances surviennent de manière aléatoire) ainsi que le stade du "vieillissement" (résultant de l'usure).
+It has been observed that the failure rate dynamics in the electronics field follow a trend commonly illustrated by the "bathtub curve," as shown in Figure 3. This curve characterizes the different failure phases during a component's lifecycle, encompassing the "Early" phase (related to issues from inadequate design or manufacturing), the "Random" phase (where failures occur randomly), and the "wearout" phase (resulting from aging).
+
 <div align="center">
     <img src="../Images/bathcurve.png" width="400"/>
-    <p>Fig 3. Bathtub curve.
+    <p>Fig 3. Bathtub curve.</p>
 </div>
-Pour évaluer la fiabilité des composants, des lois statistiques sont couramment utilisées. La fonction de Weibull est celle sélectionnée dans l'outil, car elle permet de reproduire la "courbe en baignoire". Elle est définie par deux paramètres σ and β le paramètre de forme. Le paramètre β est lié à une période de la vie du composant. C’est-à-dire, les défaillances liées à la jeunesse ont un paramètre β<1, les défaillances aléatoires β=1, et les défaillances fin de vie β>1. L’addition des trois fonctions de Weibull correspondant aux défauts jeunesse, de vie utile et de fin de vie permet de recréer la courbe en baignoire comme illustrée dans la figure 4
+To assess component reliability, statistical laws are commonly used. The Weibull distribution is employed in this tool because it can replicate the "bathtub curve." It is defined by two parameters: σ (scale parameter) and β (shape parameter). The β parameter is associated with different phases of the component's life. Specifically, β<1 corresponds to the early phase, β=1 to the random failures during the useful life, and β>1 to the wearout phase. By combining three Weibull functions representing early, random, and wearout failures, the bathtub curve can be reconstructed, as illustrated in Figure 4.
 <div align="center">
     <img src="../Images/ERW.png" width="400"/>
-    <p>Fig 4. Modélisation de la courbe en baignoire à partir de trois fonctions défaut..
+    <p>Fig 4. Modeling the bathtub curve using three failure functions.</p>
 </div>
-Chaque RU a donc 3 fonctions de défaut, les paramètres à sélectionnés sont dans la feuille "Faults".
-    
+Each Reliability Unit (RU) thus has three failure functions, and the parameters to be selected are found in the "Faults" sheet.
+
 ##  Diagnosis: replacement matrix (RM)
 The tool allows models the diagnosis associated with the system, specifically detailing the replacement scenarios when a fault occurs. This includes identifying what components are replaced within the system, To achieve this, this sheet constructs the Replacement Matrix (RM). 
-Pour élaborer la matrice de remplacement, il faut modéliser l'observation du diagnostic pour chaque type de défaut (Early, Random et Wearout). En fonction du type de défaut détecté, le diagnostic peut déduire l'emplacement de la défaillance, et la partie déduite est alors remplacée, formant ainsi un scénario de remplacement. Il est essentiel de comprendre les conséquences des défauts mentionnés précédemment, ainsi que la perspective du diagnostic. Un arbre des défaillances peut être construit pour lier le défaut, les effets, les observations des effets et le scénario de remplacement.
-The numbers in the matrix represent the average proportion of each component replaced when a fault occurs in a specific RU, with values ranging from 0 to 1. La matrice de remplacement $[RM]$ spécifique à une technique de diagnostic $(l)$ suivante peut alors être construite figure 5. $RU_i$ représente l'unité de remplacement $i$ allant de 1 à $m$ et $d_{k}$ le défaut $k$ de l'unité de remplacement $i$. Les colonnes de la matrice sont notées $i$ et represent the RUs to be replaced (e.g., RU1) et les lignes $k$ et represent faults in a specific RU (e.g., Fault RU1).
+To develop the Replacement Matrix, it is necessary to model the diagnostic observation for each type of fault (Early, Random, and Wearout). Depending on the type of fault detected, the diagnosis can infer the location of the failure. The inferred part is then replaced, forming a replacement scenario. Understanding the consequences of the mentioned faults and the diagnostic perspective is crucial. A fault tree can be constructed to link the fault, its effects, observations of these effects, and the replacement scenario.
+The numbers in the matrix represent the average proportion of each component replaced when a fault occurs in a specific Reliability Unit (RU), with values ranging from 0 to 1. The Replacement Matrix `[RM]` specific to a diagnostic technique `(l)` can be constructed as shown in Figure 5. `RU_i` represents the replacement unit `i`, ranging from 1 to `m`, and `d_{k}` represents fault `k` of the replacement unit `i`. The columns of the matrix are labeled `i` and represent the RUs to be replaced (e.g., RU1), while the rows `k` represent faults in a specific RU (e.g., Fault RU1).
+
 <div align="center">
     <img src="../Images/RM.png" width="400"/>
-    <p>Fig 5. Replacement Matrix [RM] of a specific diagnosis (l).
+    <p>Fig 5. Replacement Matrix `[RM]` for a specific diagnosis `(l)`.</p>
 </div>
-To clarify, consider an example with 2 RUs, resulting in a 2x2 matrix, figure 6. In this example, if the value in the first row, first column (Fault RU1 ; RU1) is 1, and the value in the first row, second column (Fault RU1 ; RU2) is 0.6, this means that when a fault occurs in RU1, 100% of RU1 and 60% of RU2 are replaced according to the diagnosis.
+
+For clarity, consider an example with 2 RUs, resulting in a 2x2 matrix, as shown in Figure 6. In this example, if the value in the first row, first column (Fault RU1; RU1) is 1, and the value in the first row, second column (Fault RU1; RU2) is 0.6, this indicates that when a fault occurs in RU1, 100% of RU1 and 60% of RU2 are replaced according to the diagnosis.
 <div align="center">
     <img src="../Images/RM_exemple.png" width="400"/>
-    <p>Fig 6. Example with 2 RU, Replacement Matrix [RM] of a specific diagnosis (l).
+    <p>Fig 6. Example with 2 RUs, Replacement Matrix `[RM]` for a specific diagnosis `(l)`.</p>
 </div>
 
 ##  Fault generation
