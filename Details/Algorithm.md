@@ -53,17 +53,18 @@ Each Reliability Unit (RU) thus has three failure functions, and the parameters 
 ##  Diagnosis: replacement matrix (RM)
 The tool allows models the diagnosis associated with the system, specifically detailing the replacement scenarios when a fault occurs. This includes identifying what components are replaced within the system, To achieve this, this sheet constructs the Replacement Matrix (RM). 
 To develop the Replacement Matrix, it is necessary to model the diagnostic observation for each type of fault (Early, Random, and Wearout). Depending on the type of fault detected, the diagnosis can infer the location of the failure. The inferred part is then replaced, forming a replacement scenario. Understanding the consequences of the mentioned faults and the diagnostic perspective is crucial. A fault tree can be constructed to link the fault, its effects, observations of these effects, and the replacement scenario.
-The numbers in the matrix represent the average proportion of each component replaced when a fault occurs in a specific Reliability Unit (RU), with values ranging from 0 to 1. The Replacement Matrix `[RM]` specific to a diagnostic technique `(l)` can be constructed as shown in Figure 5. `RUi` represents the replacement unit `i`, ranging from 1 to `m`, and `d_{k}` represents fault `k` of the replacement unit `i`. The columns of the matrix are labeled `i` and represent the RUs to be replaced (e.g., RU1), while the rows `k` represent faults in a specific RU (e.g., Fault RU1).
+The numbers in the matrix represent the average proportion of each component replaced when a fault occurs in a specific Reliability Unit (RU), with values ranging from 0 to 1. The Replacement Matrix [RM] specific to a diagnostic technique (l) can be constructed as shown in Figure 5. RUi represents the replacement unit i, ranging from 1 to m, and dk represents fault k of the replacement unit i. The columns of the matrix are labeled i and represent the RUs to be replaced (e.g., RU1), while the rows k represent faults in a specific RU (e.g., Fault RU1).
 
 <div align="center">
     <img src="../Images/RM.png" width="400"/>
-    <p>Fig 5. Replacement Matrix `[RM]` for a specific diagnosis `(l)`.</p>
+    <p>Fig 5. Replacement Matrix [RM] for a specific diagnosis (l).
+    </p>
 </div>
 
 For clarity, consider an example with 2 RUs, resulting in a 2x2 matrix, as shown in Figure 6. In this example, if the value in the first row, first column (Fault RU1; RU1) is 1, and the value in the first row, second column (Fault RU1; RU2) is 0.6, this indicates that when a fault occurs in RU1, 100% of RU1 and 60% of RU2 are replaced according to the diagnosis.
 <div align="center">
     <img src="../Images/RM_exemple.png" width="400"/>
-    <p>Fig 6. Example with 2 RUs, Replacement Matrix `[RM]` for a specific diagnosis `(l)`.</p>
+    <p>Fig 6. Example with 2 RUs, Replacement Matrix [RM] for a specific diagnosis (l).</p>
 </div>
 
 ##  Fault generation
@@ -75,22 +76,22 @@ In this section, we will detail how we determine the occurrence time of faults f
 </div>
 
 Initially, the global distribution function of the RU must be found. It is necessary to associate faults within a replacement unit. Faults can be associated in series, meaning all subsystems must function for the overall system to be operational.
-Once the distribution function is established, it is compared to a random number between 0 and 1, generated according to a uniform distribution. This comparison helps determine the fault time (`ti*`) for the `RUi`. If the random number is less than the distribution function, it indicates the fault time `ti*`.
+Once the distribution function is established, it is compared to a random number between 0 and 1, generated according to a uniform distribution. This comparison helps determine the fault time (ti*) for the RUi. If the random number is less than the distribution function, it indicates the fault time ti*.
 
 ##  Replacement: quantifying Impacts
-The previous sections describe, on one hand, the creation of the replacement matrix based on faults and diagnostics for the input data, and on the other hand, the fault generation. To calculate the Impact related to replacement `(IR)`, it remains to link the two. For this purpose, depending on the fault at a given time `t`, we will generate a replacement vector `(RV)`, which is mathematically expressed as follows:
+The previous sections describe, on one hand, the creation of the replacement matrix based on faults and diagnostics for the input data, and on the other hand, the fault generation. To calculate the Impact related to replacement (IR), it remains to link the two. For this purpose, depending on the fault at a given time t, we will generate a replacement vector (RV), which is mathematically expressed as follows:
 <div align="center">
     <img src="../Images/quanti_remp1.png" width="400"/>
     <p>Fig 8. Equation to quantify replacement.</p>
 </div>
 
-Where `i*` represents the `RUi` in fault, `d*` the faults at `t`, and `d` the vector of all faults. `RV*` represents the replacement vector when a fault occurs at `t*`, and `RM*(k,:)` is the k-th row of `RM*`.
+Where i* represents the RUi in fault, d* the faults at t, and d the vector of all faults. RV* represents the replacement vector when a fault occurs at t*, and RM*(k,:) is the k-th row of RM*.
 
-Then, to quantify the impact of replacement `IR`, simply perform the matrix calculation of the replacement vector with the impact matrix for the manufacturing of each component:
+Then, to quantify the impact of replacement IR, simply perform the matrix calculation of the replacement vector with the impact matrix for the manufacturing of each component:
 
 <div align="center">
     <img src="../Images/quanti_remp2.png" width="400"/>
     <p>Fig 9. Equation to quantify impact of replacement.</p>
 </div>
 
-Where `Imf` represents the environmental impacts during manufacturing.
+Where Imf represents the environmental impacts during manufacturing.
