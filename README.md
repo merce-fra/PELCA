@@ -40,7 +40,7 @@ We welcome all kinds of contributions! To contribute to the project, start by fo
 You can also contribute by submitting bug reports, feature requests, and following the issues.
 
 ## License
-
+LGPL-3.0-only ou LGPL-3.0-or-later
 
 ## Authors
 - Baudais Briac: baudaisbriac@gmail.com
