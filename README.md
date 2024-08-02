@@ -75,19 +75,21 @@ L'outil a été développé à l'aide de la bibliothèque Brightway2 en python.
 
 To use the tool, you must work with a specific Excel input file. You can find the general template in [Input](/Input) (Input - template.xlsx).
 
-The Excel file is divided into 8 sheets that need to be filled out, **Cells highlighted in orange indicate areas that need to be modified.** :
+The Excel file is divided into 8 sheets that need to be filled out. **Cells highlighted in orange indicate areas that need to be modified.** :
 
 - **`Inventory - Manufacturing`**
 
   This sheet follows the model of the Excel template used with the Brightway2 library. For more information, refer to the Brightway2 documentation.
   - You need to create one "activity" per Replacement Unit (RU).
   - Each activity should include "exchanges", which are the flows required for the manufacturing of the RU.
+  -  **Note:** Do not forget to include the exchange representing the output flow. This exchange should be named same as the activity, with "amount" set to 1, "unit" set to "unit," and the database specified as the name of the database.
 
 - **`Inventory - Use`**
 
   This sheet also follows the model of the Excel template used with the Brightway2 library. For more details, refer to the Brightway2 documentation.
   - You need to create one "activity" per Replacement Unit (RU). The activities represent the energy consumption during the use of the RU for one hour.
   - Each activity should include "exchanges", which are the flows required for the use of the RU for one hour.
+  -  **Note:** Do not forget to include the exchange representing the output flow. This exchange should be named same as the activity, with "amount" set to 1, "unit" set to "unit," and the database specified as the name of the database.
 
 - **`LCA`**
 
