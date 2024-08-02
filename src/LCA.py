@@ -285,6 +285,14 @@ def EI_calculation(dic,path_input, name_input):
 
     # Monte Carlo part
     if dic["simulation"] == 'Monte Carlo' :
+        # Lire les données d'Inventory - Use pour la simulation
+        df_inventory_use = pd.read_excel("\\".join([path_input, name_input]), sheet_name='Inventory - Use', header=None)
+        excel.close()
+
+        # Modifier les quantités pour Monte Carlo
+        updated_factors = df_inventory_use[df_inventory_use[0] == 'Activity'][1].apply(lambda x: x *dic["num_hourPerYear"]*dic["service_life"])
+        activity_updates = dict(zip(df_inventory_use[df_inventory_use[0] == 'Activity'][1], updated_factors))
+
         # define the function for MC simulation
         iterations=dic["iterations"]
         def multiImpactMonteCarloLCA(functional_unit, list_methods, iterations):
@@ -310,9 +318,9 @@ def EI_calculation(dic,path_input, name_input):
             return results
             
         
-        # define the LCIA methods, functional unit, and the number of iterations       
-        fu = {act: 1 for act in activities}
-        
+        # Update the functional unit with the modified quantities
+        fu = {act: activity_updates.get(act, 1) for act in activities}
+
         
         # let it run!
         print('\nMonte Carlo : ', dic["proj_name"])
