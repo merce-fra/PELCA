@@ -28,6 +28,17 @@ L'outil a été développé à l'aide de la bibliothèque Brightway2 en python.
 
 ## Installation
 
+Comment l'utiliser 1ère installation :
+1) Installer miniconda (permet la gestion des environnements en programmation): Miniconda — Anaconda documentation
+2) Ouvrir miniconda, vous êtes dans l'environnement "base"
+3) Créer un environnement virtuel, voici la ligne de code : `conda create -n nomenvironnement`
+4) Activer l'environnement : conda activate `nomenvironnement`
+
+Pour utiliser le projet certaine bibliothèques pythons sont nécéssaire dans votre environnement python. voici les lignes de code a mettre dans miniconda :
+5) conda install conda-forge::brightway2
+6) conda install conda-forge::spyder
+7) conda install bioconda::customtkinter
+8)
 
 ## Usage
 
