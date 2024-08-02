@@ -75,7 +75,31 @@ L'outil a été développé à l'aide de la bibliothèque Brightway2 en python.
 Pour utiliser l'outil vous devez utiliser un fichier Excel input spécifique, vous pouvez trouver le template général dans [Input](/Input) (Input - template.xlsx)
 
 L'excel est divisé en 8 feuilles à remplir :
+- `Inventory - Manufacturing`
+cette feuille suit le modèle du template Excel utilisé avce la bibiothèque Brightway2, pour plus d'information s'y référer.
+Il est nécéssaire de creer une "activity" par unité de remplacement (RU)
+Chaque activité est agrémenté d'"exchanges", qui sont les flux nécéssaires à la fabrication du RU.
 
+- `Inventory - Use`
+cette feuille suit le modèle du template Excel utilisé avce la bibiothèque Brightway2, pour plus d'information s'y référer.
+Il est nécéssaire de creer une "activity" par unité de remplacement (RU). Les activités représente la consommation énéergétique de l'utilisation de l'RU pendant 1 heure.
+Chaque activité est agrémenté d'"exchanges", qui sont les flux nécéssaires à l'utilisation de l'RU pendant 1 heure.
+
+- `LCA`
+Information pour la partie calcul ACV
+- `LCIA`
+Methodes sélectionnées pour la quantification environnemental sur cycle de vie.
+Avec la bibliothèque brightway2, une LCIA se défini avec 2 paramètre la partie "Method name", la partie "impact category" et la partie "specific context". Ces trois partie permette de retrouver les LCIA dans la base de donnée brightway2, donc il faut faire attention à bien renseigner ces parametres selon brightway2.
+Pour connaitre les parametre précis d'une LCIA vous puvez utiliser Activity browser ou la directement avec un code python utilisant laa bibliothèque brightway :
+```bash
+import brightway2 as bw
+list(bw.methods)
+```
+ 
+- `Staircase`
+- `Faults`
+- `Replac. Matrix`
+- `Licence (GNU LGPL)`
 
 ## Example
 
