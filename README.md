@@ -72,39 +72,52 @@ L'outil a été développé à l'aide de la bibliothèque Brightway2 en python.
 3. **Open and Run Code**: Open your project code in Spyder and run it.
 
 ## Usage
-Pour utiliser l'outil vous devez utiliser un fichier Excel input spécifique, vous pouvez trouver le template général dans [Input](/Input) (Input - template.xlsx)
 
-L'excel est divisé en 8 feuilles à remplir :
-- `Inventory - Manufacturing`
+To use the tool, you must work with a specific Excel input file. You can find the general template in [Input](/Input) (Input - template.xlsx).
 
-cette feuille suit le modèle du template Excel utilisé avce la bibiothèque Brightway2, pour plus d'information s'y référer.
-Il est nécéssaire de creer une "activity" par unité de remplacement (RU)
-Chaque activité est agrémenté d'"exchanges", qui sont les flux nécéssaires à la fabrication du RU.
+The Excel file is divided into 8 sheets that need to be filled out:
 
-- `Inventory - Use`
+- **`Inventory - Manufacturing`**
 
-cette feuille suit le modèle du template Excel utilisé avce la bibiothèque Brightway2, pour plus d'information s'y référer.
-Il est nécéssaire de creer une "activity" par unité de remplacement (RU). Les activités représente la consommation énéergétique de l'utilisation de l'RU pendant 1 heure.
-Chaque activité est agrémenté d'"exchanges", qui sont les flux nécéssaires à l'utilisation de l'RU pendant 1 heure.
+  This sheet follows the model of the Excel template used with the Brightway2 library. For more information, refer to the Brightway2 documentation.
+  - You need to create one "activity" per Replacement Unit (RU).
+  - Each activity should include "exchanges", which are the flows required for the manufacturing of the RU.
 
-- `LCA`
-Information pour la partie calcul ACV
-- `LCIA`
-Methodes sélectionnées pour la quantification environnemental sur cycle de vie.
-Avec la bibliothèque brightway2, une LCIA se défini avec 2 paramètre la partie "Method name", la partie "impact category" et la partie "specific context". Ces trois partie permette de retrouver les LCIA dans la base de donnée brightway2, donc il faut faire attention à bien renseigner ces parametres selon brightway2.
-Pour connaitre les parametre précis d'une LCIA vous puvez utiliser Activity browser ou la directement avec un code python utilisant laa bibliothèque brightway :
-```bash
-import brightway2 as bw
-list(bw.methods)
-```
- 
-- `Staircase`
-  Information pour la partie fabrication de la courbe en escalier
-- `Faults`
-Modélisation des fautes pour chaque RU, il faut autant de ligne qu'il y a de RU. Pour plus d'explication se référer à [Algorithm.md](/Details/Algorithm.md)
-- `Replac. Matrix`
-Matrice de remplacement pour le dia
-- `Licence (GNU LGPL)`
+- **`Inventory - Use`**
+
+  This sheet also follows the model of the Excel template used with the Brightway2 library. For more details, refer to the Brightway2 documentation.
+  - You need to create one "activity" per Replacement Unit (RU). The activities represent the energy consumption during the use of the RU for one hour.
+  - Each activity should include "exchanges", which are the flows required for the use of the RU for one hour.
+
+- **`LCA`**
+
+  Information related to the LCA (Life Cycle Assessment) calculations.
+
+- **`LCIA`**
+
+  Methods selected for environmental impact quantification over the life cycle.
+  - In Brightway2, an LCIA (Life Cycle Impact Assessment) is defined with three parameters: "Method name," "Impact category," and "Specific context." Ensure these parameters are correctly specified to match the Brightway2 database.
+  - To find the precise parameters for an LCIA, you can use the Activity Browser or directly query with the following Python code using the Brightway2 library:
+    ```python
+    import brightway2 as bw
+    list(bw.methods)
+    ```
+
+- **`Staircase`**
+
+  Information related to the creation of the staircase curve.
+
+- **`Faults`**
+
+  Modeling faults for each RU. You need one row per RU. For more details, refer to [Algorithm.md](/Details/Algorithm.md).
+
+- **`Replac. Matrix`**
+
+  Replacement matrix for modeling diagnostics. Ensure that the number of rows equals the number of columns and corresponds to the number of RUs. For more details, refer to [Algorithm.md](/Details/Algorithm.md).
+
+- **`Licence (GNU LGPL)`**
+
+  Information related to licensing under the GNU Lesser General Public License (LGPL).
 
 ## Example
 
