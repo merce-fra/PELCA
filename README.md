@@ -71,10 +71,8 @@ L'outil a été développé à l'aide de la bibliothèque Brightway2 en python.
 
 3. **Open and Run Code**: Open your project code in Spyder and run it.
 
-
-
 ## Usage
-
+Pour utiliser l'outil vous devez utiliser un fichier Excel input spécifique.
 
 ## Example
 
