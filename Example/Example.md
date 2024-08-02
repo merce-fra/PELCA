@@ -10,7 +10,7 @@ Les données utilisées sont celle présentées dans le fichier `Input - Example
 Lors du lancement de l'outil voici l'interface obtenue :
 
 <div align="center">
-    <img src="../Images/exemple2.png" width="400"/>
+    <img src="../Images/exemple2.jpg" width="400"/>
 </div> 
 
 Il faut alors cliquer sur Browse et sélectionner le fichier `Input - Example.xlsx`. Puis appuyer sur le bouton `Run Script`.
