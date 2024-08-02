@@ -75,7 +75,7 @@ L'outil a été développé à l'aide de la bibliothèque Brightway2 en python.
 
 To use the tool, you must work with a specific Excel input file. You can find the general template in [Input](/Input) (Input - template.xlsx).
 
-The Excel file is divided into 8 sheets that need to be filled out:
+The Excel file is divided into 8 sheets that need to be filled out, **Cells highlighted in orange indicate areas that need to be modified.** :
 
 - **`Inventory - Manufacturing`**
 
