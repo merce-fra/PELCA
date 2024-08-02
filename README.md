@@ -101,7 +101,7 @@ list(bw.methods)
 - `Staircase`
   Information pour la partie fabrication de la courbe en escalier
 - `Faults`
-Modélisation des fautes pour chaque RU, il faut autant de ligne qu'il y a de RU. Pour plus d'explication se référer à [Algorithm.md](/details/Algorithm.md)
+Modélisation des fautes pour chaque RU, il faut autant de ligne qu'il y a de RU. Pour plus d'explication se référer à [Algorithm.md](/Details/Algorithm.md)
 - `Replac. Matrix`
 Matrice de remplacement pour le dia
 - `Licence (GNU LGPL)`
