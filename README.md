@@ -74,6 +74,8 @@ L'outil a été développé à l'aide de la bibliothèque Brightway2 en python.
 ## Usage
 Pour utiliser l'outil vous devez utiliser un fichier Excel input spécifique, vous pouvez trouver le template général dans [Input](/Input) (Input - template.xlsx)
 
+L'excel est divisé en 8 feuilles à remplir :
+
 
 ## Example
 
