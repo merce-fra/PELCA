@@ -76,11 +76,13 @@ Pour utiliser l'outil vous devez utiliser un fichier Excel input spécifique, vo
 
 L'excel est divisé en 8 feuilles à remplir :
 - `Inventory - Manufacturing`
+
 cette feuille suit le modèle du template Excel utilisé avce la bibiothèque Brightway2, pour plus d'information s'y référer.
 Il est nécéssaire de creer une "activity" par unité de remplacement (RU)
 Chaque activité est agrémenté d'"exchanges", qui sont les flux nécéssaires à la fabrication du RU.
 
 - `Inventory - Use`
+
 cette feuille suit le modèle du template Excel utilisé avce la bibiothèque Brightway2, pour plus d'information s'y référer.
 Il est nécéssaire de creer une "activity" par unité de remplacement (RU). Les activités représente la consommation énéergétique de l'utilisation de l'RU pendant 1 heure.
 Chaque activité est agrémenté d'"exchanges", qui sont les flux nécéssaires à l'utilisation de l'RU pendant 1 heure.
@@ -97,8 +99,11 @@ list(bw.methods)
 ```
  
 - `Staircase`
+  Information pour la partie fabrication de la courbe en escalier
 - `Faults`
+Modélisation des fautes pour chaque RU, il faut autant de ligne qu'il y a de RU. Pour plus d'explication se référer à [Algorithm.md](/details/Algorithm.md)
 - `Replac. Matrix`
+Matrice de remplacement pour le dia
 - `Licence (GNU LGPL)`
 
 ## Example
