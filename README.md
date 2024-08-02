@@ -21,7 +21,7 @@ The impact of diagnostics and modularity can be explained by the Replacement Rat
 L'outil a été développé à l'aide de la bibliothèque Brightway2 en python.
 
 ## Table of Contents
-- [Installation Guide](#installation_guide)
+- [Installation Guide](#installationguide)
 - [Usage](#usage)
 - [Contribution](#contribution)
 - [License](#license)
