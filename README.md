@@ -34,10 +34,11 @@ Comment l'utiliser 1ère installation :
 3) Activer l'environnement : `conda activate nomenvironnement`
 
 Pour utiliser le projet certaine bibliothèques pythons sont nécéssaire dans votre environnement python. voici les lignes de code a mettre dans miniconda :
+
 4) `conda install conda-forge::brightway2` (bibliothèse pour la partie ACV)
-5) `conda install conda-forge::spyder` 
-6) `conda install bioconda::customtkinter`
-7) 
+5) `conda install conda-forge::spyder` (environnement de développement)
+6) `conda install bioconda::customtkinter` (Interface graphique)
+7) `conda install conda-forge::pillow` (Interface graphique)
 
 ## Usage
 
