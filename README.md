@@ -21,32 +21,10 @@ The impact of diagnostics and modularity can be explained by the Replacement Rat
 L'outil a été développé à l'aide de la bibliothèque Brightway2 en python.
 
 ## Table of Contents
-- [Installation](#installation)
+- [Installation Guide](#installationguide)
 - [Usage](#usage)
 - [Contribution](#contribution)
 - [License](#license)
-
-## Installation
-
-Comment l'utiliser 1ère installation :
-1) Installer miniconda (permet la gestion des environnements en programmation): Miniconda — Anaconda documentation
-2) Ouvrir miniconda, vous êtes dans l'environnement "base", créer un environnement virtuel, voici la ligne de code : `conda create -n nomenvironnement`
-3) Activer l'environnement : `conda activate nomenvironnement`
-
-Pour utiliser le projet certaine bibliothèques pythons sont nécéssaire dans votre environnement python. voici les lignes de code a mettre dans miniconda :
-
-4) `conda install conda-forge::brightway2` (Version 2.4.6 - Bibliothèse pour la partie ACV)
-5) `conda install conda-forge::spyder` (Version 5.5.5 - Environnement de développement IDE)
-Un autre environnement de développement peut être utilisé
-7) `conda install bioconda::customtkinter` (Version 5.2.2 - Interface graphique)
-8) `conda install conda-forge::pillow` (Version 10.4.0 - Interface graphique)
-9) Lancer l'IDE : `spyder`
-10) Ouvrir le code et lancer le code dans spyder
-
-Comment l'utiliser après 1ère installation :
-1) Ouvrir miniconda, vous êtes dans l'environnement "base", activer l'environnement : 'conda activate nomenvironnement'
-3) Lancer spyder : 'spyder'
-4) Ouvrir le code et lancer le code dans spyder
 
 ## Installation Guide
 
