@@ -28,4 +28,10 @@ Les plot seront sauvegardez dans le meme dossier que celui de `Input - Example.x
     <img src="../Images/exemple3.jpg" width="200"/>
 </div> 
 
-Vous pouvez aussi choisir de sauvegarder des données sur cycle de vie de tous les RUs, pour toutes les itérations Monte Carlo. Les données sont les impacts totaux, seulement fabrication, seulement utilisation ou l'âge des RU. Pour cela cocher les données que vous souhaitez sauvegarder et cliquer sur le bouton `Save Data`.
+Vous pouvez aussi choisir de sauvegarder des données sur cycle de vie de tous les RUs, pour toutes les itérations Monte Carlo. Les données sont les impacts totaux, seulement fabrication, seulement utilisation ou l'âge des RU. Pour cela cocher les données que vous souhaitez sauvegarder et cliquer sur le bouton `Save Data`, cela va ouvrir le sélectionneur de dossier et sauvegarder les données là où vous aurez choisi.
+Pour pouvoir réutiliser les données sous python je vous propose le code suivant (la fonction "recover_data.py" est à retrouver dans le dossier exemple
+
+```python
+import recover_data
+data=recover_data._rd_np(path,"data.npy")
+```
