@@ -122,7 +122,7 @@ The Excel file is divided into 8 sheets that need to be filled out. **Cells high
   Information related to licensing under the GNU Lesser General Public License (LGPL).
 
 ## Example
-An example is detailed in the file [Example](/Example/Example.md)
+An example is detailed in the file [Example](/Example/Example.md).
 
 ## Contribution
 We welcome all kinds of contributions! To contribute to the project, start by forking the repository, make your proposed changes in a new branch, and create a pull request. Make sure your code is readable and well-documented. Include unit tests if possible.
