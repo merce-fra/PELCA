@@ -216,10 +216,12 @@ def reset_interface():
         var_EI.set("")
         var_EI_manu.set("")
         var_EI_use.set("")
+        var_fault_cause.set("")
         var_RU_age.set("")
         checkbox_EI.configure(state="disabled")
         checkbox_EI_manu.configure(state="disabled")
         checkbox_EI_use.configure(state="disabled")
+        checkbox_fault_cause.configure(state="disabled")
         checkbox_RU_age.configure(state="disabled")
 
     # Planifier la réinitialisation pour le thread principal
@@ -377,11 +379,13 @@ def save_data_to_excel():
     if folder_path:
         try:
             if var_EI.get():
-                _export_data(folder_path, "EI", EI)
+                _export_data(folder_path, "Impact_total", EI)
             if var_EI_manu.get():
-                _export_data(folder_path, "EI_manu", EI_manu)
+                _export_data(folder_path, "Impact_manu", EI_manu)
             if var_EI_use.get():
-                _export_data(folder_path, "EI_use", EI_use)
+                _export_data(folder_path, "Impact_use", EI_use)
+            if var_fault_cause.get():
+                _export_data(folder_path, "fault_cause", fault_cause)
             if var_RU_age.get():
                 _export_data(folder_path, "RU_age", RU_age)
             print(f"Selected data saved successfully in {folder_path}")
@@ -412,12 +416,13 @@ def update_ui(simulation_type):
         checkbox_EI.configure(state="normal")
         checkbox_EI_manu.configure(state="normal")
         checkbox_EI_use.configure(state="normal")
+        checkbox_fault_cause.configure(state="normal")
         checkbox_RU_age.configure(state="normal")
 
 def run_script():
     global figs
     global current_index
-    global EI, EI_manu, EI_use, RU_age
+    global EI, EI_manu, EI_use, RU_age, fault_cause
     
     full_path_input = entry_file_path.get()
     if not full_path_input:
@@ -521,6 +526,7 @@ data_frame.pack(side='bottom', fill='x', padx=10, pady=10)
 var_EI = ctk.StringVar()
 var_EI_manu = ctk.StringVar()
 var_EI_use = ctk.StringVar()
+var_fault_cause = ctk.StringVar()
 var_RU_age = ctk.StringVar()
 
 checkbox_EI = ctk.CTkCheckBox(data_frame, text="Impact total", variable=var_EI, onvalue='EI', offvalue='', state="disabled")
@@ -531,6 +537,9 @@ checkbox_EI_manu.pack(side='left', padx=5)
 
 checkbox_EI_use = ctk.CTkCheckBox(data_frame, text="Impact use", variable=var_EI_use, onvalue='EI_use', offvalue='', state="disabled")
 checkbox_EI_use.pack(side='left', padx=5)
+
+checkbox_fault_cause = ctk.CTkCheckBox(data_frame, text="Fault cause", variable=var_fault_cause, onvalue='fault_cause', offvalue='', state="disabled")
+checkbox_fault_cause.pack(side='left', padx=5)
 
 checkbox_RU_age = ctk.CTkCheckBox(data_frame, text="RU age", variable=var_RU_age, onvalue='RU_age', offvalue='', state="disabled")
 checkbox_RU_age.pack(side='left', padx=5)
