@@ -23,9 +23,9 @@ Aussi les différents plots sont affichés comme suit :
 
 Vous pouvez naviger entre les plot avec les boutons next et previous mais aussi en cliquant directement sur l'image du plot.
 Pour sauvegarder un plot, il faut afficher le plot choisi et cliquer suir le bouton `save`. Pous sauvegarder tous les plots il faut cliquer sur le bouton `save all`.
-Les plot seront sauvegardez dans le meme dossier que celui de `Input - Example.xlsx`. Il s'y trouvera aussi les résultats du calcul des impacts dans le dossier `Results PELCA`. Pour le fichier de l'ACV classique 
-
+Les plot seront sauvegardez dans le meme dossier que celui de `Input - Example.xlsx`. Il s'y trouvera aussi les résultats du calcul des impacts dans le dossier `Results PELCA`.
 <div align="center">
     <img src="../Images/exemple3.jpg" width="200"/>
 </div> 
 
+Vous pouvez aussi choisir de sauvegarder des données sur cycle de vie de tous les RUs, pour toutes les itérations Monte Carlo. Les données sont les impacts totaux, seulement fabrication, seulement utilisation ou l'âge des RU. Pour cela cocher les données que vous souhaitez sauvegarder et cliquer sur le bouton `Save Data`.
