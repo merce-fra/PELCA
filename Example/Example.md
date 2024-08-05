@@ -18,7 +18,7 @@ Il faut alors cliquer sur Browse et sélectionner le fichier `Input - Example.xl
 Le terminal a gauche présentera l'ancement du script, quand le calcul est terminé l'information " PELCA executed successfully" s'affiche.
 Aussi les différents plots sont affichés comme suit :
 <div align="center">
-    <img src="../Images/exmple1.png" width="400"/>
+    <img src="../Images/exemple1.png" width="400"/>
 </div>
 
 Vous pouvez naviger entre les plot avec les boutons next et previous mais aussi en cliquant directement sur l'image du plot.
