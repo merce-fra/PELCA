@@ -25,7 +25,9 @@ The terminal on the left will show the script execution process. When the calcul
     <img src="../Images/exemple1.png" width="1000"/>
 </div>
 
-You can navigate between plots using the `Next` and `Previous` buttons or by clicking directly on the plot image. To save a specific plot, display the chosen plot and click the `Save` button. To save all plots, click the `Save All` button. The plots will be saved in the same directory as `Input - Example.xlsx`. Calculation results will be located in the `Results PELCA` folder.
+You can navigate between plots using the `Next` and `Previous` buttons or by clicking directly on the plot image. To save a specific plot, display the chosen plot and click the `Save` button. To save all plots, click the `Save All` button. The plots will be saved in the same directory as `Input - Example.xlsx`.
+
+Calculation results will be located in the `Results PELCA` folder.
 
 <div align="center">
     <img src="../Images/exemple3.jpg" width="200"/>
