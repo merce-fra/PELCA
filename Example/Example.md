@@ -41,7 +41,7 @@ data=recover_data._rd_np(path,"data.npy")
 This example is inspired by the case study presented in the thesis:
 [Consult the thesis](https://theses.hal.science/tel-04659788)
 
-The example is based on a two-Resource Unit (RU) system:
+The example is based on a two-Replacement Unit (RU) system:
 - An IGBT power module (750V; 820A)
 - A DC bus filtering capacitor
 
