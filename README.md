@@ -23,6 +23,7 @@ L'outil a été développé à l'aide de la bibliothèque Brightway2 en python.
 ## Table of Contents
 - [Installation Guide](#installation-guide)
 - [Usage](#usage)
+- [Example](#example)
 - [Contribution](#contribution)
 - [License](#license)
 
