@@ -26,6 +26,6 @@ Pour sauvegarder un plot, il faut afficher le plot choisi et cliquer suir le bou
 Les plot seront sauvegardez dans le meme dossier que celui de `Input - Example.xlsx`. Il s'y trouvera aussi les résultats du calcul des impacts dans le dossier `Results PELCA`. Pour le fichier de l'ACV classique 
 
 <div align="center">
-    <img src="../Images/exemple3.jpg" width="400"/>
+    <img src="../Images/exemple3.jpg" width="200"/>
 </div> 
 
