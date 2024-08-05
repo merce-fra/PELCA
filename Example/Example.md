@@ -10,7 +10,7 @@ Les données utilisées sont celle présentées dans le fichier `Input - Example
 Lors du lancement de l'outil voici l'interface obtenue :
 
 <div align="center">
-    <img src="../Images/exemple2.jpg" width="400"/>
+    <img src="../Images/exemple2.jpg" width="800"/>
 </div> 
 
 Il faut alors cliquer sur Browse et sélectionner le fichier `Input - Example.xlsx`. Puis appuyer sur le bouton `Run Script`.
@@ -18,7 +18,7 @@ Il faut alors cliquer sur Browse et sélectionner le fichier `Input - Example.xl
 Le terminal a gauche présentera l'ancement du script, quand le calcul est terminé l'information " PELCA executed successfully" s'affiche.
 Aussi les différents plots sont affichés comme suit :
 <div align="center">
-    <img src="../Images/exemple1.png" width="400"/>
+    <img src="../Images/exemple1.jpg" width="800"/>
 </div>
 
 Vous pouvez naviger entre les plot avec les boutons next et previous mais aussi en cliquant directement sur l'image du plot.
@@ -26,6 +26,6 @@ Pour sauvegarder un plot, il faut afficher le plot choisi et cliquer suir le bou
 Les plot seront sauvegardez dans le meme dossier que celui de `Input - Example.xlsx`. Il s'y trouvera aussi les résultats du calcul des impacts dans le dossier `Results PELCA`. Pour le fichier de l'ACV classique 
 
 <div align="center">
-    <img src="../Images/exemple3.png" width="400"/>
+    <img src="../Images/exemple3.jpg" width="800"/>
 </div> 
 
