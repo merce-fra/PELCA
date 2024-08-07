@@ -79,7 +79,7 @@ The tool was developed using the Brightway2 library in Python.
 
 To use the tool:
 
-- You need to download the Python `.py` files from the [src](/src) and place them in the same directory.
+- You need to download the Python `.py` files from the [src](/src) and place them in the same directory. To start the tool, compile the file `main_PELCA_GUI.py`.
 - You must work with a specific Excel input file. You can find the general template in [Input](/Input) (Input - template.xlsx).
 
 ### Excel file
@@ -92,6 +92,11 @@ The Excel file is divided into 8 sheets that need to be filled out. **Cells high
   - You need to create one "activity" per Replacement Unit (RU).
   - Each activity should include "exchanges", which are the flows required for the manufacturing of the RU.
   -  **Note:** Do not forget to include the exchange representing the output flow. This exchange should be named same as the activity, with "amount" set to 1, "unit" set to "unit," and the database specified as the name of the database.
+
+<p align="center">
+    <img src="Images/fonctionnement_excel.png?raw=true" width="600"/>
+</p>
+ 
 
 - **`Inventory - Use`**
 
