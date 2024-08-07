@@ -203,8 +203,8 @@ def EI_calculation(dic,path_input, name_input):
     # Export excel
     imp = bw.ExcelImporter("\\".join([path_input,name_input]))
     imp.apply_strategies()
-    imp.match_database(fields=('name', 'unit', 'location'))
-    imp.match_database(dic["database_ecoinvent"], fields=('name', 'unit', 'location'))
+    imp.match_database(fields=('name', 'reference product', 'unit', 'location'))
+    imp.match_database(dic["database_ecoinvent"], fields=('name', 'reference product', 'unit', 'location'))
     imp.statistics()
 
     # imp.write_excel()  # ou can check whether the import went as expected by having a look at an Excel sheet, that includes our process data.
