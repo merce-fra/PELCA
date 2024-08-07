@@ -77,7 +77,12 @@ The tool was developed using the Brightway2 library in Python.
 
 ## Usage
 
-To use the tool, you must work with a specific Excel input file. You can find the general template in [Input](/Input) (Input - template.xlsx).
+To use the tool:
+
+- You need to download the Python `.py` files from the [src](/src) and place them in the same directory.
+- You must work with a specific Excel input file. You can find the general template in [Input](/Input) (Input - template.xlsx).
+
+### Excel file
 
 The Excel file is divided into 8 sheets that need to be filled out. **Cells highlighted in orange indicate areas that need to be modified.** :
 
