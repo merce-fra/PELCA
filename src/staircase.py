@@ -267,7 +267,7 @@ class STAIRCASE():
         
         self.number_of_fault=np.array([[[0 for i in range(nb_RU)] for z in range(nb_ite_MC)] for y in range(self.usage_time)])
 
-        self.fault_cause =np.array([[["" for i in range(nb_RU+nb_RU)] for z in range(nb_ite_MC)] for y in range(self.usage_time)], dtype="<U10")
+        self.fault_cause =np.array([[["" for i in range(nb_RU)] for z in range(nb_ite_MC)] for y in range(self.usage_time)], dtype="<U10")
       
         weibull_Efault=np.array([[0 for i in range(nb_RU)] for z in t], dtype='float')
         weibull_Rfault=np.array([[0 for i in range(nb_RU)] for z in t], dtype='float')
@@ -280,7 +280,7 @@ class STAIRCASE():
         time=np.array([t+1 for i in range(nb_RU)]).T
         
         (row_r,col_r)=dic["Remplacement_matrix"].shape
-        remplacement=np.array([[[0 for y in range(col_r)] for z in range(nb_RU+nb_RU)] for i in range(nb_ite_MC)] , dtype='int')
+        remplacement=np.array([[[0 for y in range(col_r)] for z in range(row_r)] for i in range(nb_ite_MC)] , dtype='float')
         
         if dic["Early_failure"]:
             weibull_Efault=np.array(weibull_min.cdf(time-1,dic["beta_early"][:], scale=dic["sigma_early"][:]),ndmin=2, dtype='float')
@@ -336,8 +336,8 @@ class STAIRCASE():
                 down=prob_weibull_Efault[self.RU_age[year,Fault[0],Fault[1]],Fault[1]]
                 up=down+prob_weibull_Rfault[self.RU_age[year]][Fault[0],0,Fault[1]]
                 Fault_R=np.where((random_fault_type[Fault] >down) & (random_fault_type[Fault] <=up))
-                self.fault_cause[year,Fault[0][Fault_R],Fault[1][Fault_R]+nb_RU]="Random"
-                remplacement[Fault[0][Fault_R],Fault[1][Fault_R]+nb_RU,:]=dic["Remplacement_matrix"].loc[Fault[1][Fault_R]]
+                self.fault_cause[year,Fault[0][Fault_R],Fault[1][Fault_R]]="Random"
+                remplacement[Fault[0][Fault_R],Fault[1][Fault_R],:]=dic["Remplacement_matrix"].loc[Fault[1][Fault_R]]
                 
                 down=up
                 Fault_W=np.where((random_fault_type[Fault] >down))
@@ -348,13 +348,18 @@ class STAIRCASE():
                 random_fault_time[Fault]=[random.uniform(0, 1) for y in Fault[1]]
                 random_fault_type[Fault]=[random.uniform(0, 1) for y in Fault[1]] 
             
-            remplacement_or=remplacement.any(axis=1).astype(int) 
-
+            #Remplacement vector (RV)
+            remplacement_or=remplacement.sum(axis=1)
+            
+            
+            #Impact calculation
             self.EI_total_manu[year,:,:]=self.EI_total_manu[year-1,:,:]+self.EI_manufacturing.dot(remplacement_or.T).T
             self.EI_total_use[year,:,:]= self.EI_total_use[year-1,:,:]+self.EI_use_onestep_total
             self.EI_total[year,:,:]= self.EI_total_use[year,:,:]+self.EI_total_manu[year,:,:]
             
-            self.RU_age[year,:,:]=np.logical_not(remplacement_or[:,:nb_RU]).astype(int)*self.RU_age[year,:,:]
+            #Calcul de l'âge moyen pondéré par rapport à la matrice de rempacement, arrondis à l'entier le plus proche
+            self.RU_age[year,:,:]=np.round((1-remplacement_or[:,:nb_RU]))*self.RU_age[year,:,:]
+            
             self.number_of_fault[year,:,:]= self.number_of_fault[year-1,:,:]+remplacement_or[:,:nb_RU]
         
             #initialise
