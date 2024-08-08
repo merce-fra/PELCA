@@ -68,7 +68,7 @@ For clarity, consider an example with 2 RUs, resulting in a 2x2 matrix, as shown
 </div>
 
 ##  Fault generation
-In this section, we will detail how we determine the occurrence time of faults for each RU. Figure 7 illustrates the algorithm for determining the type of fault.
+In this section, we will detail how we determine the occurrence time of faults and the type of fault for each RU. Figure 7 illustrates the algorithm for determining the time and type of fault.
 
 <div align="center">
     <img src="../Images/algo_fault.png" width="600"/>
@@ -76,7 +76,9 @@ In this section, we will detail how we determine the occurrence time of faults f
 </div>
 
 Initially, the global distribution function of the RU must be found. It is necessary to associate faults within a replacement unit. Faults can be associated in series, meaning all subsystems must function for the overall system to be operational.
-Once the distribution function is established, it is compared to a random number between 0 and 1, generated according to a uniform distribution. This comparison helps determine the fault time (ti*) for the RUi. If the random number is less than the distribution function, it indicates the fault time ti*.
+Once the distribution function is established, it is compared to a random number between 0 and 1, generated according to a uniform distribution. This comparison helps determine the fault time (ti*) for the RUi.
+A second random number is used to select the fault type (d{k,i}*), based on the probabilities associated with each type at the time of the fault.
+This algorithm allows for determining, for each RU, both the time at which a fault occurs (t*i) and the type of fault that occurs (d*i). This enables the generation of two vectors, t* and d*, of size m, representing the occurrence times and fault types for each RU, respectively.
 
 ##  Replacement: quantifying Impacts
 The previous sections describe, on one hand, the creation of the replacement matrix based on faults and diagnostics for the input data, and on the other hand, the fault generation. To calculate the Impact related to replacement (IR), it remains to link the two. For this purpose, depending on the fault at a given time t, we will generate a replacement vector (RV), which is mathematically expressed as follows:
