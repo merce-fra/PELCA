@@ -10,7 +10,7 @@ The Excel file is divided into 8 sheets that need to be filled out. **Cells high
   -  **Note:** Do not forget to include the exchange representing the output flow. This exchange should be named same as the activity, with "amount" set to 1, "unit" set to "unit," and the database specified as the name of the database.
 
 <p align="center">
-    <img src=".../Images/fonctionnement_excel.png?raw=true" width="800"/>
+    <img src="../Images/fonctionnement_excel.png?raw=true" width="800"/>
 </p>
 
 
