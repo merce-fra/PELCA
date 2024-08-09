@@ -7,7 +7,7 @@ The example is based on a two-Replacement Unit (RU) system:
 - An IGBT power module (750V; 820A)
 - A DC bus filtering capacitor
 
-The data used are provided in the `Input - Example.xlsx` file.
+The data used are provided in the `Input - Example.xlsx` file. In the Excel file, modify the red-highlighted cells in the 'LCA' sheet to ensure the example works correctly.
 
 ### Running the Tool
 
