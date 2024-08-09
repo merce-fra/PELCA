@@ -9,6 +9,8 @@ The example is based on a two-Replacement Unit (RU) system:
 
 The data used are provided in the `Input - Example.xlsx` file. In the Excel file, modify the red-highlighted cells in the 'LCA' sheet to ensure the example works correctly.
 
+The example was calculated using the Ecoinvent library "ecoinvent 3.9_cutoff_ecoSpold02".
+
 ### Running the Tool
 
 Upon launching the tool, you will see the following interface:
