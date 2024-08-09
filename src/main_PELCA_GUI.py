@@ -497,11 +497,14 @@ separator_color = "#242424"
 
 root.configure(bg=bg_color)
 
+# Récupérer les chemins des variables d'environnement
+icon_path = os.getenv('ICON_PATH', 'assets/icon.ico')
+image_path = os.getenv('IMAGE_PATH', 'assets/first_image.png')
+
 # Charger l'icône
-root.after(201, lambda: root.iconbitmap('C:/Users/baudais/Desktop/MERCE/icon.ico'))
+root.after(201, lambda: root.iconbitmap(icon_path))
 
 # Charger l'image du haut
-image_path = "C:/Users/baudais/Desktop/MERCE/first_image.png"
 top_image = ctk.CTkImage(dark_image=Image.open(image_path), size=(1654//4, 578//4))
 image_label = ctk.CTkLabel(root, image=top_image, text='')
 image_label.pack(pady=10)
