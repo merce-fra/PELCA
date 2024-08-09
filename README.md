@@ -79,7 +79,7 @@ The tool was developed using the Brightway2 library in Python.
 
 To use the tool:
 
-- You need to download the Python `.py` files from the [src](/src) and place them in the same directory. To start the tool, compile the file `main_PELCA_GUI.py`.
+- You need to download the Python `.py` files from the [src](/src) and place them in the same directory. To start the tool, execute the file `main_PELCA_GUI.py`.
 - You must work with a specific Excel input file. You can find the general template in [Input](/Input) (Input - template.xlsx).
 
 ### Excel file
