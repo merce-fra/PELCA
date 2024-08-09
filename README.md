@@ -50,8 +50,8 @@ The tool was developed using the Brightway2 library in Python.
     ```bash
     conda install conda-forge::brightway2  # Version 2.4.6 - ACV library
     conda install conda-forge::spyder    # Version 5.5.5 - IDE environment
-    conda install  bioconda::customtkinter # Version 5.2.2 - GUI
-    conda install  conda-forge::pillow     # Version 10.4.0 - GUI
+    conda install bioconda::customtkinter # Version 5.2.2 - GUI
+    conda install conda-forge::pillow     # Version 10.4.0 - GUI
     ```
 
 5. **Launch the IDE**: Start Spyder by running:
