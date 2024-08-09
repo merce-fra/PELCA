@@ -226,7 +226,7 @@ def _init_dic(path_input,name_input):
     else:
          print("LCA not yet calculated.")
          dic["LCA"]='yes'
-         _init_dir(path,dic["directory"])
+         _init_dir(dic["LCA_path"],dic["directory"])
          
          dic["database_ecoinvent"] =df.iloc[df[df.isin(['Database ecoinvent']).any(axis=1)].index[0], 1]
          dic["database_ecoinvent_path"]=df.iloc[df[df.isin(['Ecoinvent path']).any(axis=1)].index[0], 1]
@@ -266,9 +266,9 @@ def _init_dic(path_input,name_input):
 
     # Path
     file_name='dict_file.csv'
-    path_file = os.path.join(path,file_name)
+    path_file = os.path.join(dic["LCA_path"],file_name)
     file_name_pickel='dict_file.pkl'
-    path_file_pickel = os.path.join(path,file_name_pickel)
+    path_file_pickel = os.path.join(dic["LCA_path"],file_name_pickel)
     
     #save csv
     with open(path_file, 'w') as csv_file:  
