@@ -29,6 +29,7 @@ The tool was developed using the Brightway2 library in Python.
 - [Example](#example)
 - [Contribution](#contribution)
 - [License](#license)
+- [Disclaimer](#disclaimer)
 
 ## Installation Guide
 
@@ -90,7 +91,7 @@ We welcome all kinds of contributions! To contribute to the project, start by fo
 
 You can also contribute by submitting bug reports, feature requests, and following the issues.
 
-### Disclaimer
+## Disclaimer
 This code is intended for use in a research environment only. We disclaim any responsibility for the results obtained and any subsequent use of them.
 
 ## License
