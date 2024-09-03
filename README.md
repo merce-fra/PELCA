@@ -28,8 +28,8 @@ The tool was developed using the Brightway2 library in Python.
 - [Usage](#usage)
 - [Example](#example)
 - [Contribution](#contribution)
-- [License](#license)
 - [Disclaimer](#disclaimer)
+- [License](#license)
 
 ## Installation Guide
 
