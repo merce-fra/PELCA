@@ -18,7 +18,7 @@ import numpy as np
 import brightway2 as bw
 from brightway2 import *
 from stats_arrays import *
-
+import os
 
 def EI_calculation(dic,path_input, name_input):
 
