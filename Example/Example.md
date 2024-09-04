@@ -8,8 +8,11 @@ The example is based on a two-Replacement Unit (RU) system:
 - A DC bus filtering capacitor
 
 The data used are provided in the `Input - Example.xlsx` file. In the Excel file, modify the red-highlighted cells in the 'LCA' sheet to ensure the example works correctly.
-
 The example was calculated using the Ecoinvent library "ecoinvent 3.9_cutoff_ecoSpold02".
+<div align="center">
+    <img src="../Images/example_lca.png" width="1000"/>
+</div>
+
 
 ### Running the Tool
 
