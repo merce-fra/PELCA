@@ -19,7 +19,7 @@ Upon launching the tool, you will see the following interface:
     <img src="../Images/exemple2.png" width="1000"/>
 </div> 
 
-Click on `Browse` to select the `Input - Example.xlsx` file, then press the `Run Script` button.
+Click on `Browse` to select the `Input - Example.xlsx` file, file provided in the Example folder of the repository, then press the `Run Script` button.
 
 The terminal on the left will show the script execution process. When the calculation is complete, you will see the message "PELCA executed successfully". Additionally, various plots will be displayed as follows:
 
