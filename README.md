@@ -95,7 +95,6 @@ You can also contribute by submitting bug reports, feature requests, and followi
 This code is intended for use in a research environment only. We disclaim any responsibility for the results obtained and any subsequent use of them.
 
 ## License
-LGPL-3.0-only ou LGPL-3.0-or-later
-
+ This code is licensed under LGPL-3.0-only or LGPL-3.0-or-later, and also uses other python libraries which also have their own licenses.
 ## Authors
 - Baudais Briac: baudaisbriac@gmail.com
