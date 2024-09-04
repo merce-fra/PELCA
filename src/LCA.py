@@ -201,7 +201,7 @@ def EI_calculation(dic,path_input, name_input):
     bw.create_core_migrations()
 
     # Export excel
-    imp = bw.ExcelImporter("\\".join([path_input,name_input]))
+    imp = bw.ExcelImporter(os.path.join(path_input,name_input))
     imp.apply_strategies()
     imp.match_database(fields=('name', 'reference product', 'unit', 'location'))
     imp.match_database(dic["database_ecoinvent"], fields=('name', 'reference product', 'unit', 'location'))
@@ -249,11 +249,10 @@ def EI_calculation(dic,path_input, name_input):
     results_df
 
     # Basic LCA
-    # results_df.to_excel("".join([dic["path_result_EI"], dic["directory"],"\\",dic["filename_result_EI"]]))
     
     
     # Diviser le DataFrame en deux parties : avec et sans 'energy per hours'
-    excel = pd.ExcelFile("\\".join([path_input,name_input]))
+    excel = pd.ExcelFile(os.path.join(path_input,name_input))
     df = pd.read_excel(excel, sheet_name='Inventory - Use', header=None)
     excel.close()
     
@@ -277,7 +276,7 @@ def EI_calculation(dic,path_input, name_input):
     df_energy_only = df_energy_only[['Unit'] + [col for col in df_energy_only.columns if col != 'Unit']]
 
     # Écrire chaque partie dans une feuille différente
-    excel_path = "\\".join([dic["path_result_EI"], dic["directory"], dic["filename_result_EI"]])
+    excel_path = os.path.join(dic["path_result_EI"], dic["directory"], dic["filename_result_EI"])
     with pd.ExcelWriter(excel_path, engine='xlsxwriter') as writer:
     # Écrire chaque partie dans une feuille différente
         df_without_energy.to_excel(writer, sheet_name='Manufacturing', index=True)
@@ -286,7 +285,7 @@ def EI_calculation(dic,path_input, name_input):
     # Monte Carlo part
     if dic["simulation"] == 'Monte Carlo' :
         # Lire les données d'Inventory - Use pour la simulation
-        df_inventory_use = pd.read_excel("\\".join([path_input, name_input]), sheet_name='Inventory - Use', header=None)
+        df_inventory_use = pd.read_excel(os.path.join(path_input, name_input), sheet_name='Inventory - Use', header=None)
         excel.close()
 
         # Modifier les quantités pour Monte Carlo
@@ -350,5 +349,5 @@ def EI_calculation(dic,path_input, name_input):
         results_df_MC.index =dic["EI_name"]
         results_df_MC = results_df_MC.reset_index()
         results_df_MC = results_df_MC.rename(columns={'index': 'Method'})
-        results_df_MC.to_excel("\\".join([dic["path_result_EI"], dic["directory"],dic["filename_result_EI_MC"]]))
+        results_df_MC.to_excel(os.path.join(dic["path_result_EI"], dic["directory"],dic["filename_result_EI_MC"]))
         

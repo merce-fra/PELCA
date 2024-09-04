@@ -189,7 +189,7 @@ def _init_dir(path,directory):
 def _init_dic(path_input,name_input):
     #%%
     
-    excel = pd.ExcelFile("\\".join([path_input,name_input]))
+    excel = pd.ExcelFile(os.path.join(path_input,name_input))
     df = pd.read_excel(excel, sheet_name='LCA', header=None, skiprows=1)
     df_LCIA = pd.read_excel(excel, sheet_name='LCIA', header=0, skiprows=1)
     df_stair = pd.read_excel(excel, sheet_name='Staircase', header=None, skiprows=1)
@@ -207,13 +207,13 @@ def _init_dic(path_input,name_input):
     dic["simulation"] =df.iloc[df[df.isin(['Type of simulation (Analysis\Monte Carlo)']).any(axis=1)].index[0], 1]
     
     dic["directory"] ="Results PELCA"
-    dic["LCA_path"] ="\\".join([dic["path_result_EI"],dic["directory"]])
+    dic["LCA_path"] =os.path.join(dic["path_result_EI"],dic["directory"])
     path = os.path.join(path_input, dic["directory"])
     
     if dic["simulation"] == "Analysis":
-        file_path="\\".join([dic["path_result_EI"],dic["directory"],dic["filename_result_EI"]])
+        file_path=os.path.join(dic["path_result_EI"],dic["directory"],dic["filename_result_EI"])
     elif dic["simulation"] == "Monte Carlo":
-        file_path="\\".join([dic["path_result_EI"],dic["directory"],dic["filename_result_EI_MC"]])
+        file_path=os.path.join(dic["path_result_EI"],dic["directory"],dic["filename_result_EI_MC"])
     
     if os.path.exists(file_path):
          print("LCA is already calculated.")

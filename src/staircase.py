@@ -176,6 +176,7 @@ import sys
 from scipy.stats import weibull_min
 import matplotlib.pyplot as plt
 import random
+import os
 
 
 def _wcdf(self,year,dic,nb_RU,weibull_Efault,weibull_Rfault,weibull_Wfault):
@@ -203,7 +204,7 @@ class STAIRCASE():
       epsilon = 1e-10 #allow to avoid to divide by 0 during .../wcdf_sum
       self.t = np.linspace(epsilon, dic["service_life"], self.usage_time)
       
-      excel = pd.ExcelFile("\\".join([dic["LCA_path"],dic["filename_result_EI"]]))
+      excel = pd.ExcelFile(os.path.join(dic["LCA_path"],dic["filename_result_EI"]))
       
       # EI manufacturing of each RU
       df_manufacturing =pd.read_excel(excel, sheet_name='Manufacturing', index_col=0)
@@ -226,7 +227,7 @@ class STAIRCASE():
       excel.close()
 
       
-      excel = pd.ExcelFile("\\".join([path_input,name_input]))
+      excel = pd.ExcelFile(os.path.join(path_input,name_input))
       beta_sigma_ERW=pd.read_excel(excel, sheet_name='Faults', index_col=0, skiprows=[0,1,2]).to_numpy()
       excel.close()
 

@@ -170,6 +170,7 @@ Created on 2024
 @author: baudais
 """
 import numpy as np
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
@@ -359,7 +360,7 @@ class PLOT():
         ax.grid(True)
         
         # Afficher la figure
-        plt.show()
+        
         
         return fig
         
@@ -443,12 +444,12 @@ class PLOT():
         plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
         plt.xlabel("Time (years)",fontsize =14)
 
-        plt.show()
+        
         
         return fig
         
     def plot_allEI_manufacturing(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
-        excel = pd.ExcelFile("\\".join([dic["LCA_path"],dic["filename_result_EI"]]))
+        excel = pd.ExcelFile(os.path.join(dic["LCA_path"],dic["filename_result_EI"]))
         
         # EI manufacturing of each RU
         self.EI_manufacturing = pd.read_excel(excel, sheet_name='Manufacturing', index_col=0)
@@ -517,7 +518,7 @@ class PLOT():
         ax.grid(True, axis='y', alpha=0.7)
         
         plt.tight_layout()
-        plt.show()
+        
         
         return fig
         
@@ -541,7 +542,7 @@ class PLOT():
             ax.set_title('Distribution of defects', fontsize=20, weight='bold')
 
             # Affichage du diagramme
-            plt.show()
+            
             
             return fig
             
@@ -555,7 +556,7 @@ class PLOT_MC():
         N = len(dic["EI_name"])
         theta = radar_factory(N, frame='polygon')
        
-        excel_LCA = pd.ExcelFile("\\".join([dic["LCA_path"],dic["filename_result_EI_MC"]]))
+        excel_LCA = pd.ExcelFile(os.path.join(dic["LCA_path"],dic["filename_result_EI_MC"]))
         df_LCA= pd.read_excel(excel_LCA, 0)
         excel_LCA.close()
 
@@ -617,7 +618,7 @@ class PLOT_MC():
         legend = ax.legend(labels, loc='upper center', bbox_to_anchor=(0.5, -0.1),
                    ncol=3, fontsize=14)
         
-        plt.show()
+        
         
         return fig
     
@@ -625,7 +626,7 @@ class PLOT_MC():
         N = len(dic["EI_name"])
         
         # Charger les données
-        excel_LCA = pd.ExcelFile("\\".join([dic["LCA_path"], dic["filename_result_EI_MC"]]))
+        excel_LCA = pd.ExcelFile(os.path.join(dic["LCA_path"], dic["filename_result_EI_MC"]))
         df_LCA = pd.read_excel(excel_LCA, 0)
         
         excel_LCA.close()
@@ -675,5 +676,5 @@ class PLOT_MC():
 
     
         plt.tight_layout()
-        plt.show()
+        
         return fig
