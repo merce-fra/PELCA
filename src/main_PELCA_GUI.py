@@ -498,8 +498,8 @@ separator_color = "#242424"
 root.configure(bg=bg_color)
 
 # Récupérer les chemins des variables d'environnement
-icon_path = os.getenv('ICON_PATH', 'assets/icon.ico')
-image_path = os.getenv('IMAGE_PATH', 'assets/first_image.png')
+icon_path = os.getenv('ICON_PATH', os.path.join('assets','icon.ico'))
+image_path = os.getenv('IMAGE_PATH', os.path.join('assets','first_image.png'))
 
 # Charger l'icône
 root.after(201, lambda: root.iconbitmap(icon_path))
