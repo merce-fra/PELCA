@@ -26,7 +26,7 @@ from matplotlib.spines import Spine
 from matplotlib.transforms import Affine2D
 import math
 import tkinter as tk
-
+import ctypes
 
 
 def get_screen_size():
@@ -36,12 +36,23 @@ def get_screen_size():
     screen_height = root.winfo_screenheight()
     return screen_width, screen_height
 
+def get_dpi_scaling():
+    # Utiliser ctypes pour obtenir les informations de mise à l'échelle DPI
+    hdc = ctypes.windll.user32.GetDC(0)
+    dpi = ctypes.windll.gdi32.GetDeviceCaps(hdc, 88)  # 88 est le LOGPIXELSX
+    ctypes.windll.user32.ReleaseDC(0, hdc)
+    
+    # Calculer le facteur de mise à l'échelle
+    scaling_factor = dpi / 96.0  # 96 DPI est la référence pour 100% de mise à l'échelle
+    return scaling_factor
+
 def adjust_figure_size(fig, ax):
     screen_width, screen_height = get_screen_size()
+    scaling_factor = get_dpi_scaling()
 
-    # Ajustement des dimensions de la figure
-    fig_width = screen_width / 225  # Ajustez ces valeurs pour une taille plus adaptée
-    fig_height = screen_height / 225
+    # Ajustement des dimensions de la figure en tenant compte de la mise à l'échelle
+    fig_width = (screen_width / 210) / scaling_factor  # Adapter à la mise à l'échelle
+    fig_height = (screen_height / 210) / scaling_factor
     fig.set_size_inches(fig_width, fig_height)
     
 
@@ -332,10 +343,11 @@ class PLOT():
 
         
         screen_width, screen_height = get_screen_size()
+        scaling_factor = get_dpi_scaling()
 
         # Ajustement des dimensions de la figure
-        fig_width = screen_width / 225  # Ajustez ces valeurs pour une taille plus adaptée
-        fig_height = screen_height / 160
+        fig_width = (screen_width / 210)/ scaling_factor  # Ajustez ces valeurs pour une taille plus adaptée
+        fig_height = (screen_height / 150)/ scaling_factor
         fig.set_size_inches(fig_width, fig_height)
         return fig
         
