@@ -331,7 +331,12 @@ class PLOT():
         plt.xlabel("Time (years)",fontsize =14)
 
         
-        adjust_figure_size(fig, ax)
+        screen_width, screen_height = get_screen_size()
+
+        # Ajustement des dimensions de la figure
+        fig_width = screen_width / 225  # Ajustez ces valeurs pour une taille plus adaptée
+        fig_height = screen_height / 160
+        fig.set_size_inches(fig_width, fig_height)
         return fig
         
     def plot_allEI_manufacturing(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):

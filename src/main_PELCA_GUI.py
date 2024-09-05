@@ -104,7 +104,7 @@ def create_figure_buttons():
             fg_color=button_color,
             text_color=fg_color,
             width=120,
-            height=120,
+            height=60,
             text=''
         )
         button.image = thumb_image  # Garder une référence pour éviter la collecte de déchets
@@ -316,7 +316,7 @@ def run_script():
         
         # Définir la taille de plot_frame
         plot_frame.configure(width=max_width, height=max_height)
-        plot_frame.pack_propagate(False)  # Empêche le cadre de se redimensionner pour s'adapter à son contenu
+        plot_frame.pack_propagate(True)  # Empêche le cadre de se redimensionner pour s'adapter à son contenu
 
         current_index = 0
 
