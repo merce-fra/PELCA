@@ -371,7 +371,7 @@ class PLOT():
         
         # Création du graphique en barres empilées
         fig, ax = plt.subplots()
-        
+        adjust_figure_size(fig, ax)
         # Nombre de lignes
         num_rows = normalized_EI_manu.shape[0]
         num_columns = len(index_labels)
@@ -407,6 +407,7 @@ class PLOT():
                     va='center', 
                     fontsize=font_size, 
                     color='black',
+                    rotation=45,
                     bbox=dict(facecolor='white', alpha=0.5, edgecolor='none', boxstyle='round,pad=0.2')  # Fond gris
                 )
                 
@@ -427,7 +428,7 @@ class PLOT():
         
         # Ajouter une légende en haut du graphique
         ax.legend(index_labels, loc='center left', bbox_to_anchor=(1, 0.5))
-        adjust_figure_size(fig, ax)
+        
         adjust_fontsize(fig, ax)
    
         plt.tight_layout()
