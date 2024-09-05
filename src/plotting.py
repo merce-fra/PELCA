@@ -25,6 +25,24 @@ from matplotlib.projections import register_projection
 from matplotlib.spines import Spine
 from matplotlib.transforms import Affine2D
 import math
+import tkinter as tk
+
+
+
+def get_screen_size():
+    root = tk.Tk()
+    root.withdraw()  # Cache la fenêtre principale
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    return screen_width, screen_height
+
+def adjust_figure_size(fig, ax):
+    screen_width, screen_height = get_screen_size()
+
+    # Ajustement des dimensions de la figure
+    fig_width = screen_width / 200  # Ajustez ces valeurs pour une taille plus adaptée
+    fig_height = screen_height / 200
+    fig.set_size_inches(fig_width, fig_height)
 
 def adjust_fontsize(fig, ax):
     # Ajuster les tailles des polices en fonction de la taille de la figure
@@ -199,13 +217,13 @@ class PLOT():
             ax.legend(['Total', 'Manufacturing', 'Use'], loc='upper left')
             
         # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
-        adjust_fontsize(fig, ax)
+        # adjust_fontsize(fig, ax)
     
         # Ajuster les tailles des polices
         ax.set_ylabel(dic["EI_name"][dic["selected_EI"]], rotation=90)
         ax.set_xlabel('Time (years)')
         ax.grid(True)
-    
+        adjust_figure_size(fig, ax)
         return fig
         
     def CDF(self,wcdf,usage_time):
@@ -221,9 +239,9 @@ class PLOT():
         ax.grid(True)
         
         # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
-        adjust_fontsize(fig, ax)   
+        # adjust_fontsize(fig, ax)   
         
-        
+        adjust_figure_size(fig, ax)
         return fig
         
     def plot_allEI(self,dic, EI, EI_manu, EI_use, usage_time,nb_RU,nb_ite_MC,step):
@@ -310,7 +328,7 @@ class PLOT():
         plt.xlabel("Time (years)",fontsize =14)
 
         
-        
+        adjust_figure_size(fig, ax)
         return fig
         
     def plot_allEI_manufacturing(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
@@ -372,7 +390,7 @@ class PLOT():
                 bottom += height
         
         # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
-        adjust_fontsize(fig, ax)        
+        # adjust_fontsize(fig, ax)        
         
         # Labels et légende
         ax.set_ylabel('Normalized Value (%)')
@@ -389,7 +407,7 @@ class PLOT():
 
    
         plt.tight_layout()
-            
+        adjust_figure_size(fig, ax)    
         return fig
         
     def fault_repartition(self, fault_cause):
@@ -405,16 +423,16 @@ class PLOT():
             couleurs = plt.cm.tab20c(range(3))
         
             # Création du diagramme en camembert
-            fig, ax = plt.subplots(figsize=(4, 4))
+            fig, ax = plt.subplots()
             ax.pie(nombres, labels=etiquettes, autopct='%1.1f%%', startangle=140, colors=couleurs)
         
             # Ajout d'un titre avec une taille de police plus grande
             ax.set_title('Distribution of defects', weight='bold')
 
             # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
-            adjust_fontsize(fig, ax)     
+            # adjust_fontsize(fig, ax)     
             
-            
+            adjust_figure_size(fig, ax)
             return fig
             
 class PLOT_MC():
