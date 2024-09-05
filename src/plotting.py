@@ -40,24 +40,25 @@ def adjust_figure_size(fig, ax):
     screen_width, screen_height = get_screen_size()
 
     # Ajustement des dimensions de la figure
-    fig_width = screen_width / 200  # Ajustez ces valeurs pour une taille plus adaptée
-    fig_height = screen_height / 200
+    fig_width = screen_width / 225  # Ajustez ces valeurs pour une taille plus adaptée
+    fig_height = screen_height / 225
     fig.set_size_inches(fig_width, fig_height)
+    
 
 def adjust_fontsize(fig, ax):
     # Ajuster les tailles des polices en fonction de la taille de la figure
     fig_width, fig_height = fig.get_size_inches()
-    base_font_size = min(fig_width, fig_height) * 4  # Ajustez ce coefficient selon vos besoins
+    base_font_size = min(fig_width, fig_height) * 2.5  # Ajustez ce coefficient selon vos besoins
 
     # Ajustement des éléments du graphique
     for item in ([ax.title, ax.xaxis.label, ax.yaxis.label] +
-                 ax.get_xticklabels() + ax.get_yticklabels()):
+                  ax.get_xticklabels() + ax.get_yticklabels()):
         item.set_fontsize(base_font_size)
     
     # Ajuster la taille des légendes
     if ax.get_legend() is not None:
         for legend in ax.get_legend().get_texts():
-            legend.set_fontsize(base_font_size * 0.6)
+            legend.set_fontsize(base_font_size * 1)
 
 def _decile(data, ax, var, display_decile,
             display_median, display_mean, display_max, display_legend,
@@ -217,13 +218,14 @@ class PLOT():
             ax.legend(['Total', 'Manufacturing', 'Use'], loc='upper left')
             
         # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
-        # adjust_fontsize(fig, ax)
+        adjust_fontsize(fig, ax)
     
         # Ajuster les tailles des polices
         ax.set_ylabel(dic["EI_name"][dic["selected_EI"]], rotation=90)
         ax.set_xlabel('Time (years)')
         ax.grid(True)
         adjust_figure_size(fig, ax)
+        
         return fig
         
     def CDF(self,wcdf,usage_time):
@@ -241,6 +243,7 @@ class PLOT():
         # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
         # adjust_fontsize(fig, ax)   
         
+        adjust_fontsize(fig, ax)
         adjust_figure_size(fig, ax)
         return fig
         
@@ -366,6 +369,9 @@ class PLOT():
         cmap = matplotlib.colormaps.get_cmap('tab20b')
         colors = [cmap(i) for i in np.linspace(0, 1, num_columns)]
         
+        fig_width, fig_height = fig.get_size_inches()
+        font_size = min(fig_width, fig_height) * 1.3 
+        
         # Barres empilées
         for i in range(num_rows):
             bottom = 0
@@ -382,7 +388,7 @@ class PLOT():
                     f'{val:.1e}', 
                     ha='center', 
                     va='center', 
-                    fontsize=7, 
+                    fontsize=font_size, 
                     color='black',
                     bbox=dict(facecolor='white', alpha=0.5, edgecolor='none', boxstyle='round,pad=0.2')  # Fond gris
                 )
@@ -404,10 +410,11 @@ class PLOT():
         
         # Ajouter une légende en haut du graphique
         ax.legend(index_labels, loc='center left', bbox_to_anchor=(1, 0.5))
-
+        adjust_figure_size(fig, ax)
+        adjust_fontsize(fig, ax)
    
         plt.tight_layout()
-        adjust_figure_size(fig, ax)    
+        
         return fig
         
     def fault_repartition(self, fault_cause):
@@ -432,7 +439,9 @@ class PLOT():
             # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
             # adjust_fontsize(fig, ax)     
             
+            
             adjust_figure_size(fig, ax)
+            adjust_fontsize(fig, ax)
             return fig
             
 class PLOT_MC():
