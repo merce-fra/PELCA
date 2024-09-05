@@ -26,6 +26,21 @@ from matplotlib.spines import Spine
 from matplotlib.transforms import Affine2D
 import math
 
+def adjust_fontsize(fig, ax):
+    # Ajuster les tailles des polices en fonction de la taille de la figure
+    fig_width, fig_height = fig.get_size_inches()
+    base_font_size = min(fig_width, fig_height) * 4  # Ajustez ce coefficient selon vos besoins
+
+    # Ajustement des éléments du graphique
+    for item in ([ax.title, ax.xaxis.label, ax.yaxis.label] +
+                 ax.get_xticklabels() + ax.get_yticklabels()):
+        item.set_fontsize(base_font_size)
+    
+    # Ajuster la taille des légendes
+    if ax.get_legend() is not None:
+        for legend in ax.get_legend().get_texts():
+            legend.set_fontsize(base_font_size * 0.6)
+
 def _decile(data, ax, var, display_decile,
             display_median, display_mean, display_max, display_legend,
            xlabel, ylabel, title, symlog=0, y_legend=1, xlog=False, ylim_min=0, x_legend=0.3):
@@ -181,11 +196,14 @@ class PLOT():
             ax.bar(var, fab_use["Manufacturing"], color=['blue'], width=w)
             ax.bar(var, fab_use["Use"], bottom=fab_use["Manufacturing"], color=['pink'], width=w)
             ax.plot(var, pd.DataFrame(result.T, index=['Total']).T)
-            ax.legend(['Total', 'Manufacturing', 'Use'], loc='upper left', fontsize=14)
+            ax.legend(['Total', 'Manufacturing', 'Use'], loc='upper left')
+            
+        # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
+        adjust_fontsize(fig, ax)
     
         # Ajuster les tailles des polices
-        ax.set_ylabel(dic["EI_name"][dic["selected_EI"]], rotation=90, fontsize=14)
-        ax.set_xlabel('Time (years)', fontsize=14)
+        ax.set_ylabel(dic["EI_name"][dic["selected_EI"]], rotation=90)
+        ax.set_xlabel('Time (years)')
         ax.grid(True)
     
         return fig
@@ -193,16 +211,17 @@ class PLOT():
     def CDF(self,wcdf,usage_time):
         t = np.arange(0,usage_time,1)
         # Créer la figure et l'axe
-        fig, ax = plt.subplots(figsize=(5, 3))  # Dimensions et résolution de la figure
+        fig, ax = plt.subplots()  # Dimensions et résolution de la figure
         # Tracer les données
         ax.plot(t, wcdf, color='mediumvioletred', linewidth=2)
         # Ajouter des titres et des labels
-        ax.set_title('Cumulative Distribution Function - All RU', fontsize=20, weight='bold')
-        ax.set_xlabel('Time', fontsize=14)
+        ax.set_title('Cumulative Distribution Function - All RU', weight='bold')
+        ax.set_xlabel('Time')
         # Ajouter une grille
         ax.grid(True)
         
-        # Afficher la figure
+        # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
+        adjust_fontsize(fig, ax)   
         
         
         return fig
@@ -263,11 +282,11 @@ class PLOT():
                             display_median=True, display_mean=True, display_max=True, display_legend=False,
                            xlabel=True, ylabel=False, title=False)
                 ax[row_fig,col_fig].ticklabel_format(axis="y", style="sci", scilimits=(0,0))
-                ax[row_fig,col_fig].set_title(methods[EI],fontsize =16)
+                ax[row_fig,col_fig].set_title(methods[EI])
                 ax[row_fig,col_fig].grid(True)
             if nb_ite_MC==1:
                 ax[row_fig,col_fig].ticklabel_format(axis="y", style="sci", scilimits=(0,0))
-                ax[row_fig,col_fig].set_title(methods[EI],fontsize =16)
+                ax[row_fig,col_fig].set_title(methods[EI])
                 ax[row_fig,col_fig].grid(True)
                 # ax=result.plot(kind='line',legend=False)
                 # plt.figure()
@@ -283,6 +302,9 @@ class PLOT():
             if col_fig==4:
                 col_fig=0
                 row_fig=row_fig+1
+        
+        # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
+        # adjust_fontsize(fig, ax)   
 
         plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
         plt.xlabel("Time (years)",fontsize =14)
@@ -310,7 +332,7 @@ class PLOT():
         normalized_EI_manu = self.EI_manufacturing * 100 / self.EI_manufacturing_total[:, np.newaxis]
         
         # Création du graphique en barres empilées
-        fig, ax = plt.subplots(figsize=(10, 7))
+        fig, ax = plt.subplots()
         
         # Nombre de lignes
         num_rows = normalized_EI_manu.shape[0]
@@ -325,7 +347,6 @@ class PLOT():
         # Utilisation d'une colormap pour obtenir les couleurs
         cmap = matplotlib.colormaps.get_cmap('tab20b')
         colors = [cmap(i) for i in np.linspace(0, 1, num_columns)]
-        
         
         # Barres empilées
         for i in range(num_rows):
@@ -343,26 +364,32 @@ class PLOT():
                     f'{val:.1e}', 
                     ha='center', 
                     va='center', 
-                    fontsize=8, 
+                    fontsize=7, 
                     color='black',
                     bbox=dict(facecolor='white', alpha=0.5, edgecolor='none', boxstyle='round,pad=0.2')  # Fond gris
                 )
                 
                 bottom += height
-                
+        
+        # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
+        adjust_fontsize(fig, ax)        
+        
         # Labels et légende
-        ax.set_ylabel('Normalized Value (%)', fontsize=14)
-        ax.set_title('Manufacturing env. impact', fontsize=20, weight='bold')
+        ax.set_ylabel('Normalized Value (%)')
+        ax.set_title('Manufacturing env. impact', weight='bold')
         ax.set_xticks(range(num_rows))
-        ax.set_xticklabels(combined_labels, rotation=45, ha='right', fontsize=12)
-        ax.legend(index_labels, bbox_to_anchor=(0.5, -0.3), loc='upper center', fontsize=10)
+        ax.set_xticklabels(combined_labels, rotation=45, ha='right')
+        # ax.legend(index_labels, loc='center left')
         ax.set_ylim(0, 100)
         ax.set_yticks(np.arange(0, 101, 10))
         ax.grid(True, axis='y', alpha=0.7)
         
+        # Ajouter une légende en haut du graphique
+        ax.legend(index_labels, loc='center left', bbox_to_anchor=(1, 0.5))
+
+   
         plt.tight_layout()
-        
-        
+            
         return fig
         
     def fault_repartition(self, fault_cause):
@@ -379,12 +406,13 @@ class PLOT():
         
             # Création du diagramme en camembert
             fig, ax = plt.subplots(figsize=(4, 4))
-            ax.pie(nombres, labels=etiquettes, autopct='%1.1f%%', startangle=140, colors=couleurs, textprops={'fontsize': 14})
+            ax.pie(nombres, labels=etiquettes, autopct='%1.1f%%', startangle=140, colors=couleurs)
         
             # Ajout d'un titre avec une taille de police plus grande
-            ax.set_title('Distribution of defects', fontsize=20, weight='bold')
+            ax.set_title('Distribution of defects', weight='bold')
 
-            # Affichage du diagramme
+            # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
+            adjust_fontsize(fig, ax)     
             
             
             return fig

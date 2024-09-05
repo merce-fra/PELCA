@@ -133,6 +133,7 @@ class RedirectText(io.StringIO):
         super().flush()
 
 def browse_file():
+    
     filepath = filedialog.askopenfilename()
     if filepath:
         entry_file_path.delete(0, ctk.END)
@@ -330,6 +331,8 @@ def run_script():
         finish_script_execution("An error occurred: " + str(e))
 
 # Créez la fenêtre principale
+
+ctk.set_appearance_mode("dark")
 root = ctk.CTk()
 root.title("PELCA")
 
