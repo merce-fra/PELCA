@@ -189,8 +189,8 @@ def save_plot():
         if folder_path:
             try:
                 for idx, fig in enumerate(figs):
-                    filepath = os.path.join(folder_path, f"plot_{idx+1}.png")
-                    fig.savefig(filepath, dpi=1200)
+                    filepath = os.path.join(folder_path, f"plot_{idx+1}.svg")
+                    fig.savefig(filepath, dpi=300)
                 print(f"All plots saved successfully in {folder_path}")
             except Exception as e:
                 print(f"An error occurred while saving the plots: {e}")
@@ -203,8 +203,8 @@ def save_selected_plot():
             if folder_path:
                 try:
                     fig = figs[current_index]
-                    filepath = os.path.join(folder_path, f"selected_plot_{current_index + 1}.png")
-                    fig.savefig(filepath, dpi=1200)
+                    filepath = os.path.join(folder_path, f"selected_plot_{current_index + 1}.svg")
+                    fig.savefig(filepath, dpi=300)
                     print(f"Selected plot saved successfully as {filepath}")
                 except Exception as e:
                     print(f"An error occurred while saving the selected plot: {e}")
