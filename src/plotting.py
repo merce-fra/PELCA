@@ -37,13 +37,18 @@ def get_screen_size():
     return screen_width, screen_height
 
 def get_dpi_scaling():
-    # Utiliser ctypes pour obtenir les informations de mise à l'échelle DPI
-    hdc = ctypes.windll.user32.GetDC(0)
-    dpi = ctypes.windll.gdi32.GetDeviceCaps(hdc, 88)  # 88 est le LOGPIXELSX
-    ctypes.windll.user32.ReleaseDC(0, hdc)
-    
-    # Calculer le facteur de mise à l'échelle
-    scaling_factor = dpi / 96.0  # 96 DPI est la référence pour 100% de mise à l'échelle
+    if os.name == 'nt':  # Windows
+        hdc = ctypes.windll.user32.GetDC(0)
+        dpi = ctypes.windll.gdi32.GetDeviceCaps(hdc, 88)  # 88 est le LOGPIXELSX
+        ctypes.windll.user32.ReleaseDC(0, hdc)
+        scaling_factor = dpi / 96.0  # 96 DPI est la référence pour 100% de mise à l'échelle
+    else:  # Linux et autres systèmes
+        root = tk.Tk()
+        root.withdraw()  # Ne pas afficher la fenêtre
+        dpi = root.winfo_fpixels('1i')  # Obtenir les pixels par pouce
+        scaling_factor = dpi / 96.0  # 96 DPI est la référence pour 100% de mise à l'échelle
+        root.destroy()  # Détruire la fenêtre après utilisation
+
     return scaling_factor
 
 def adjust_figure_size(fig, ax):
