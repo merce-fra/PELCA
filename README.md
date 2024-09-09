@@ -84,10 +84,10 @@ To use the tool:
 - You must work with a specific Excel input file. You can find the general template in [Input](/Input) (Input - template.xlsx) and an explanation of the Excel in the file [Excel presentation.md](/Input/Excel%20presentation.md).
 
 ### Uncertainty : Monte Carlo Simulation
-It is also possible to perform uncertainty analyses using the Monte Carlo method with Pelca. To do this, you need to change line 12 from "Analysis" to "Monte Carlo" in the Excel sheet named "LCA," as shown in the following image:
+It is also possible to perform uncertainty analyses using the Monte Carlo method with Pelca. To do this, you need to change line 12 from "Analysis" to "Monte Carlo" in the Excel sheet named "LCA", choose also the number of iterations, as shown in the following image:
 
 <p align="center">
-    <img src="Images/montecarlochoice.png?raw=true" alt="montecarlochoice" width="900"/>
+    <img src="Images/montecarlochoice.png?raw=true" alt="montecarlochoice" width="1000"/>
 </p>
 
 **IMPORTANT:** Currently, the results obtained using this method are not accurate. This appears to be due to an issue with Brightway2 and the handling of uncertainties related to biosphere flows, because same results are obtained in activity browser.
