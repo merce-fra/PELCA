@@ -83,6 +83,16 @@ To use the tool:
 - You need to download the directory `src`, inside you get Python `.py` files. To start the tool, execute the file `main_PELCA_GUI.py` in your  integrated development environment (IDE).
 - You must work with a specific Excel input file. You can find the general template in [Input](/Input) (Input - template.xlsx) and an explanation of the Excel in the file [Excel presentation.md](/Input/Excel%20presentation.md).
 
+### Uncertainty : Monte Carlo Simulation
+It is also possible to perform uncertainty analyses using the Monte Carlo method with Pelca. To do this, you need to change line 12 from "Analysis" to "Monte Carlo" in the Excel sheet named "LCA," as shown in the following image:
+
+<p align="center">
+    <img src="Images/montecarlochoice.png?raw=true" alt="montecarlochoice" width="600"/>
+</p>
+
+**IMPORTANT:** Currently, the results obtained using this method are not accurate. This appears to be due to an issue with Brightway2 and the handling of uncertainties related to biosphere flows, because same results are obtained in activity browser.
+
+
 ## Example
 An example is detailed in the file [Example](/Example/Example.md).
 
