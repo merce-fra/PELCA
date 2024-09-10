@@ -3,7 +3,7 @@
 </p>
 PELCA (Power Electronics Life Cycle Assessment) is an open-source project aimed at assessing the environmental impact over the life cycle of modular and diagnosable power electronics systems. The integration of modularity and diagnosability aligns with circular economy principles, promoting practices such as repair and reuse. This project provides a tool to calculate the environmental impacts associated with the manufacturing, usage, and replacement of power electronics products.
 
-This work began as part of the PhD thesis:
+This work began as part of the PhD thesis (collaboration between Mitsubishi Electric R&D Centre Europe and SATIE):
 Baudais, Briac. *Eco-design in power electronics. Impacts of sizing,
 modularity, and diagnosticability*. Electronique. Université Paris-Saclay, 2024. Français. ⟨NNT : 2024UPAST092⟩. ⟨tel-04659788⟩.
 [Consult the thesis](https://theses.hal.science/tel-04659788)
@@ -106,5 +106,6 @@ This code is intended for use in a research environment only. We disclaim any re
 
 ## License
  This code is licensed under LGPL-3.0-only or LGPL-3.0-or-later, and also uses other python libraries which also have their own licenses.
+ 
 ## Authors
 - Baudais Briac: baudaisbriac@gmail.com
