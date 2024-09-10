@@ -35,6 +35,13 @@ import numpy as np
 
 is_running = False
 
+def on_closing():
+
+    root.destroy()  # Ferme l'application proprement
+    # Restaurer stdout et stderr
+    sys.stdout = sys.__stdout__
+    sys.stderr = sys.__stderr__
+    
 def reset_interface():
     """ Réinitialise l'interface graphique à son état initial. """
 
@@ -269,6 +276,9 @@ def run_script():
     global current_index
     global EI, EI_manu, EI_use, RU_age, fault_cause
     
+    # Ferme toutes les figures ouvertes
+    plt.close('all')
+    
     full_path_input = entry_file_path.get()
     if not full_path_input:
         messagebox.showerror("Error", "Please select an input file")
@@ -456,13 +466,16 @@ console_text = Text(console_frame, bg=bg_color, fg=fg_color, wrap='word', state=
 console_text.pack(padx=10, pady=10, fill='both', expand=True)
 
 # Redirigez stdout et stderr
-sys.stdout = RedirectText(console_text)
-sys.stderr = RedirectText(console_text)
+redirector = RedirectText(console_text)
+sys.stdout = redirector
+sys.stderr = redirector
 
 # Initialisez l'index courant
 current_index = 0
 
+# Liaison de la fonction on_closing à l'événement de fermeture
+root.protocol("WM_DELETE_WINDOW", on_closing)
+
 # Démarrez la boucle principale
 root.mainloop()
 root.after(100, update_console)  # Démarrer la boucle de mise à jour
-
