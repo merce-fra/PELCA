@@ -33,6 +33,8 @@ import threading
 import pandas as pd
 import numpy as np
 
+print('test')
+
 is_running = False
 
 def on_closing():
