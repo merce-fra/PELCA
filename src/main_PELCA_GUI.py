@@ -25,6 +25,8 @@ import staircase
 import plotting
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')  # Utiliser un backend non interactif
 from io import BytesIO
 from customtkinter import CTkImage
 import io
@@ -247,16 +249,19 @@ def save_data_to_excel():
 output_queue = queue.Queue()
 
 def update_console():
-    while True:
-        try:
-            message = output_queue.get_nowait()
+    try:
+        while True:
+            message = output_queue.get_nowait()  # Récupérer le message sans bloquer
             console_text.configure(state='normal')
             console_text.insert(END, message)
             console_text.configure(state='disabled')
             console_text.see(END)
-        except queue.Empty:
-            break
+    except queue.Empty:
+        pass  # Ne rien faire si la queue est vide
+
+    # Planifier la prochaine exécution de update_console dans le thread principal
     root.after(100, update_console)  # Vérifier les nouveaux messages toutes les 100 ms
+
 
 def update_ui(simulation_type):
     prev_button.configure(state="normal")
@@ -475,6 +480,8 @@ current_index = 0
 
 # Liaison de la fonction on_closing à l'événement de fermeture
 root.protocol("WM_DELETE_WINDOW", on_closing)
+
+# update_console()
 
 # Démarrez la boucle principale
 root.mainloop()
