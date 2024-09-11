@@ -33,6 +33,11 @@ The tool was developed using the Brightway2 library in Python.
 
 ## Installation Guide
 
+There are two options for installation: 
+
+1. You can use the `PELCA_installation.exe` file found in the releases to directly install the application on your computer.
+2. If you prefer to have control over the code using an IDE, please follow the installation instructions below.
+
 ### Initial Setup
 
 1. **Install Miniconda**: Miniconda helps manage programming environments. You can download it from the [Miniconda Documentation](https://docs.conda.io/en/latest/miniconda.html).
