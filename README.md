@@ -48,22 +48,13 @@ The tool was developed using the Brightway2 library in Python.
     ```
 
 4. **Install Required Python Libraries**: To use this project, you need to install certain Python libraries. Execute the following commands in Miniconda:
-    ```bash
-    conda install -c conda-forge brightway2 numpy=1.26.4 scipy=1.13.1
-    ```
-    Version 2.4.6 - ACV library
-    ```bash
-    conda install conda-forge::spyder
-    ```
-    Version 5.5.5 - IDE environment
-    ```bash
-    conda install bioconda::customtkinter
-    ```
-    Version 5.2.2 - GUI
-    ```bash
-    conda install conda-forge::pillow
-    ```
-    # Version 10.4.0 - GUI
+    | Commande                                                      | Version  |
+|---------------------------------------------------------------|----------|
+| `conda install -c conda-forge brightway2 numpy=1.26.4 scipy=1.13.1` | 2.4.6   |
+| `conda install conda-forge::spyder`                          | 5.5.5    |
+| `conda install bioconda::customtkinter`                     | 5.2.2    |
+| `conda install conda-forge::pillow`                          | 10.4.0   |
+
 
 5. **Launch the IDE**: Start Spyder by running:
     ```bash
