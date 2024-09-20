@@ -27,13 +27,19 @@ def _wcdf(self,year,dic,nb_RU,weibull_Efault,weibull_Rfault,weibull_Wfault):
     weibull_E=np.array([[0 for i in range(nb_RU)] for z in range(dic["nb_ite_MC"])], dtype='float')
     weibull_R=np.array([[0 for i in range(nb_RU)] for z in range(dic["nb_ite_MC"])], dtype='float')
     weibull_W=np.array([[0 for i in range(nb_RU)] for z in range(dic["nb_ite_MC"])], dtype='float')
-    if dic["Early_failure"]:    
-        weibull_E=weibull_Efault[self.RU_age[year-1]][:,:,0]
-    if dic["Random_failure"] :  
-        weibull_R=weibull_Rfault[self.RU_age[year-1]][:,:,0]
+    
+    indices = self.RU_age[year-1, :, :]
+    
+    if dic["Early_failure"]=='True':    
+        weibull_E=weibull_Efault[indices, np.arange(2)]
+    if dic["Random_failure"]=='True' :  
+        weibull_R=weibull_Rfault[indices, np.arange(2)]
         
-    if dic["Wearout_failure"]:
-        weibull_W=weibull_Wfault[self.RU_age[year-1]][:,:,0]
+    if dic["Wearout_failure"]=='True':
+        # weibull_W=weibull_Wfault[self.RU_age[year-1,:,:]][:,0,:]
+        # weibull_W=1-np.prod(1 - weibull_Wfault[self.RU_age[year-1]][:,0,:], axis=1)
+        weibull_W = weibull_Wfault[indices, np.arange(2)]  # shape: (1000, 2)
+
 
     wcdf=1-(1-weibull_E)*(1-weibull_R)*(1-weibull_W)
     
@@ -126,13 +132,13 @@ class STAIRCASE():
         (row_r,col_r)=dic["Remplacement_matrix"].shape
         remplacement=np.array([[[0 for y in range(col_r)] for z in range(row_r)] for i in range(nb_ite_MC)] , dtype='float')
         
-        if dic["Early_failure"]:
+        if dic["Early_failure"]=='True':
             weibull_Efault=np.array(weibull_min.cdf(time-1,dic["beta_early"][:], scale=dic["sigma_early"][:]),ndmin=2, dtype='float')
             
-        if dic["Random_failure"] : 
+        if dic["Random_failure"]=='True' : 
             weibull_Rfault=np.array(weibull_min.cdf(time-1,dic["beta_random"][:], scale=dic["sigma_random"][:]),ndmin=2, dtype='float')
 
-        if dic["Wearout_failure"]:
+        if dic["Wearout_failure"]=='True':
             weibull_Wfault=np.array(weibull_min.cdf(time-1, dic["beta_wearout"], scale=dic["sigma_wearout"][:]),ndmin=2, dtype='float')
         
         wcdf_sum=np.sum([weibull_Efault,weibull_Rfault,weibull_Wfault],axis=0)
@@ -140,15 +146,15 @@ class STAIRCASE():
         wcdf=1-(1-weibull_Efault)*(1-weibull_Rfault)*(1-weibull_Wfault)
         self.wcdf_total=1-np.prod(1 - wcdf, axis=1)
         
-        if dic["Early_failure"]:
+        if dic["Early_failure"]=='True':
             prob_weibull_Efault=weibull_Efault/wcdf_sum
-        if dic["Random_failure"] :   
+        if dic["Random_failure"]=='True' :   
             prob_weibull_Rfault=weibull_Rfault/wcdf_sum
 
-        if dic["Wearout_failure"]:
-            prob_weibull_Wfault=weibull_Wfault/wcdf_sum
+        if dic["Wearout_failure"]=='True':
+            prob_weibull_Wfault=np.divide(weibull_Wfault,wcdf_sum)
             
-        wcdf_year=0
+        wcdf_year=np.array([[0 for y in range(nb_ite_MC)] for y in range(nb_RU)], dtype='float').T
         
         for year in range(1,self.usage_time):
            
@@ -164,7 +170,7 @@ class STAIRCASE():
                 
             else:
             
-                #probabilité de défaillance individuelle de tout le système (ici driver et TO247)
+                #probabilité de défaillance individuelle de tout le système
                 wcdf_oldyear=wcdf_year
                 wcdf_year=_wcdf(self,year,dic,nb_RU,weibull_Efault,weibull_Rfault,weibull_Wfault)
                 
@@ -207,6 +213,7 @@ class STAIRCASE():
             self.number_of_fault[year,:,:]= self.number_of_fault[year-1,:,:]+remplacement_or[:,:nb_RU]
         
             #initialise
+            wcdf_oldyear[Fault[0][Fault_W],Fault[1][Fault_W]]=0
             remplacement=remplacement*0
         
     def get_variables(self):

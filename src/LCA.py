@@ -97,7 +97,18 @@ def EI_calculation(dic,path_input, name_input):
     # Diviser le DataFrame en deux parties : avec et sans 'energy per hours'
     excel = pd.ExcelFile(os.path.join(path_input,name_input))
     df = pd.read_excel(excel, sheet_name='Inventory - Use', header=None)
+    df_RU = pd.read_excel(excel, sheet_name='Inventory - Manufacturing', header=None)
+
     excel.close()
+    
+    # Initialiser une liste pour stocker les nom des RU
+    list_RU = []
+    # Parcourir chaque ligne du DataFrame
+    for index, row in df_RU.iterrows():
+        # Vérifier si le contenu de la colonne 0 est 'activity'
+        if row[0] == "Activity":
+            # Ajouter la valeur de la colonne 1 à la liste
+            list_RU.append(row[1])
     
     # Initialiser une liste pour stocker les valeurs
     list_energy = []
@@ -116,7 +127,10 @@ def EI_calculation(dic,path_input, name_input):
     
     # Réorganiser les colonnes pour placer "Unit" en deuxième position
     df_without_energy = df_without_energy[['Unit'] + [col for col in df_without_energy.columns if col != 'Unit']]
+    df_without_energy = df_without_energy[['Unit'] + [col for col in list_RU if col in df_without_energy.columns]]
     df_energy_only = df_energy_only[['Unit'] + [col for col in df_energy_only.columns if col != 'Unit']]
+    df_energy_only = df_energy_only[['Unit'] + [col for col in list_energy if col in df_energy_only.columns]]
+
 
     # Écrire chaque partie dans une feuille différente
     excel_path = os.path.join(dic["path_result_EI"], dic["directory"], dic["filename_result_EI"])

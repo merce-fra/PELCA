@@ -94,8 +94,8 @@ def _init_dic(path_input,name_input):
 
     # Select type of fault
     dic["Early_failure"]=df_stair.iloc[df_stair[df_stair.isin(['Early failure']).any(axis=1)].index[0], 1]
-    dic["Random_failure"]=df_stair.iloc[df_stair[df_stair.isin(['Early failure']).any(axis=1)].index[0], 1]
-    dic["Wearout_failure"]=df_stair.iloc[df_stair[df_stair.isin(['Early failure']).any(axis=1)].index[0], 1]
+    dic["Random_failure"]=df_stair.iloc[df_stair[df_stair.isin(['Random failure']).any(axis=1)].index[0], 1]
+    dic["Wearout_failure"]=df_stair.iloc[df_stair[df_stair.isin(['Wearout failure']).any(axis=1)].index[0], 1]
     
     dic["pre_set_fail"]=False
     
