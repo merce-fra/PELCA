@@ -77,7 +77,7 @@ There are two options for installation:
     spyder
     ```
 
-7. **Open and Run Code**: Open your project code in Spyder and run it.
+7. **Open and Run Code**: Open your project code in Spyder and run it (information in Usage part below), PELCA will open.
 
 ### Using the Project After Initial Setup
 
@@ -94,9 +94,13 @@ There are two options for installation:
 3. **Open and Run Code**: Open your project code in Spyder and run it.
 
 ## Usage
-To use PELCA, by clicking on `clone`, you can either clone the repository or download the .zip file directly (and then extract it).
-To use the tool/
-- Inside PELCA you get Python `.py` files in the folder `src`. To start the tool, execute the file `main_PELCA_GUI.py` in your integrated development environment (IDE).
+If you are using PELCA with an IDE :
+- Click on `clone`, you can either clone the repository or download the .zip file directly (and then extract it). Inside PELCA folder you get Python `.py` files in the folder `src`. To start the tool, execute the file `main_PELCA_GUI.py` in your integrated development environment (IDE).
+
+If you are using directly PELCA application :
+- Download `PELCA.zip` file found in the `releases`, unzip the file and launch ...\PELCA\PELCA\main_PELCA_GUI.exe
+
+To use the tool :
 - You must work with a specific Excel input file. You can find the general template in [Input](/Input) (Input - template.xlsx) and an explanation of the Excel in the file [Excel presentation.md](/Input/Excel%20presentation.md).
 
 ### Uncertainty : Monte Carlo Simulation
