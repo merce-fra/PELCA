@@ -36,7 +36,7 @@ The tool was developed using the Brightway2 library in Python.
 
 There are two options for installation: 
 
-1. You can use the `PELCA.zip` file found in the releases to directly install the application on your computer.
+1. You can use the `PELCA.zip` file found in the `releases` to directly install the application on your computer.
 2. If you prefer to have control over the code using an IDE, please follow the installation instructions below.
 
 ### Initial Setup
