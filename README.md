@@ -114,7 +114,7 @@ It is also possible to perform uncertainty analyses using the Monte Carlo method
 
 
 ## Example
-An example is detailed in the file [Example](/Example/Example.md).
+An example is detailed in the file [Example](/Example/Example.md). Please read the example carefully before running it, as there are some modifications to be made to make it work.
 
 ## Contribution
 We welcome all kinds of contributions! To contribute to the project, start by forking the repository, make your proposed changes in a new branch, and create a pull request. Make sure your code is readable and well-documented. Include unit tests if possible.
