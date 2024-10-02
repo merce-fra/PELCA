@@ -208,6 +208,8 @@ class PLOT():
         self.fig4=self.plot_selectEI(dic,EI, EI_manu, EI_use, usage_time,nb_RU,nb_ite_MC,step)
         self.fig5=self.plot_allEI(dic, EI, EI_manu, EI_use, usage_time,nb_RU,nb_ite_MC,step)
         
+        self.fig6=self.plot_allEIatServicelife(dic, EI, EI_manu, EI_use ,nb_RU,nb_ite_MC,step)
+        
     def plot_allEI_manufacturing(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
         excel = pd.ExcelFile(os.path.join(dic["LCA_path"],dic["filename_result_EI"]))
         
@@ -467,6 +469,102 @@ class PLOT():
             adjust_figure_size(fig, ax)
             adjust_fontsize(fig, ax)
             return fig
+        
+    def plot_allEIatServicelife(self, dic, EI, EI_manu, EI_use ,nb_RU,nb_ite_MC,step):
+            excel = pd.ExcelFile(os.path.join(dic["LCA_path"],dic["filename_result_EI"]))
+            
+            # EI manufacturing of each RU
+            self.EI_manufacturing = pd.read_excel(excel, sheet_name='Manufacturing', index_col=0)
+            
+            self.EI_manufacturing =self.EI_manufacturing.drop(columns=['Unit'])
+                    
+            self.EI_manufacturing = self.EI_manufacturing.to_numpy()
+            
+            self.EI_manufacturing =np.sum(self.EI_manufacturing, axis=1)
+            
+            self.EI_use=np.mean(EI_use[dic["service_life"]-1,:,:],axis=0)
+            
+            self.EI_replacement=np.mean(EI_manu[dic["service_life"]-1,:,:],axis=0)-self.EI_manufacturing
+            
+             
+            index_labels = np.array(['Manufacture', 'Use', 'Replacement'])
+            
+            # EI manufacturing of total RU
+            self.EI_total = np.mean(EI[dic["service_life"]-1,:,:],axis=0)
+            # Normalisation pour que chaque ligne somme à 1
+            normalized_EI_manu = self.EI_manufacturing * 100 / self.EI_total
+            normalized_EI_use = self.EI_use * 100 / self.EI_total
+            normalized_EI_replacement = self.EI_replacement * 100 / self.EI_total
+            
+            combined_EI = np.column_stack((self.EI_manufacturing, self.EI_use, self.EI_replacement))            
+            combined_normalized_EI = np.column_stack((normalized_EI_manu, normalized_EI_use, normalized_EI_replacement))
+            
+            # Création du graphique en barres empilées
+            fig, ax = plt.subplots()
+            adjust_figure_size(fig, ax)
+            # Nombre de lignes
+            num_rows = normalized_EI_manu.shape[0]
+            num_columns = 3
+            
+            # Récupérer les noms des lignes
+            line_names = dic["EI_name"]
+            
+            combined_labels = [f"{name} ({unit})" for name, unit in zip(line_names, dic["LCIA_unit"])]
+
+            
+            # Utilisation d'une colormap pour obtenir les couleurs
+            cmap = matplotlib.colormaps.get_cmap('tab20b')
+            colors = [cmap(i) for i in np.linspace(0, 1, num_columns)]
+            
+            fig_width, fig_height = fig.get_size_inches()
+            font_size = min(fig_width, fig_height) * 1.3 
+            
+            # Barres empilées
+            for i in range(num_rows):
+                bottom = 0
+                for j in range(num_columns):
+                    bar_color = colors[j % len(colors)]  # Utilisation des couleurs cycliquement
+                    ax.bar(i, combined_normalized_EI[i, j], color=bar_color, bottom=bottom)
+                    
+                    # Annotation pour les valeurs
+                    height = combined_normalized_EI[i, j]
+                    val=combined_EI[i, j]
+                    ax.text(
+                        i, 
+                        bottom + height / 2, 
+                        f'{val:.1e}', 
+                        ha='center', 
+                        va='center', 
+                        fontsize=font_size, 
+                        color='black',
+                        rotation=45,
+                        bbox=dict(facecolor='white', alpha=0.5, edgecolor='none', boxstyle='round,pad=0.2')  # Fond gris
+                    )
+                    
+                    bottom += height
+            
+            # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
+            # adjust_fontsize(fig, ax)        
+            
+            # Labels et légende
+            ax.set_ylabel('Normalized Value (%)')
+            ax.set_title(f'Total env. impact at {dic["service_life"]} years (Mean)', weight='bold')
+            ax.set_xticks(range(num_rows))
+            ax.set_xticklabels(combined_labels, rotation=45, ha='right')
+            # ax.legend(index_labels, loc='center left')
+            ax.set_ylim(0, 100)
+            ax.set_yticks(np.arange(0, 101, 10))
+            ax.grid(True, axis='y', alpha=0.7)
+            
+            # Ajouter une légende en haut du graphique
+            ax.legend(index_labels, loc='center left', bbox_to_anchor=(1, 0.5))
+            
+            adjust_fontsize(fig, ax)
+       
+            # plt.tight_layout()
+            
+            return fig         
+                  
             
 class PLOT_MC():
     def __init__(self, dic):

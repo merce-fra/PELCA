@@ -316,7 +316,7 @@ def run_script():
             
             print("\nDisplaying the results...")
             plot_instance = plotting.PLOT(dic, EI, EI_manu, EI_use, usage_time, fault_cause, dic["nb_RU"], dic["nb_ite_MC"], dic["step"], wcdf)
-            figs = [plot_instance.fig1, plot_instance.fig2, plot_instance.fig3, plot_instance.fig4, plot_instance.fig5]
+            figs = [plot_instance.fig1, plot_instance.fig2, plot_instance.fig3, plot_instance.fig4, plot_instance.fig5, plot_instance.fig6]
             
             print("\nPELCA executed successfully\n")
 
