@@ -1,6 +1,6 @@
 # Excel file
 
-The Excel file is divided into 8 sheets that need to be filled out. **Cells highlighted in orange indicate areas that need to be modified.** :
+The Excel file is divided into 8 sheets that need to be filled out. **Cells highlighted in orange indicate areas that need to be modified.**
 
 - **`Inventory - Manufacturing`**
 
