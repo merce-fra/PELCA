@@ -14,12 +14,12 @@ on:
 jobs:
   build:
     # The environment for running the job
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # Use windows-latest to build .exe files
 
     # Define the Python version matrix (test against multiple Python versions)
     strategy:
       matrix:
-        python-version: [3.12]
+        python-version: [3.12]  # You can add more versions if needed
 
     # Steps in the build process
     steps:
@@ -33,18 +33,45 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      # Step 3: Install Poetry
+      # Step 3: Cache Poetry dependencies
+      - name: Cache Poetry dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+
+      # Step 4: Install Poetry
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo "${{ runner.home }}/.local/bin" >> $GITHUB_PATH
 
-      # Step 4: Install dependencies with Poetry
+      # Step 5: Install dependencies with Poetry
       - name: Install dependencies
         run: |
           poetry install
 
-      # Step 5: Run tests using pytest (or your preferred test framework)
+      # Step 6: Lint code (optional)
+      - name: Lint code
+        run: |
+          poetry run flake8 .
+
+      # Step 7: Run tests using pytest
       - name: Run tests
         run: |
           poetry run pytest
+
+      # Step 8: Build executable using PyInstaller
+      - name: Build executable
+        run: |
+          poetry run pip install pyinstaller  # Ensure PyInstaller is installed
+          poetry run pyinstaller --onefile src/main_PELCA_GUI.py  # Build executable from the main script
+
+      # Step 9: Archive the executable
+      - name: Archive executable
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-executable
+          path: dist/main_PELCA_GUI.exe  # Adjust this to match the output name of your built executable
