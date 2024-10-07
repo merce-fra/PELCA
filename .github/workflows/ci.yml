@@ -52,7 +52,7 @@ jobs:
         run: |
           source .venv/Scripts/activate  # Activer l'environnement virtuel
           pip install pyinstaller  # Installer PyInstaller
-          pyinstaller --add-data "assets;assets" --onefile main_PELCA_GUI.py 
+          pyinstaller  --onefile src/main_PELCA_GUI.py 
 
       # # Étape pour archiver l'exécutable
       # - name: Archive Executable
