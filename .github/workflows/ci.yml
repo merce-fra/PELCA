@@ -4,10 +4,14 @@ on: [pull_request]
 
 jobs:
   test:
-    runs-on: windows-latest
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        python-version: [3.8, 3.9, 3.10, 3.11, 3.12]
+    runs-on: ${{ matrix.os }}
     defaults:
       run:
-        shell: bash  # Définir le shell par défaut sur bash pour la compatibilité
+        shell: bash
 
     steps:
       - name: Check out repository
@@ -16,13 +20,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: ${{ matrix.python-version }}
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
           virtualenvs-create: true
-          virtualenvs-in-project: true  # Crée un venv dans le répertoire du projet
+          virtualenvs-in-project: true
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -40,6 +44,18 @@ jobs:
 
       - name: Run tests
         run: |
-          source .venv/Scripts/activate  # Activer l'environnement virtuel sur Windows
+          source .venv/Scripts/activate  # Activation spécifique à Windows
           pytest tests/
-          coverage report
+
+      # Étape pour construire l'exécutable
+      - name: Build Windows Executable
+        run: |
+          source .venv/Scripts/activate  # Activer l'environnement virtuel
+          pip install pyinstaller  # Installer PyInstaller
+          pyinstaller --add-data "assets;assets" --onefile main_PELCA_GUI.py 
+
+      # # Étape pour archiver l'exécutable
+      # - name: Archive Executable
+      #   if: matrix.os == 'windows-latest'
+      #   run: |
+      #     zip pelca.zip dist/main_PELCA_GUI.exe  # Archiver l'exécutable
