@@ -1,0 +1,50 @@
+name: Python Poetry CI
+
+# Trigger the workflow on push or pull request events
+on:
+  push:
+    branches:
+      - main
+      - install
+  pull_request:
+    branches:
+      - main
+
+# Define the jobs in the workflow
+jobs:
+  build:
+    # The environment for running the job
+    runs-on: ubuntu-latest
+
+    # Define the Python version matrix (test against multiple Python versions)
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 3.12]
+
+    # Steps in the build process
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up the specified Python version
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Step 3: Install Poetry
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "${{ runner.home }}/.local/bin" >> $GITHUB_PATH
+
+      # Step 4: Install dependencies with Poetry
+      - name: Install dependencies
+        run: |
+          poetry install
+
+      # Step 5: Run tests using pytest (or your preferred test framework)
+      - name: Run tests
+        run: |
+          poetry run pytest
