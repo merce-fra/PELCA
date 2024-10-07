@@ -46,11 +46,14 @@ jobs:
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
+          # Add Poetry to the PATH
           echo "${{ runner.home }}/.local/bin" >> $GITHUB_PATH
 
       # Step 5: Install dependencies with Poetry
       - name: Install dependencies
         run: |
+          # Make sure poetry is available in the current session
+          refreshEnv.cmd
           poetry install
 
       # Step 6: Lint code (optional)
