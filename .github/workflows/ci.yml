@@ -46,30 +46,38 @@ jobs:
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
-          # Add Poetry to the PATH
+          # Add Poetry to the PATH for the current session
           echo "$Env:USERPROFILE\.local\bin" >> $Env:GITHUB_PATH
 
       # Step 5: Install dependencies with Poetry
       - name: Install dependencies
         shell: pwsh  # Use PowerShell shell
         run: |
+          # Add the path for Poetry installation to the current session
+          $env:Path += ";$env:USERPROFILE\.local\bin"
           # Verify Poetry installation
-          $env:Path += ";$env:USERPROFILE\.local\bin"  # Add Poetry to the PATH
+          poetry --version  # Check if Poetry is installed correctly
           poetry install
 
       # Step 6: Lint code (optional)
       - name: Lint code
+        shell: pwsh  # Use PowerShell shell
         run: |
+          $env:Path += ";$env:USERPROFILE\.local\bin"  # Ensure Poetry is in the PATH
           poetry run flake8 .
 
       # Step 7: Run tests using pytest
       - name: Run tests
+        shell: pwsh  # Use PowerShell shell
         run: |
+          $env:Path += ";$env:USERPROFILE\.local\bin"  # Ensure Poetry is in the PATH
           poetry run pytest
 
       # Step 8: Build executable using PyInstaller
       - name: Build executable
+        shell: pwsh  # Use PowerShell shell
         run: |
+          $env:Path += ";$env:USERPROFILE\.local\bin"  # Ensure Poetry is in the PATH
           poetry run pip install pyinstaller  # Ensure PyInstaller is installed
           poetry run pyinstaller --onefile src/main_PELCA_GUI.py  # Build executable from the main script
 
