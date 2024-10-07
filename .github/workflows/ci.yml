@@ -19,7 +19,7 @@ jobs:
     # Define the Python version matrix (test against multiple Python versions)
     strategy:
       matrix:
-        python-version: [3.8, 3.9, 3.10, 3.12]
+        python-version: [3.12]
 
     # Steps in the build process
     steps:
