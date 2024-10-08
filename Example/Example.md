@@ -39,6 +39,12 @@ Calculation results will be located in the `Results PELCA` folder.
     <img src="../Images/exemple3.jpg" width="200"/>
 </div>
 
+## Explanation of the graphs
+The following Figure presents the types of results and graphs that can be generated with PELCA. Figure (a) shows the environmental impacts related to the manufacturing of each Replacement Unit, i.e., the power module and the DC link capacitor. Figure 4 (b) displays the distribution function, representing the probability of failure between 0 and 1 over time, plotted for the complete system. Figure (c) illustrates the evolution of the Mineral resources depletion (MRD) impact over time, considering probabilistic failures and replacements based on the level of diagnosability. This Figure (c) is explained with Figure (d), which shows the distribution of failures at 30 years, where the majority of failures are due to wearout. This explains why, in Figure (c), the median curve has a step at 12 years, corresponding to the wearout failure of the capacitor. The step indicates the replacement of the entire system since the chosen diagnostic does not allow for the precise identification of the failure's location. Figure (e) presents the median impacts at 30 years, with proportions related to manufacturing, use, and replacement.
+
+<div align="center">
+    <img src="../Images/example_figures2.png" width="1000"/>
+</div>
 
 ### Saving Data
 
