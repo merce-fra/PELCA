@@ -31,14 +31,14 @@ def _wcdf(self,year,dic,nb_RU,weibull_Efault,weibull_Rfault,weibull_Wfault):
     indices = self.RU_age[year-1, :, :]
     
     if dic["Early_failure"]=='True':    
-        weibull_E=weibull_Efault[indices, np.arange(2)]
+        weibull_E=weibull_Efault[indices, np.arange(nb_RU)]
     if dic["Random_failure"]=='True' :  
-        weibull_R=weibull_Rfault[indices, np.arange(2)]
+        weibull_R=weibull_Rfault[indices, np.arange(nb_RU)]
         
     if dic["Wearout_failure"]=='True':
         # weibull_W=weibull_Wfault[self.RU_age[year-1,:,:]][:,0,:]
         # weibull_W=1-np.prod(1 - weibull_Wfault[self.RU_age[year-1]][:,0,:], axis=1)
-        weibull_W = weibull_Wfault[indices, np.arange(2)]  # shape: (1000, 2)
+        weibull_W = weibull_Wfault[indices, np.arange(nb_RU)]  # shape: (1000, 2)
 
 
     wcdf=1-(1-weibull_E)*(1-weibull_R)*(1-weibull_W)
@@ -200,7 +200,8 @@ class STAIRCASE():
             
             #Remplacement vector (RV)
             remplacement_or=remplacement.sum(axis=1)
-            
+            # Limiter les valeurs de remplacement_or à un maximum de 1
+            remplacement_or = np.clip(remplacement_or, 0, 1)
             
             #Impact calculation
             self.EI_total_manu[year,:,:]=self.EI_total_manu[year-1,:,:]+self.EI_manufacturing.dot(remplacement_or.T).T

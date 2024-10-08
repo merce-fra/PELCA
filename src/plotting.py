@@ -204,7 +204,7 @@ class PLOT():
         
         self.fig1=self.plot_allEI_manufacturing(dic, EI, EI_manu, EI_use, usage_time,nb_RU,nb_ite_MC,step)
         self.fig2=self.CDF(wcdf,usage_time)
-        self.fig3=self.fault_repartition(fault_cause)
+        self.fig3=self.fault_repartition(dic,fault_cause)
         self.fig4=self.plot_selectEI(dic,EI, EI_manu, EI_use, usage_time,nb_RU,nb_ite_MC,step)
         self.fig5=self.plot_allEI(dic, EI, EI_manu, EI_use, usage_time,nb_RU,nb_ite_MC,step)
         
@@ -443,31 +443,39 @@ class PLOT():
         return fig
         
         
-    def fault_repartition(self, fault_cause):
-            # Données
-            tableau_1d = fault_cause.flatten()
-            count_early = np.sum(tableau_1d == 'Early')
-            count_random = np.sum(tableau_1d == 'Random')
-            count_wearout = np.sum(tableau_1d == 'Wearout')
-            nombres = [count_early, count_random, count_wearout]
-            etiquettes = ['Early fault', 'Random fault', 'Wearout fault']
-        
-            # Couleurs correspondantes
-            couleurs = plt.cm.tab20c(range(3))
-        
-            # Création du diagramme en camembert
-            fig, ax = plt.subplots()
-            ax.pie(nombres, labels=etiquettes, autopct='%1.1f%%', startangle=140, colors=couleurs)
-        
-            # Ajout d'un titre avec une taille de police plus grande
-            ax.set_title('Distribution of defects', weight='bold')
-
-            # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
-            # adjust_fontsize(fig, ax)     
+    def fault_repartition(self,dic, fault_cause):
+            if dic["Wearout_failure"] == "False" and dic["Random_failure"] == "False" and dic["Early_failure"] == "False":
+                # Afficher un message "no fault selected" si toutes les défaillances sont False
+                fig, ax = plt.subplots()
+                ax.pie([1], colors=['lightgrey'])
+                ax.text(0.5, 0.5, 'No fault selected', fontsize=24, ha='center', va='center')
+                ax.axis('off')  # Masquer les axes pour un affichage plus propre
+                
+            else:
+                # Données
+                tableau_1d = fault_cause.flatten()
+                count_early = np.sum(tableau_1d == 'Early')
+                count_random = np.sum(tableau_1d == 'Random')
+                count_wearout = np.sum(tableau_1d == 'Wearout')
+                nombres = [count_early, count_random, count_wearout]
+                etiquettes = ['Early fault', 'Random fault', 'Wearout fault']
             
+                # Couleurs correspondantes
+                couleurs = plt.cm.tab20c(range(3))
             
-            adjust_figure_size(fig, ax)
-            adjust_fontsize(fig, ax)
+                # Création du diagramme en camembert
+                fig, ax = plt.subplots()
+                ax.pie(nombres, labels=etiquettes, autopct='%1.1f%%', startangle=140, colors=couleurs)
+            
+                # Ajout d'un titre avec une taille de police plus grande
+                ax.set_title('Distribution of defects', weight='bold')
+    
+                # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
+                # adjust_fontsize(fig, ax)     
+                
+                
+                adjust_figure_size(fig, ax)
+                adjust_fontsize(fig, ax)
             return fig
         
     def plot_allEIatServicelife(self, dic, EI, EI_manu, EI_use ,nb_RU,nb_ite_MC,step):
