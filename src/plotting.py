@@ -200,7 +200,7 @@ def radar_factory(num_vars, frame='circle'):
 
 class PLOT():
     
-    def __init__(self, dic, EI, EI_manu, EI_use, usage_time, fault_cause,nb_RU,nb_ite_MC,step,wcdf):
+    def __init__(self, dic, EI, EI_manu, EI_use, usage_time, fault_cause,nb_RU,nb_ite_MC,step,wcdf, EI_maintenance):
         
         self.fig1=self.plot_allEI_manufacturing(dic, EI, EI_manu, EI_use, usage_time,nb_RU,nb_ite_MC,step)
         self.fig2=self.CDF(wcdf,usage_time)
@@ -208,7 +208,7 @@ class PLOT():
         self.fig4=self.plot_selectEI(dic,EI, EI_manu, EI_use, usage_time,nb_RU,nb_ite_MC,step)
         self.fig5=self.plot_allEI(dic, EI, EI_manu, EI_use, usage_time,nb_RU,nb_ite_MC,step)
         
-        self.fig6=self.plot_allEIatServicelife(dic, EI, EI_manu, EI_use ,nb_RU,nb_ite_MC,step)
+        self.fig6=self.plot_allEIatServicelife(dic, EI, EI_manu, EI_use, EI_maintenance ,nb_RU,nb_ite_MC,step)
         
     def plot_allEI_manufacturing(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
         excel = pd.ExcelFile(os.path.join(dic["LCA_path"],dic["filename_result_EI"]))
@@ -478,7 +478,7 @@ class PLOT():
                 adjust_fontsize(fig, ax)
             return fig
         
-    def plot_allEIatServicelife(self, dic, EI, EI_manu, EI_use ,nb_RU,nb_ite_MC,step):
+    def plot_allEIatServicelife(self, dic, EI, EI_manu, EI_use, EI_maintenance ,nb_RU,nb_ite_MC,step):
             excel = pd.ExcelFile(os.path.join(dic["LCA_path"],dic["filename_result_EI"]))
             
             # EI manufacturing of each RU
@@ -492,10 +492,11 @@ class PLOT():
             
             self.EI_use=np.mean(EI_use[dic["service_life"]-1,:,:],axis=0)
             
-            self.EI_replacement=np.mean(EI_manu[dic["service_life"]-1,:,:],axis=0)-self.EI_manufacturing
+            self.EI_maintenance=np.mean(EI_maintenance[dic["service_life"]-1,:,:],axis=0)
             
+            self.EI_replacement=np.mean(EI_manu[dic["service_life"]-1,:,:],axis=0)-self.EI_manufacturing-self.EI_maintenance
              
-            index_labels = np.array(['Manufacture', 'Use', 'Replacement'])
+            index_labels = np.array(['Manufacture', 'Use', 'Replacement', 'Maintenance'])
             
             # EI manufacturing of total RU
             self.EI_total = np.mean(EI[dic["service_life"]-1,:,:],axis=0)
@@ -503,16 +504,17 @@ class PLOT():
             normalized_EI_manu = self.EI_manufacturing * 100 / self.EI_total
             normalized_EI_use = self.EI_use * 100 / self.EI_total
             normalized_EI_replacement = self.EI_replacement * 100 / self.EI_total
+            normalized_EI_maintenance = self.EI_maintenance * 100 / self.EI_total
             
-            combined_EI = np.column_stack((self.EI_manufacturing, self.EI_use, self.EI_replacement))            
-            combined_normalized_EI = np.column_stack((normalized_EI_manu, normalized_EI_use, normalized_EI_replacement))
+            combined_EI = np.column_stack((self.EI_manufacturing, self.EI_use, self.EI_replacement, self.EI_maintenance))            
+            combined_normalized_EI = np.column_stack((normalized_EI_manu, normalized_EI_use, normalized_EI_replacement, normalized_EI_maintenance))
             
             # Création du graphique en barres empilées
             fig, ax = plt.subplots()
             adjust_figure_size(fig, ax)
             # Nombre de lignes
             num_rows = normalized_EI_manu.shape[0]
-            num_columns = 3
+            num_columns = 4
             
             # Récupérer les noms des lignes
             line_names = dic["EI_name"]

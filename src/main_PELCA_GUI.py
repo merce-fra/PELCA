@@ -311,11 +311,11 @@ def run_script():
             # Création de la courbe de l'escalier
             print("\nCreating the Staircase Curve...")
             staircase_instance = staircase.STAIRCASE(path_input, name_input, dic)
-            EI, EI_manu, EI_use, usage_time, number_of_fault, wcdf, fault_cause, RU_age = staircase_instance.get_variables()
+            EI, EI_manu, EI_use, usage_time, number_of_fault, wcdf, fault_cause, RU_age, EI_maintenance = staircase_instance.get_variables()
             print("\n... Staircase Curve Completed")
             
             print("\nDisplaying the results...")
-            plot_instance = plotting.PLOT(dic, EI, EI_manu, EI_use, usage_time, fault_cause, dic["nb_RU"], dic["nb_ite_MC"], dic["step"], wcdf)
+            plot_instance = plotting.PLOT(dic, EI, EI_manu, EI_use, usage_time, fault_cause, dic["nb_RU"], dic["nb_ite_MC"], dic["step"], wcdf, EI_maintenance)
             figs = [plot_instance.fig1, plot_instance.fig2, plot_instance.fig3, plot_instance.fig4, plot_instance.fig5, plot_instance.fig6]
             
             print("\nPELCA executed successfully\n")

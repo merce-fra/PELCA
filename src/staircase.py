@@ -77,7 +77,11 @@ class STAIRCASE():
 
       
       excel = pd.ExcelFile(os.path.join(path_input,name_input))
-      beta_sigma_ERW=pd.read_excel(excel, sheet_name='Faults', index_col=0, skiprows=[0,1,2]).to_numpy()
+      data=pd.read_excel(excel, sheet_name='Faults', index_col=0, skiprows=[0,1,2])
+      # Extract the 6th column (index 5) into a variable named 'maintenance'
+      dic["maintenance"] = data.iloc[:, 6].to_numpy()
+      # Drop the 6th column (index 5) from the DataFrame and convert it to a NumPy array for 'beta_sigma_ERW'
+      beta_sigma_ERW = data.drop(data.columns[6], axis=1).to_numpy()
       excel.close()
 
 
@@ -113,6 +117,7 @@ class STAIRCASE():
         self.driver_age =np.array([[[0 for i in range(nb_RU)] for z in range(nb_ite_MC)] for y in range(self.usage_time)])
         self.EI_total=np.array([[self.EI_manufacturing_total for z in range(nb_ite_MC)] for y in range(self.usage_time)], dtype='float')
         self.EI_total_manu=np.array([[self.EI_manufacturing_total for z in range(nb_ite_MC)] for y in range(self.usage_time)], dtype='float')
+        self.EI_total_maintenance=np.array([[self.EI_manufacturing_total*0 for z in range(nb_ite_MC)] for y in range(self.usage_time)], dtype='float')
         self.EI_total_use=np.array([[self.EI_manufacturing_total*0 for z in range(nb_ite_MC)] for y in range(self.usage_time)], dtype='float')
         
         self.number_of_fault=np.array([[[0 for i in range(nb_RU)] for z in range(nb_ite_MC)] for y in range(self.usage_time)])
@@ -131,6 +136,8 @@ class STAIRCASE():
         
         (row_r,col_r)=dic["Remplacement_matrix"].shape
         remplacement=np.array([[[0 for y in range(col_r)] for z in range(row_r)] for i in range(nb_ite_MC)] , dtype='float')
+        remplacement_or=np.array([[0 for y in range(nb_RU)] for i in range(nb_ite_MC)] , dtype='float')
+
         
         if dic["Early_failure"]=='True':
             weibull_Efault=np.array(weibull_min.cdf(time-1,dic["beta_early"][:], scale=dic["sigma_early"][:]),ndmin=2, dtype='float')
@@ -169,7 +176,23 @@ class STAIRCASE():
                     remplacement[0,dic["UR_set_fail"][indice],:]=dic["Remplacement_matrix"].loc[dic["Remplacement_matrix"]["Fault"] == dic["typefault_pre_set_fail"][indice]].drop(["Fault"], axis=1).reset_index(drop=True).loc[dic["UR_set_fail"][indice]]
                 
             else:
-            
+                #part maintenance
+                EI_maintenance=0
+                if dic["Maintenance"]=="True":
+                    
+                    # Mise à jour de la matrice remplacement et remise à zéro des composants lors de la maintenance
+                    maintenance_indices = np.where(self.RU_age[year,:,:] == dic["maintenance"])  # Trouver les composants dont l'année correspond à l'année de maintenance
+                    remplacement_or[maintenance_indices[0],maintenance_indices[1]] = 1
+                
+                    # Remettre l'âge des composants à zéro (RU) pour ceux qui ont subi une maintenance
+                    self.RU_age[year,:,:]=np.round((1-remplacement_or[:,:nb_RU]))*self.RU_age[year,:,:]
+                    EI_maintenance=self.EI_manufacturing.dot(remplacement_or.T).T
+    
+                    remplacement_or=remplacement_or*0
+
+                
+                #part faut
+                
                 #probabilité de défaillance individuelle de tout le système
                 wcdf_oldyear=wcdf_year
                 wcdf_year=_wcdf(self,year,dic,nb_RU,weibull_Efault,weibull_Rfault,weibull_Wfault)
@@ -178,13 +201,15 @@ class STAIRCASE():
                 Fault=np.where((wcdf_oldyear<=random_fault_time) & (random_fault_time<=wcdf_year))
                 notFault=np.where((wcdf_oldyear>random_fault_time) | (random_fault_time>wcdf_year))
                 
+                age_component = self.RU_age[year, Fault[0], Fault[1]]
+                
                 # Find the type of the fault for each RU
                 Fault_E=np.where(random_fault_type[Fault] <= prob_weibull_Efault[self.RU_age[year,Fault[0],Fault[1]],Fault[1]])
                 self.fault_cause[year,Fault[0][Fault_E],Fault[1][Fault_E]]="Early"
                 remplacement[Fault[0][Fault_E],Fault[1][Fault_E],:]=dic["Remplacement_matrix"].loc[Fault[1][Fault_E]]
                 
                 down=prob_weibull_Efault[self.RU_age[year,Fault[0],Fault[1]],Fault[1]]
-                up=down+prob_weibull_Rfault[self.RU_age[year]][Fault[0],0,Fault[1]]
+                up=down+prob_weibull_Rfault[age_component, Fault[1]]
                 Fault_R=np.where((random_fault_type[Fault] >down) & (random_fault_type[Fault] <=up))
                 self.fault_cause[year,Fault[0][Fault_R],Fault[1][Fault_R]]="Random"
                 remplacement[Fault[0][Fault_R],Fault[1][Fault_R],:]=dic["Remplacement_matrix"].loc[Fault[1][Fault_R]]
@@ -203,10 +228,12 @@ class STAIRCASE():
             # Limiter les valeurs de remplacement_or à un maximum de 1
             remplacement_or = np.clip(remplacement_or, 0, 1)
             
+            
             #Impact calculation
-            self.EI_total_manu[year,:,:]=self.EI_total_manu[year-1,:,:]+self.EI_manufacturing.dot(remplacement_or.T).T
+            self.EI_total_manu[year,:,:]=self.EI_total_manu[year-1,:,:]+self.EI_manufacturing.dot(remplacement_or.T).T+EI_maintenance
             self.EI_total_use[year,:,:]= self.EI_total_use[year-1,:,:]+self.EI_use_onestep_total
             self.EI_total[year,:,:]= self.EI_total_use[year,:,:]+self.EI_total_manu[year,:,:]
+            self.EI_total_maintenance[year,:,:]=self.EI_total_maintenance[year-1,:,:]+EI_maintenance
             
             #Calcul de l'âge moyen pondéré par rapport à la matrice de rempacement, arrondis à l'entier le plus proche
             self.RU_age[year,:,:]=np.round((1-remplacement_or[:,:nb_RU]))*self.RU_age[year,:,:]
@@ -216,7 +243,9 @@ class STAIRCASE():
             #initialise
             wcdf_oldyear[Fault[0][Fault_W],Fault[1][Fault_W]]=0
             remplacement=remplacement*0
+            remplacement_or=remplacement_or*0
+
         
     def get_variables(self):
-        return self.EI_total, self.EI_total_manu, self.EI_total_use, self.usage_time, self.number_of_fault, self.wcdf_total, self.fault_cause, self.RU_age       
+        return self.EI_total, self.EI_total_manu, self.EI_total_use, self.usage_time, self.number_of_fault, self.wcdf_total, self.fault_cause, self.RU_age, self.EI_total_maintenance      
         

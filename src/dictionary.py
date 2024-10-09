@@ -97,6 +97,8 @@ def _init_dic(path_input,name_input):
     dic["Random_failure"]=df_stair.iloc[df_stair[df_stair.isin(['Random failure']).any(axis=1)].index[0], 1]
     dic["Wearout_failure"]=df_stair.iloc[df_stair[df_stair.isin(['Wearout failure']).any(axis=1)].index[0], 1]
     
+    dic["Maintenance"]=df_stair.iloc[df_stair[df_stair.isin(['Maintenance']).any(axis=1)].index[0], 1]
+
     dic["pre_set_fail"]=False
     
     # Replacement rate, replacement matrix
