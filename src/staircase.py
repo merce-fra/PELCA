@@ -77,7 +77,7 @@ class STAIRCASE():
 
       
       excel = pd.ExcelFile(os.path.join(path_input,name_input))
-      data=pd.read_excel(excel, sheet_name='Faults', index_col=0, skiprows=[0,1,2])
+      data=pd.read_excel(excel, sheet_name='Faults & Maintenance', index_col=0, skiprows=[0,1,2])
       # Extract the 6th column (index 5) into a variable named 'maintenance'
       dic["maintenance"] = data.iloc[:, 6].to_numpy()
       # Drop the 6th column (index 5) from the DataFrame and convert it to a NumPy array for 'beta_sigma_ERW'
