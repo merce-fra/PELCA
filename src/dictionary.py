@@ -88,6 +88,8 @@ def _init_dic(path_input,name_input):
     dic["step"] =df_stair.iloc[df_stair[df_stair.isin(['Time step (step/year)']).any(axis=1)].index[0], 1]
     
     #%% Staircase curve
+    
+    dic["filename_result_staircase"] =df_stair.iloc[df_stair[df_stair.isin(['Staircase result filename']).any(axis=1)].index[0], 1]
   
     # Monte carlo
     dic["nb_ite_MC"] =df_stair.iloc[df_stair[df_stair.isin(['Monte Carlo (number of iteration)']).any(axis=1)].index[0], 1]

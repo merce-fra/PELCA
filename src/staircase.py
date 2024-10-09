@@ -246,6 +246,33 @@ class STAIRCASE():
             remplacement_or=remplacement_or*0
 
         
-    def get_variables(self):
-        return self.EI_total, self.EI_total_manu, self.EI_total_use, self.usage_time, self.number_of_fault, self.wcdf_total, self.fault_cause, self.RU_age, self.EI_total_maintenance      
+    def get_variables(self, dic):
         
+        index_labels = np.array(['Manufacture', 'Use', 'Replacement', 'Maintenance'])
+        manufacturing = self.EI_manufacturing_total
+        use=np.mean(self.EI_total_use[dic["service_life"]-1,:,:],axis=0)
+        maintenance=np.mean(self.EI_total_maintenance[dic["service_life"]-1,:,:],axis=0)
+        replacement=np.mean(self.EI_total_manu[dic["service_life"]-1,:,:],axis=0)-manufacturing-maintenance
+
+        # Créer un DataFrame avec les données
+        data = {
+            'Method': dic["EI_name"],
+            'LCIA Unit': dic["LCIA_unit"],
+            'Manufacture': manufacturing,
+            'Use': use,
+            'Replacement': replacement,
+            'Maintenance': maintenance
+        }
+        
+        df = pd.DataFrame(data)
+        
+        # Définir le chemin du fichier Excel
+        excel_path = os.path.join(dic["path_result_EI"], dic["directory"], dic["filename_result_staircase"])
+        
+        # Écrire le DataFrame dans un fichier Excel
+        df.to_excel(excel_path, index=False)
+        
+        print(f"The data were written to the Excel file: : {excel_path}")
+
+        return self.EI_total, self.EI_total_manu, self.EI_total_use, self.usage_time, self.number_of_fault, self.wcdf_total, self.fault_cause, self.RU_age, self.EI_total_maintenance      
+           

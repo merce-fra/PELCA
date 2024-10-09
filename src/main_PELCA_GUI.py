@@ -311,7 +311,7 @@ def run_script():
             # Création de la courbe de l'escalier
             print("\nCreating the Staircase Curve...")
             staircase_instance = staircase.STAIRCASE(path_input, name_input, dic)
-            EI, EI_manu, EI_use, usage_time, number_of_fault, wcdf, fault_cause, RU_age, EI_maintenance = staircase_instance.get_variables()
+            EI, EI_manu, EI_use, usage_time, number_of_fault, wcdf, fault_cause, RU_age, EI_maintenance = staircase_instance.get_variables(dic)
             print("\n... Staircase Curve Completed")
             
             print("\nDisplaying the results...")
