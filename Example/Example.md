@@ -57,13 +57,13 @@ The following Figure presents the types of results and graphs that can be genera
 Now we will implement maintenance. In the "Staircase" sheet, we set maintenance to "True", as shown in the following figure. In the "Faults & Maintenance" sheet, we set a preventive maintenance schedule for RU1 at 35 years and for RU2 at 8 years before its wearout, where sigma is set to 12 years for RU2.
 
 <div align="center">
-    <img src="../Images/selectfault_maintenance.png" width="200" alt="Maintenance Implementation"/>
+    <img src="../Images/selectfault_maintenance.png" width="1000" alt="Maintenance Implementation"/>
 </div>
 
 The results obtained are as follows:
 
 <div align="center">
-    <img src="../Images/result_exemple_maintenance.png" width="200" alt="Results with Maintenance"/>
+    <img src="../Images/result_exemple_maintenance.png" width="1000" alt="Results with Maintenance"/>
 </div>
 
 We can see that there are significantly fewer failures related to wearout, as RU2 is replaced through preventive maintenance before reaching its wearout. This allows the MRD at 30 years to be reduced in this example by -32% compared to the case without preventive maintenance.
