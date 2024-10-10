@@ -39,9 +39,9 @@ The Excel file is divided into 8 sheets that need to be filled out. **Cells high
 
   Information related to the creation of the staircase curve.
 
-- **`Faults`**
+- **`Faults & Maintenance`**
 
-  Modeling faults for each RU. You need one row per RU. For more details, refer to [Algorithm.md](/Details/Algorithm.md).
+  Modeling faults and the preventive maintenance for each RU. You need one row per RU. For more details, refer to [Algorithm.md](/Details/Algorithm.md).
 
 - **`Replac. Matrix`**
 
