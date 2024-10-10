@@ -1,0 +1,86 @@
+name: Build and release windows executable
+
+# Déclenche le workflow à chaque push sur la branche main
+on:
+  push:
+    branches:
+      - install
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest]
+        python-version: [3.12]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+
+      - name: Install library
+        run: poetry install --no-interaction
+
+      - name: Run tests
+        run: |
+          source .venv/Scripts/activate  # Activation spécifique à Windows
+          pytest tests/
+
+      # Étape pour construire l'exécutable sous Windows
+      - name: Build Windows Executable
+        run: |
+          source .venv/Scripts/activate  # Activer l'environnement virtuel
+          pip install pyinstaller  # Installer PyInstaller
+          pyinstaller --onefile src/main_PELCA_GUI.py
+
+      # Étape pour compresser l'exécutable sous Windows (PowerShell)
+      - name: Archive Executable
+        if: matrix.os == 'windows-latest'
+        run: |
+          Compress-Archive -Path dist/main_PELCA_GUI.exe -DestinationPath pelca.zip
+        shell: powershell
+
+      # Étape pour publier une release GitHub et y attacher le fichier zip
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: pelca.zip
+          asset_name: pelca.zip
+          asset_content_type: application/zip
