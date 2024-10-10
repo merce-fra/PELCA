@@ -34,6 +34,7 @@ import queue
 import threading
 import pandas as pd
 import numpy as np
+from bw2data.errors import InvalidExchange
 
 is_running = False
 
@@ -342,7 +343,9 @@ def run_script():
 
         finish_script_execution("Script executed successfully")
 
-    except Exception as e:
+    except InvalidExchange:
+        finish_script_execution("An error occurred : Exchange is missing ‘amount’ or ‘input’")
+    except BaseException as e:
         finish_script_execution("An error occurred: " + str(e))
 
 # Créez la fenêtre principale
