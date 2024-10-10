@@ -1,10 +1,13 @@
 name: Build and release windows executable
+
 on:
-    push:
-        tags:
-        - '*'
+  push:
+    tags:
+      - '*'
+
 permissions:
   contents: write
+
 jobs:
   build:
     strategy:
@@ -43,7 +46,8 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Install library
-        run: poetry install --no-interaction
+        run: | 
+            poetry install --no-interaction
 
       - name: Run tests
         run: |
@@ -53,15 +57,16 @@ jobs:
       # Étape pour construire l'exécutable sous Windows
       - name: Build Windows Executable
         run: |
-          source .venv/Scripts/activate  # Activer l'environnement virtuel
-          pip install pyinstaller  # Installer PyInstaller
-          pyinstaller --onefile src/main_PELCA_GUI.py
+          source .venv/Scripts/activate
+          pip install pyinstaller
+          pyinstaller main_PELCA_GUI.spec
+          cp -R src/assets/ dist/PELCA/
 
       # Étape pour compresser l'exécutable sous Windows (PowerShell)
       - name: Archive Executable
         if: matrix.os == 'windows-latest'
         run: |
-          Compress-Archive -Path dist/main_PELCA_GUI.exe -DestinationPath pelca.zip
+          Compress-Archive -Path dist/PELCA -DestinationPath pelca.zip
         shell: powershell
 
       # Étape pour publier une release GitHub et y attacher le fichier zip
@@ -69,8 +74,8 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: v${{ github.run_number }}
-          release_name: Release v${{ github.run_number }}
+          tag_name: ${{ github.ref }}  # Utiliser le tag réel
+          release_name: Release ${{ github.ref }}  # Nom de la release
           draft: false
           prerelease: false
         env:
@@ -78,6 +83,8 @@ jobs:
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: pelca.zip
