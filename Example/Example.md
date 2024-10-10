@@ -16,6 +16,12 @@ The example was calculated using the Ecoinvent library "ecoinvent 3.9_cutoff_eco
     <img src="../Images/example_lca.png" width="1000"/>
 </div>
 
+### Fault Selection
+
+In this first example, only the faults are selected. Therefore, the "Maintenance" cell in the "Staircase" sheet (B14) is set to "False". The "Early failure", "Random failure", and "Wearout failure" cells are set to "True", as illustrated in the following figure. We can also observe the values of the Weibull functions for the three types of failures, sheet "Faults & Maintenance". It is important to note that the values in the "Maintenance (year)" column are not considered, as "Maintenance" has been set to "False". Additionally, we can see the chosen diagnosis in the "Replac. Matrix" sheet. In this case, it is a poor diagnosis because when one RU fails, all RU1 and RU2 are replaced at 100%.
+<div align="center">
+    <img src="../Images/selectfault.png" width="1000" alt="Fault Selection"/>
+</div>
 
 ### Running the Tool
 
