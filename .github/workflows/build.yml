@@ -1,10 +1,9 @@
 name: Build and release windows executable
 
-# Déclenche le workflow à chaque push sur la branche main
 on:
   push:
     branches:
-      - install
+      - main
 permissions:
   contents: write
 jobs:
