@@ -1,9 +1,8 @@
 name: Build and release windows executable
-
 on:
-  push:
-    branches:
-      - main
+    push:
+        tags:
+        - '*'
 permissions:
   contents: write
 jobs:
