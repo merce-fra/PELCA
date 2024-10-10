@@ -19,7 +19,7 @@ The evolution of environmental impacts over time can be illustrated with a stair
 1. Initially, the curve shows the environmental impacts associated with the manufacturing of the product. 
 2. The slope of the curve represents the impacts during usage, specifically the operational losses incurred. 
 3. When a failure occurs, the impacts rise, reflecting the need to replace the faulty component. This increase is influenced by the accuracy of diagnostics and the system's architecture (modularity). More precise and selective diagnostics allow for more targeted replacements, assuming the modularity supports it. In contrast, an integrated architecture does not facilitate the separation of the faulty component from the rest of the system. The impact of diagnostics and modularity can be explained by the Replacement Rate (RR). An RR of 100% indicates a low-precision diagnosis, which provides no specific information when a fault occurs, leading to the replacement of the entire system or also no modularity. Conversely, an RR of 10% represents a more precise and selective diagnosis, where only 10% of the system is replaced. Thus, RR is directly related to the type of diagnostics and modularity.
-4. Preventive maintenance means replacing only part of a product before it breaks down.
+4. Preventive maintenance allows replacing only part of a product before it breaks down.
 
 For a detailed explanation of the algorithmic functioning of the tool, refer to [Algorithm.md](/Details/Algorithm.md).
 
