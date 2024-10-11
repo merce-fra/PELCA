@@ -21,6 +21,7 @@ import os
 import sys
 import LCA
 import dictionary
+from pelcaGUI import PelcaGUI
 import staircase
 import plotting
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -348,133 +349,12 @@ def run_script():
     except BaseException as e:
         finish_script_execution("An error occurred: " + str(e))
 
-# Créez la fenêtre principale
 
-ctk.set_appearance_mode("dark")
-root = ctk.CTk()
-root.title("PELCA")
 
-# Définir les couleurs du thème sombre
-bg_color = "#2E2E2E"
-fg_color = "#FFFFFF"
-button_color = "#4E4E4E"
-separator_color = "#242424"
-
-root.configure(bg=bg_color)
-
-# Récupérer les chemins des variables d'environnement
-icon_path = os.getenv('ICON_PATH', os.path.join('assets','icon.ico'))
-image_path = os.getenv('IMAGE_PATH', os.path.join('assets','first_image.png'))
-
-# Charger l'icône
-root.after(201, lambda: root.iconbitmap(icon_path))
-
-# Charger l'image du haut
-top_image = ctk.CTkImage(dark_image=Image.open(image_path), size=(1654//4, 578//4))
-image_label = ctk.CTkLabel(root, image=top_image, text='')
-image_label.pack(pady=10)
-
-# Créez et placez les widgets
-main_frame = ctk.CTkFrame(root, fg_color=bg_color)
-main_frame.pack(padx=10, pady=10, fill='both', expand=True)
-
-left_frame = ctk.CTkFrame(main_frame, fg_color=bg_color)
-left_frame.pack(side='left', padx=10, pady=10, fill='y')
-
-right_frame = ctk.CTkFrame(main_frame, fg_color=bg_color)
-right_frame.pack(side='right', fill='both', expand=True)
-
-separator_frame = ctk.CTkFrame(main_frame, width=8, height=600, fg_color=separator_color)
-separator_frame.pack(side='left', fill='y')
-
-# Frame pour les données et le bouton de sauvegarde
-data_frame = ctk.CTkFrame(right_frame, fg_color=bg_color)
-data_frame.pack(side='bottom', fill='x', padx=10, pady=10)
-
-var_EI = ctk.StringVar()
-var_EI_manu = ctk.StringVar()
-var_EI_use = ctk.StringVar()
-var_fault_cause = ctk.StringVar()
-var_RU_age = ctk.StringVar()
-
-checkbox_EI = ctk.CTkCheckBox(data_frame, text="Impact total", variable=var_EI, onvalue='EI', offvalue='', state="disabled")
-checkbox_EI.pack(side='left', padx=5)
-
-checkbox_EI_manu = ctk.CTkCheckBox(data_frame, text="Impact manufact.", variable=var_EI_manu, onvalue='EI_manu', offvalue='', state="disabled")
-checkbox_EI_manu.pack(side='left', padx=5)
-
-checkbox_EI_use = ctk.CTkCheckBox(data_frame, text="Impact use", variable=var_EI_use, onvalue='EI_use', offvalue='', state="disabled")
-checkbox_EI_use.pack(side='left', padx=5)
-
-checkbox_fault_cause = ctk.CTkCheckBox(data_frame, text="Fault cause", variable=var_fault_cause, onvalue='fault_cause', offvalue='', state="disabled")
-checkbox_fault_cause.pack(side='left', padx=5)
-
-checkbox_RU_age = ctk.CTkCheckBox(data_frame, text="RU age", variable=var_RU_age, onvalue='RU_age', offvalue='', state="disabled")
-checkbox_RU_age.pack(side='left', padx=5)
-
-save_data_button = ctk.CTkButton(data_frame, text="Save Data", command=save_data_to_excel, fg_color=button_color, text_color=fg_color, state="disabled")
-save_data_button.pack(side='left', padx=10)
-
-# Frame pour les boutons de navigation en haut
-nav_buttons_frame = ctk.CTkFrame(right_frame, fg_color=bg_color)
-nav_buttons_frame.pack(side='top', fill='x', padx=10, pady=10)
-
-# Frame pour les graphiques, centrée dans le frame droit
-plot_frame = ctk.CTkFrame(right_frame, fg_color=bg_color)
-plot_frame.pack(side='left', padx=10, pady=10, expand=True)
-plot_frame.pack_propagate(False)
-
-# Frame pour la sélection des graphiques, placée à droite des graphiques
-selection_frame = ctk.CTkFrame(right_frame, fg_color=bg_color)
-selection_frame.pack(side='right', fill='y', padx=10, pady=10)
-
-# Frame pour les espaces en haut et en bas
-top_spacer = Frame(right_frame, bg=bg_color)
-top_spacer.pack(side='top', fill='both', expand=True)
-
-bottom_spacer = Frame(right_frame, bg=bg_color)
-bottom_spacer.pack(side='bottom', fill='both', expand=True)
-
-# Créez les boutons de navigation dans la nouvelle frame
-prev_button = ctk.CTkButton(nav_buttons_frame, text="Previous", command=show_prev_plot, fg_color=button_color, text_color=fg_color, state="disabled")
-next_button = ctk.CTkButton(nav_buttons_frame, text="Next", command=show_next_plot, fg_color=button_color, text_color=fg_color, state="disabled")
-save_button = ctk.CTkButton(nav_buttons_frame, text="Save All", command=save_plot, fg_color=button_color, text_color=fg_color, state="disabled")
-save_selected_button = ctk.CTkButton(nav_buttons_frame, text="Save", command=save_selected_plot, fg_color=button_color, text_color=fg_color, state="disabled")
-
-prev_button.pack(side='left', padx=5, pady=5)
-next_button.pack(side='left', padx=5, pady=5)
-save_selected_button.pack(side='left', padx=5, pady=5)
-save_button.pack(side='top', fill='x', padx=5, pady=10)
-
-nav_buttons_frame.grid_columnconfigure(0, weight=1)
-nav_buttons_frame.grid_columnconfigure(1, weight=1)
-nav_buttons_frame.grid_columnconfigure(2, weight=1)
-
-# Créez les widgets pour left_frame (inchangé)
-label_file_path = ctk.CTkLabel(left_frame, text="Select Input File:", fg_color=bg_color, text_color=fg_color)
-label_file_path.grid(row=0, column=0, padx=5, pady=5)
-
-entry_file_path = ctk.CTkEntry(left_frame, width=300, fg_color=button_color, text_color=fg_color)
-entry_file_path.grid(row=0, column=1, padx=5, pady=5)
-
-button_browse = ctk.CTkButton(left_frame, text="Browse", command=browse_file, fg_color=button_color, text_color=fg_color)
-button_browse.grid(row=0, column=2, padx=5, pady=5)
-
-button_run = ctk.CTkButton(left_frame, text="Run Script", command=run_script_threaded, fg_color=button_color, text_color=fg_color)
-button_run.grid(row=1, column=0, columnspan=3, pady=10)
-
-loading_label = ctk.CTkLabel(left_frame, text="", fg_color=bg_color, text_color=fg_color)
-loading_label.grid(row=2, column=0, columnspan=3, pady=5)
-
-# Créez le widget console
-console_frame = ctk.CTkFrame(left_frame, fg_color=bg_color)
-console_frame.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky='nswe')
-
-console_text = Text(console_frame, bg=bg_color, fg=fg_color, wrap='word', state='disabled')
-console_text.pack(padx=10, pady=10, fill='both', expand=True)
+root = PelcaGUI()
 
 # Redirigez stdout et stderr
-redirector = RedirectText(console_text)
+redirector = RedirectText(root.console_text)
 sys.stdout = redirector
 sys.stderr = redirector
 
@@ -483,9 +363,5 @@ current_index = 0
 
 # Liaison de la fonction on_closing à l'événement de fermeture
 root.protocol("WM_DELETE_WINDOW", on_closing)
-
-# update_console()
-
-# Démarrez la boucle principale
 root.mainloop()
 root.after(100, update_console)  # Démarrer la boucle de mise à jour
