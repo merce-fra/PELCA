@@ -1,7 +1,8 @@
 import customtkinter as ctk
 import os
+import sys
 from PIL import Image
-from tkinter import Text  # Import Text from tkinter if you haven't already
+from tkinter import Text
 
 # Define colors for the dark theme
 BG_COLOR = "#2E2E2E"
@@ -32,7 +33,6 @@ class PelcaGUI(ctk.CTk):
         # Create main frame
         self.main_frame = self.create_main_frame()
 
-        # Add top image
 
         # Initialize variables
         self.initialize_variables()
@@ -56,6 +56,7 @@ class PelcaGUI(ctk.CTk):
         self.loading_label.grid(row=2, column=0, columnspan=3, pady=5)
 
         self.create_console_frame()
+
        
 
     def create_console_frame(self):
@@ -234,5 +235,3 @@ class PelcaGUI(ctk.CTk):
     def run_script_threaded(self):
         """Placeholder for running script in a threaded way."""
         print("Script running in thread")
-
-
