@@ -14,74 +14,77 @@ Created on 2024
 @author: baudais
 """
 
-import customtkinter as ctk
-from tkinter import filedialog, messagebox, Text, END, Frame
-from PIL import Image
 import os
 import sys
-import LCA
-import dictionary
-from pelcaGUI import PelcaGUI
-import staircase
-import plotting
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import matplotlib.pyplot as plt
+from tkinter import END, filedialog, messagebox
+
+import customtkinter as ctk
 import matplotlib
-matplotlib.use('Agg')  # Utiliser un backend non interactif
-from io import BytesIO
-from customtkinter import CTkImage
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from PIL import Image
+
+import dictionary
+import LCA
+import plotting
+import staircase
+from pelcaGUI import BUTTON_COLOR, FG_COLOR, PelcaGUI
+
+matplotlib.use("Agg")  # Utiliser un backend non interactif
 import io
 import queue
 import threading
-import pandas as pd
+from io import BytesIO
+
 import numpy as np
 from bw2data.errors import InvalidExchange
+from customtkinter import CTkImage
 
 is_running = False
 
-def on_closing():
 
+def on_closing():
     root.destroy()  # Ferme l'application proprement
     # Restaurer stdout et stderr
     sys.stdout = sys.__stdout__
     sys.stderr = sys.__stderr__
-    
+
+
 def reset_interface():
-    """ Réinitialise l'interface graphique à son état initial. """
+    """Réinitialise l'interface graphique à son état initial."""
 
     # Fonction pour effectuer la réinitialisation dans le thread principal
     def do_reset():
         # Effacer les graphiques
-        for widget in plot_frame.winfo_children():
-            widget.destroy()
-        
-        # Effacer les miniatures des boutons
-        for widget in selection_frame.winfo_children():
+        for widget in root.plot_frame.winfo_children():
             widget.destroy()
 
-        
+        # Effacer les miniatures des boutons
+        for widget in root.selection_frame.winfo_children():
+            widget.destroy()
+
         # Réinitialiser les états des boutons
-        prev_button.configure(state="disabled")
-        next_button.configure(state="disabled")
-        save_button.configure(state="disabled")
-        save_selected_button.configure(state="disabled")
-        save_data_button.configure(state="disabled")
+        root.prev_button.configure(state="disabled")
+        root.next_button.configure(state="disabled")
+        root.save_button.configure(state="disabled")
+        root.save_selected_button.configure(state="disabled")
+        root.save_data_button.configure(state="disabled")
 
         # Réinitialiser les cases à cocher
-        var_EI.set("")
-        var_EI_manu.set("")
-        var_EI_use.set("")
-        var_fault_cause.set("")
-        var_RU_age.set("")
-        checkbox_EI.configure(state="disabled")
-        checkbox_EI_manu.configure(state="disabled")
-        checkbox_EI_use.configure(state="disabled")
-        checkbox_fault_cause.configure(state="disabled")
-        checkbox_RU_age.configure(state="disabled")
+        root.var_EI.set("")
+        root.var_EI_manu.set("")
+        root.var_EI_use.set("")
+        root.var_fault_cause.set("")
+        root.var_RU_age.set("")
+        root.checkbox_EI.configure(state="disabled")
+        root.checkbox_EI_manu.configure(state="disabled")
+        root.checkbox_EI_use.configure(state="disabled")
+        root.checkbox_fault_cause.configure(state="disabled")
+        root.checkbox_RU_age.configure(state="disabled")
 
     # Planifier la réinitialisation pour le thread principal
     root.after(100, do_reset)
-    
+
 
 def run_script_threaded():
     global is_running
@@ -92,39 +95,42 @@ def run_script_threaded():
     threading.Thread(target=run_script).start()
     is_running = True
 
+
 def create_thumbnail(fig, size=(100, 100)):
-    """ Crée une image miniature de la figure pour la compatibilité CTkImage """
+    """Crée une image miniature de la figure pour la compatibilité CTkImage"""
     with BytesIO() as buf:
-        fig.savefig(buf, format='png', bbox_inches='tight', pad_inches=0)
+        fig.savefig(buf, format="png", bbox_inches="tight", pad_inches=0)
         buf.seek(0)
         img = Image.open(buf)
         img.thumbnail(size)
         return CTkImage(dark_image=img, size=size)
 
+
 def create_figure_buttons():
-    # Efface les boutons précédents
-    for widget in selection_frame.winfo_children():
+    for widget in root.selection_frame.winfo_children():
         widget.destroy()
 
     for idx, fig in enumerate(figs):
         thumb_image = create_thumbnail(fig)
         button = ctk.CTkButton(
-            selection_frame,
+            root.selection_frame,
             image=thumb_image,
             command=lambda i=idx: update_and_display_plot(i),
-            fg_color=button_color,
-            text_color=fg_color,
+            fg_color=BUTTON_COLOR,
+            text_color=FG_COLOR,
             width=120,
             height=60,
-            text=''
+            text="",
         )
         button.image = thumb_image  # Garder une référence pour éviter la collecte de déchets
-        button.pack(fill='x', padx=5, pady=5)
+        button.pack(fill="x", padx=5, pady=5)
+
 
 def update_and_display_plot(i):
     global current_index
     current_index = i
     display_plot(i)
+
 
 class RedirectText(io.StringIO):
     def __init__(self, console_widget):
@@ -133,9 +139,9 @@ class RedirectText(io.StringIO):
 
     def write(self, string):
         super().write(string)
-        self.console_widget.configure(state='normal')
+        self.console_widget.configure(state="normal")
         self.console_widget.insert(END, string)
-        self.console_widget.configure(state='disabled')
+        self.console_widget.configure(state="disabled")
         self.console_widget.see(END)
         self.flush()  # Assurez-vous que le tampon est vidé
 
@@ -143,15 +149,16 @@ class RedirectText(io.StringIO):
         # Appelez explicitement flush sur la classe parente pour gérer le tampon
         super().flush()
 
+
 def browse_file():
-    
     filepath = filedialog.askopenfilename()
     if filepath:
-        entry_file_path.delete(0, ctk.END)
-        entry_file_path.insert(0, filepath)
+        root.entry_file_path.delete(0, ctk.END)
+        root.entry_file_path.insert(0, filepath)
+
 
 def get_max_fig_size(figs):
-    """ Retourne la taille de la plus grande figure """
+    """Retourne la taille de la plus grande figure"""
     max_width = 0
     max_height = 0
     for fig in figs:
@@ -160,20 +167,22 @@ def get_max_fig_size(figs):
         max_height = max(max_height, fig_height)
     return (int(max_width), int(max_height))
 
+
 def display_plot(index):
     # Efface le graphique précédent
-    for widget in plot_frame.winfo_children():
+    for widget in root.plot_frame.winfo_children():
         widget.destroy()
 
     # Affiche le graphique actuel
     fig = figs[index]
-    
+
     # Ajuster la taille de la figure si nécessaire
     fig.tight_layout()
 
-    canvas = FigureCanvasTkAgg(fig, master=plot_frame)
+    canvas = FigureCanvasTkAgg(fig, master=root.plot_frame)
     canvas.draw()
     canvas.get_tk_widget().pack(side="top", fill="both", expand=1)
+
 
 def show_next_plot():
     global current_index
@@ -184,6 +193,7 @@ def show_next_plot():
         current_index = 0
         display_plot(current_index)
 
+
 def show_prev_plot():
     global current_index
     if current_index > 0:
@@ -192,6 +202,7 @@ def show_prev_plot():
     elif current_index == 0:
         current_index = len(figs) - 1
         display_plot(current_index)
+
 
 def save_plot():
     print("Saving plots...")
@@ -206,8 +217,9 @@ def save_plot():
             except Exception as e:
                 print(f"An error occurred while saving the plots: {e}")
 
+
 def save_selected_plot():
-    """ Sauvegarde le graphique actuellement affiché """
+    """Sauvegarde le graphique actuellement affiché"""
     if figs:
         if current_index is not None:
             folder_path = filedialog.askdirectory()
@@ -222,42 +234,46 @@ def save_selected_plot():
         else:
             print("No plot is currently displayed.")
     else:
-        print("No plots available to save.") 
+        print("No plots available to save.")
 
-def _export_data(path,file_name,file):
-    file_name_pickel=file_name +'.npy'
-    path_file_pickel = os.path.join(path,"",file_name_pickel)
-    with open(path_file_pickel, 'wb') as f:
-        np.save(f,file)
+
+def _export_data(path, file_name, file):
+    file_name_pickel = file_name + ".npy"
+    path_file_pickel = os.path.join(path, "", file_name_pickel)
+    with open(path_file_pickel, "wb") as f:
+        np.save(f, file)
+
 
 def save_data_to_excel():
     folder_path = filedialog.askdirectory()
     if folder_path:
         try:
-            if var_EI.get():
+            if root.var_EI.get():
                 _export_data(folder_path, "Impact_total", EI)
-            if var_EI_manu.get():
+            if root.var_EI_manu.get():
                 _export_data(folder_path, "Impact_manu", EI_manu)
-            if var_EI_use.get():
+            if root.var_EI_use.get():
                 _export_data(folder_path, "Impact_use", EI_use)
-            if var_fault_cause.get():
+            if root.var_fault_cause.get():
                 _export_data(folder_path, "fault_cause", fault_cause)
-            if var_RU_age.get():
+            if root.var_RU_age.get():
                 _export_data(folder_path, "RU_age", RU_age)
             print(f"Selected data saved successfully in {folder_path}")
         except Exception as e:
             print(f"An error occurred while saving the data: {e}")
 
+
 output_queue = queue.Queue()
+
 
 def update_console():
     try:
         while True:
             message = output_queue.get_nowait()  # Récupérer le message sans bloquer
-            console_text.configure(state='normal')
-            console_text.insert(END, message)
-            console_text.configure(state='disabled')
-            console_text.see(END)
+            root.console_text.configure(state="normal")
+            root.console_text.insert(END, message)
+            root.console_text.configure(state="disabled")
+            root.console_text.see(END)
     except queue.Empty:
         pass  # Ne rien faire si la queue est vide
 
@@ -266,39 +282,40 @@ def update_console():
 
 
 def update_ui(simulation_type):
-    prev_button.configure(state="normal")
-    next_button.configure(state="normal")
-    save_button.configure(state="normal")
-    save_selected_button.configure(state="normal")
-    if simulation_type == 'Analysis':
-        save_data_button.configure(state="normal")
-        checkbox_EI.configure(state="normal")
-        checkbox_EI_manu.configure(state="normal")
-        checkbox_EI_use.configure(state="normal")
-        checkbox_fault_cause.configure(state="normal")
-        checkbox_RU_age.configure(state="normal")
+    root.prev_button.configure(state="normal")
+    root.next_button.configure(state="normal")
+    root.save_button.configure(state="normal")
+    root.save_selected_button.configure(state="normal")
+    if simulation_type == "Analysis":
+        root.save_data_button.configure(state="normal")
+        root.checkbox_EI.configure(state="normal")
+        root.checkbox_EI_manu.configure(state="normal")
+        root.checkbox_EI_use.configure(state="normal")
+        root.checkbox_fault_cause.configure(state="normal")
+        root.checkbox_RU_age.configure(state="normal")
+
 
 def run_script():
     global figs
     global current_index
     global EI, EI_manu, EI_use, RU_age, fault_cause
-    
+
     # Ferme toutes les figures ouvertes
-    plt.close('all')
-    
-    full_path_input = entry_file_path.get()
+    plt.close("all")
+
+    full_path_input = root.entry_file_path.get()
     if not full_path_input:
         messagebox.showerror("Error", "Please select an input file")
         return
-    
+
     path_input = os.path.dirname(full_path_input)
     name_input = os.path.basename(full_path_input)
 
     def finish_script_execution(message):
-        loading_label.configure(text=message)
+        root.loading_label.configure(text=message)
         root.after(0, update_ui(dic["simulation"]))  # Planifie la mise à jour de l'UI dans le thread principal
 
-    loading_label.configure(text="Running script...")
+    root.loading_label.configure(text="Running script...")
     root.update_idletasks()  # Met à jour l'interface pour afficher le message de chargement
 
     try:
@@ -306,39 +323,68 @@ def run_script():
         dic = dictionary._init_dic(path_input, name_input)
 
         # LCA
-        if dic["LCA"] == 'yes':
+        if dic["LCA"] == "yes":
             LCA.EI_calculation(dic, path_input, name_input)
-        
-        if dic["simulation"] == 'Analysis':
+
+        if dic["simulation"] == "Analysis":
             # Création de la courbe de l'escalier
             print("\nCreating the Staircase Curve...")
             staircase_instance = staircase.STAIRCASE(path_input, name_input, dic)
-            EI, EI_manu, EI_use, usage_time, number_of_fault, wcdf, fault_cause, RU_age, EI_maintenance = staircase_instance.get_variables(dic)
+            (
+                EI,
+                EI_manu,
+                EI_use,
+                usage_time,
+                number_of_fault,
+                wcdf,
+                fault_cause,
+                RU_age,
+                EI_maintenance,
+            ) = staircase_instance.get_variables(dic)
             print("\n... Staircase Curve Completed")
-            
+
             print("\nDisplaying the results...")
-            plot_instance = plotting.PLOT(dic, EI, EI_manu, EI_use, usage_time, fault_cause, dic["nb_RU"], dic["nb_ite_MC"], dic["step"], wcdf, EI_maintenance)
-            figs = [plot_instance.fig1, plot_instance.fig2, plot_instance.fig3, plot_instance.fig4, plot_instance.fig5, plot_instance.fig6]
-            
+            plot_instance = plotting.PLOT(
+                dic,
+                EI,
+                EI_manu,
+                EI_use,
+                usage_time,
+                fault_cause,
+                dic["nb_RU"],
+                dic["nb_ite_MC"],
+                dic["step"],
+                wcdf,
+                EI_maintenance,
+            )
+            figs = [
+                plot_instance.fig1,
+                plot_instance.fig2,
+                plot_instance.fig3,
+                plot_instance.fig4,
+                plot_instance.fig5,
+                plot_instance.fig6,
+            ]
+
             print("\nPELCA executed successfully\n")
 
-        if dic["simulation"] == 'Monte Carlo':
+        if dic["simulation"] == "Monte Carlo":
             print("\nDisplaying the results...")
             plot_instance = plotting.PLOT_MC(dic)
             figs = [plot_instance.fig1, plot_instance.fig2]
             print("\nPELCA executed successfully\n")
-            
+
         # Calculer la taille maximale des figures
         max_width, max_height = get_max_fig_size(figs)
-        
+
         # Définir la taille de plot_frame
-        plot_frame.configure(width=max_width, height=max_height)
-        plot_frame.pack_propagate(True)  # Empêche le cadre de se redimensionner pour s'adapter à son contenu
+        root.plot_frame.configure(width=max_width, height=max_height)
+        root.plot_frame.pack_propagate(True)  # Empêche le cadre de se redimensionner pour s'adapter à son contenu
 
         current_index = 0
 
         display_plot(current_index)
-        
+
         # Créer les boutons de sélection des figures avec des miniatures
         create_figure_buttons()
 
@@ -348,7 +394,6 @@ def run_script():
         finish_script_execution("An error occurred : Exchange is missing ‘amount’ or ‘input’")
     except BaseException as e:
         finish_script_execution("An error occurred: " + str(e))
-
 
 
 root = PelcaGUI()
