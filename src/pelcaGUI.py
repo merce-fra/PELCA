@@ -300,7 +300,7 @@ class PelcaGUI(ctk.CTk):
             widget.destroy()
 
         # Affiche le graphique actuel
-        fig = figs[index]
+        fig = self.figs[index]
 
         # Ajuster la taille de la figure si nécessaire
         fig.tight_layout()
@@ -310,10 +310,10 @@ class PelcaGUI(ctk.CTk):
         canvas.get_tk_widget().pack(side="top", fill="both", expand=1)
 
     def show_next_plot(self):
-        if self.current_index < len(figs) - 1:
+        if self.current_index < len(self.figs) - 1:
             self.current_index += 1
             self.display_plot(self.current_index)
-        elif current_index == len(figs) - 1:
+        elif self.current_index == len(self.figs) - 1:
             self.current_index = 0
             self.display_plot(self.current_index)
 
@@ -322,16 +322,16 @@ class PelcaGUI(ctk.CTk):
             self.current_index -= 1
             self.display_plot(self.current_index)
         elif self.current_index == 0:
-            self.current_index = len(figs) - 1
+            self.current_index = len(self.figs) - 1
             self.display_plot(self.current_index)
 
     def save_plot(self):
         print("Saving plots...")
-        if figs:
+        if self.figs:
             folder_path = filedialog.askdirectory()
             if folder_path:
                 try:
-                    for idx, fig in enumerate(figs):
+                    for idx, fig in enumerate(self.figs):
                         filepath = os.path.join(folder_path, f"plot_{idx+1}.svg")
                         fig.savefig(filepath, dpi=300)
                     print(f"All plots saved successfully in {folder_path}")
@@ -340,13 +340,13 @@ class PelcaGUI(ctk.CTk):
 
     def save_selected_plot():
         """Sauvegarde le graphique actuellement affiché"""
-        if figs:
-            if current_index is not None:
+        if self.figs:
+            if self.current_index is not None:
                 folder_path = filedialog.askdirectory()
                 if folder_path:
                     try:
-                        fig = figs[current_index]
-                        filepath = os.path.join(folder_path, f"selected_plot_{current_index + 1}.svg")
+                        fig = self.figs[self.current_index]
+                        filepath = os.path.join(folder_path, f"selected_plot_{self.current_index + 1}.svg")
                         fig.savefig(filepath, dpi=300)
                         print(f"Selected plot saved successfully as {filepath}")
                     except Exception as e:
@@ -410,10 +410,6 @@ class PelcaGUI(ctk.CTk):
         self.after(100, do_reset)
 
     def run_script(self):
-        global figs
-        global current_index
-        global EI, EI_manu, EI_use, RU_age, fault_cause
-
         # Ferme toutes les figures ouvertes
         plt.close("all")
 
@@ -458,6 +454,8 @@ class PelcaGUI(ctk.CTk):
                 print("\n... Staircase Curve Completed")
 
                 print("\nDisplaying the results...")
+                print(fault_cause)
+
                 plot_instance = plotting.PLOT(
                     dic,
                     EI,
@@ -471,7 +469,7 @@ class PelcaGUI(ctk.CTk):
                     wcdf,
                     EI_maintenance,
                 )
-                figs = [
+                self.figs = [
                     plot_instance.fig1,
                     plot_instance.fig2,
                     plot_instance.fig3,
@@ -485,11 +483,11 @@ class PelcaGUI(ctk.CTk):
             if dic["simulation"] == "Monte Carlo":
                 print("\nDisplaying the results...")
                 plot_instance = plotting.PLOT_MC(dic)
-                figs = [plot_instance.fig1, plot_instance.fig2]
+                self.figs = [plot_instance.fig1, plot_instance.fig2]
                 print("\nPELCA executed successfully\n")
 
             # Calculer la taille maximale des figures
-            max_width, max_height = get_max_fig_size(figs)
+            max_width, max_height = get_max_fig_size(self.figs)
 
             # Définir la taille de plot_frame
             self.plot_frame.configure(width=max_width, height=max_height)
@@ -517,7 +515,7 @@ class PelcaGUI(ctk.CTk):
         for widget in self.selection_frame.winfo_children():
             widget.destroy()
 
-        for idx, fig in enumerate(figs):
+        for idx, fig in enumerate(self.figs):
             thumb_image = create_thumbnail(fig)
             button = ctk.CTkButton(
                 self.selection_frame,

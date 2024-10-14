@@ -491,6 +491,7 @@ class PLOT:
             count_random = np.sum(tableau_1d == "Random")
             count_wearout = np.sum(tableau_1d == "Wearout")
             nombres = [count_early, count_random, count_wearout]
+            print(nombres)
             etiquettes = ["Early fault", "Random fault", "Wearout fault"]
 
             # Couleurs correspondantes

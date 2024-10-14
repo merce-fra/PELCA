@@ -78,9 +78,6 @@ redirector = RedirectText(root.console_text)
 sys.stdout = redirector
 sys.stderr = redirector
 
-# Initialisez l'index courant
-current_index = 0
-
 # Liaison de la fonction on_closing à l'événement de fermeture
 root.protocol("WM_DELETE_WINDOW", on_closing)
 root.mainloop()
