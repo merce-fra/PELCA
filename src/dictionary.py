@@ -18,6 +18,7 @@ import os
 import pickle
 import shutil
 
+import numpy as np
 import pandas as pd
 
 
@@ -50,7 +51,7 @@ def _init_dic(path_input, name_input):
     dic["filename_result_EI"] = df.iloc[df[df.isin(["LCA result filename"]).any(axis=1)].index[0], 1]
     dic["filename_result_EI_MC"] = df.iloc[df[df.isin(["LCA Monte Carlo result filename"]).any(axis=1)].index[0], 1]
 
-    dic["simulation"] = df.iloc[df[df.isin([r"Type of simulation (Analysis\Monte Carlo)"]).any(axis=1)].index[0], 1]
+    dic["simulation"] = df.iloc[df[df.isin(["Type of simulation (Analysis\Monte Carlo)"]).any(axis=1)].index[0], 1]
 
     dic["directory"] = "Results PELCA"
     dic["LCA_path"] = os.path.join(dic["path_result_EI"], dic["directory"])
