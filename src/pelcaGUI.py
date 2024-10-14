@@ -270,15 +270,15 @@ class PelcaGUI(ctk.CTk):
         self.selection_frame.pack(side="right", fill="y", padx=10, pady=10)
 
         # Create spacers
-        self.create_spacers()
+        # self.create_spacers()
 
     def create_spacers(self):
         """Create spacers in the right frame."""
-        top_spacer = ctk.CTkFrame(self.right_frame, fg_color=BG_COLOR)
-        top_spacer.pack(side="top", fill="both", expand=True)
+        top_spacer = ctk.CTkFrame(self.right_frame, fg_color=SEPARATOR_COLOR)
+        top_spacer.pack(side="top", fill="both", expand=False)
 
-        bottom_spacer = ctk.CTkFrame(self.right_frame, fg_color=BG_COLOR)
-        bottom_spacer.pack(side="bottom", fill="both", expand=True)
+        # bottom_spacer = ctk.CTkFrame(self.right_frame, fg_color=SEPARATOR_COLOR)
+        # bottom_spacer.pack(side="bottom", fill="both", expand=True)
 
     def _add_top_image(self):
         """Add the top image to the GUI."""
@@ -454,7 +454,6 @@ class PelcaGUI(ctk.CTk):
                 print("\n... Staircase Curve Completed")
 
                 print("\nDisplaying the results...")
-                print(fault_cause)
 
                 plot_instance = plotting.PLOT(
                     dic,
@@ -494,11 +493,10 @@ class PelcaGUI(ctk.CTk):
             self.plot_frame.pack_propagate(True)  # Empêche le cadre de se redimensionner pour s'adapter à son contenu
 
             self.current_index = 0
+            self.create_figure_buttons()
 
             self.display_plot(self.current_index)
 
-            # Créer les boutons de sélection des figures avec des miniatures
-            self.create_figure_buttons()
 
             finish_script_execution("Script executed successfully")
 
