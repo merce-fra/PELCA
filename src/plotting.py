@@ -5,13 +5,13 @@ This program is free software: you can redistribute it and/or modify it under th
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along with this program.  If not, see https://www.gnu.org/licenses/lgpl-3.0.html
+You should have received a copy of the GNU Lesser General Public License along with this program.  If not, see https://www.gnu.org/licenses/lgpl-3.0.html"""
 
+"""
 Created on 2024
 
 @author: baudais
 """
-
 import ctypes
 import math
 import os
@@ -612,18 +612,6 @@ class PLOT:
 
 
 class PLOT_MC:
-    """
-    A class used to create Monte Carlo uncertainty analysis plots.
-    Methods
-    -------
-    __init__(dic)
-        Initializes the PLOT_MC object and generates radar and bar plots.
-    radar_montecarlo(dic)
-        Generates a radar plot for Monte Carlo uncertainty analysis.
-    bar_with_uncertainty(dic)
-        Generates a bar plot with uncertainty for Monte Carlo analysis.
-    """
-
     def __init__(self, dic):
         self.fig1 = self.radar_montecarlo(dic)
         self.fig2 = self.bar_with_uncertainty(dic)

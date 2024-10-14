@@ -1,8 +1,17 @@
 import os
-from tkinter import Text
+from tkinter import Text, filedialog, messagebox
 
 import customtkinter as ctk
+import matplotlib.pyplot as plt
+from bw2data.errors import InvalidExchange
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from PIL import Image
+
+import dictionary
+import LCA
+import plotting
+import staircase
+from utils import create_thumbnail, export_data, get_max_fig_size
 
 # Define colors for the dark theme
 BG_COLOR = "#2E2E2E"
@@ -27,6 +36,7 @@ class PelcaGUI(ctk.CTk):
         self.title("PELCA")
         self.set_window_icon()
         self.configure(bg=BG_COLOR)
+        self.current_index = 0
 
         self._add_top_image()
 
@@ -63,6 +73,8 @@ class PelcaGUI(ctk.CTk):
 
         self.loading_label = ctk.CTkLabel(self.left_frame, text="", fg_color=BG_COLOR, text_color=FG_COLOR)
         self.loading_label.grid(row=2, column=0, columnspan=3, pady=5)
+        self.is_running = False
+        self.figs = []
 
         self.create_console_frame()
 
@@ -137,22 +149,22 @@ class PelcaGUI(ctk.CTk):
         self.var_fault_cause = ctk.StringVar()
         self.var_RU_age = ctk.StringVar()
 
-        checkbox_EI = ctk.CTkCheckBox(
+        self.checkbox_EI = ctk.CTkCheckBox(
             parent, text="Impact total", variable=self.var_EI, onvalue="EI", offvalue="", state="disabled"
         )
-        checkbox_EI.pack(side="left", padx=5)
+        self.checkbox_EI.pack(side="left", padx=5)
 
-        checkbox_EI_manu = ctk.CTkCheckBox(
+        self.checkbox_EI_manu = ctk.CTkCheckBox(
             parent, text="Impact manufact.", variable=self.var_EI_manu, onvalue="EI_manu", offvalue="", state="disabled"
         )
-        checkbox_EI_manu.pack(side="left", padx=5)
+        self.checkbox_EI_manu.pack(side="left", padx=5)
 
-        checkbox_EI_use = ctk.CTkCheckBox(
+        self.checkbox_EI_use = ctk.CTkCheckBox(
             parent, text="Impact use", variable=self.var_EI_use, onvalue="EI_use", offvalue="", state="disabled"
         )
-        checkbox_EI_use.pack(side="left", padx=5)
+        self.checkbox_EI_use.pack(side="left", padx=5)
 
-        checkbox_fault_cause = ctk.CTkCheckBox(
+        self.checkbox_fault_cause = ctk.CTkCheckBox(
             parent,
             text="Fault cause",
             variable=self.var_fault_cause,
@@ -160,16 +172,34 @@ class PelcaGUI(ctk.CTk):
             offvalue="",
             state="disabled",
         )
-        checkbox_fault_cause.pack(side="left", padx=5)
+        self.checkbox_fault_cause.pack(side="left", padx=5)
 
-        checkbox_RU_age = ctk.CTkCheckBox(
+        self.checkbox_RU_age = ctk.CTkCheckBox(
             parent, text="RU age", variable=self.var_RU_age, onvalue="RU_age", offvalue="", state="disabled"
         )
-        checkbox_RU_age.pack(side="left", padx=5)
+        self.checkbox_RU_age.pack(side="left", padx=5)
+
+    def save_data_to_excel(self):
+        folder_path = filedialog.askdirectory()
+        if folder_path:
+            try:
+                if self.var_EI.get():
+                    export_data(folder_path, "Impact_total", EI)
+                if self.var_EI_manu.get():
+                    export_data(folder_path, "Impact_manu", EI_manu)
+                if self.var_EI_use.get():
+                    export_data(folder_path, "Impact_use", EI_use)
+                if self.var_fault_cause.get():
+                    export_data(folder_path, "fault_cause", fault_cause)
+                if self.var_RU_age.get():
+                    export_data(folder_path, "RU_age", RU_age)
+                print(f"Selected data saved successfully in {folder_path}")
+            except Exception as e:
+                print(f"An error occurred while saving the data: {e}")
 
     def create_save_data_button(self, parent):
         """Create a save data button."""
-        save_data_button = ctk.CTkButton(
+        self.save_data_button = ctk.CTkButton(
             parent,
             text="Save Data",
             command=self.save_data_to_excel,
@@ -177,7 +207,7 @@ class PelcaGUI(ctk.CTk):
             text_color=FG_COLOR,
             state="disabled",
         )
-        save_data_button.pack(side="left", padx=10)
+        self.save_data_button.pack(side="left", padx=10)
 
     def create_navigation_buttons(self):
         """Create navigation buttons frame."""
@@ -232,12 +262,12 @@ class PelcaGUI(ctk.CTk):
 
     def create_plot_and_selection_frames(self):
         """Create plot and selection frames in the right frame."""
-        plot_frame = ctk.CTkFrame(self.right_frame, fg_color=BG_COLOR)
-        plot_frame.pack(side="left", padx=10, pady=10, expand=True)
-        plot_frame.pack_propagate(False)
+        self.plot_frame = ctk.CTkFrame(self.right_frame, fg_color=BG_COLOR)
+        self.plot_frame.pack(side="left", padx=10, pady=10, expand=True)
+        self.plot_frame.pack_propagate(False)
 
-        selection_frame = ctk.CTkFrame(self.right_frame, fg_color=BG_COLOR)
-        selection_frame.pack(side="right", fill="y", padx=10, pady=10)
+        self.selection_frame = ctk.CTkFrame(self.right_frame, fg_color=BG_COLOR)
+        self.selection_frame.pack(side="right", fill="y", padx=10, pady=10)
 
         # Create spacers
         self.create_spacers()
@@ -264,30 +294,249 @@ class PelcaGUI(ctk.CTk):
         self.var_fault_cause = ctk.StringVar()
         self.var_RU_age = ctk.StringVar()
 
-    def save_data_to_excel(self):
-        """Placeholder for save data to Excel functionality."""
-        print("Data saved to Excel")
+    def display_plot(self, index):
+        # Efface le graphique précédent
+        for widget in self.plot_frame.winfo_children():
+            widget.destroy()
 
-    def show_prev_plot(self):
-        """Placeholder for showing previous plot functionality."""
-        print("Showing previous plot")
+        # Affiche le graphique actuel
+        fig = figs[index]
+
+        # Ajuster la taille de la figure si nécessaire
+        fig.tight_layout()
+
+        canvas = FigureCanvasTkAgg(fig, master=self.plot_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side="top", fill="both", expand=1)
 
     def show_next_plot(self):
-        """Placeholder for showing next plot functionality."""
-        print("Showing next plot")
+        if self.current_index < len(figs) - 1:
+            self.current_index += 1
+            self.display_plot(self.current_index)
+        elif current_index == len(figs) - 1:
+            self.current_index = 0
+            self.display_plot(self.current_index)
+
+    def show_prev_plot(self):
+        if self.current_index > 0:
+            self.current_index -= 1
+            self.display_plot(self.current_index)
+        elif self.current_index == 0:
+            self.current_index = len(figs) - 1
+            self.display_plot(self.current_index)
 
     def save_plot(self):
-        """Placeholder for saving all plots functionality."""
-        print("All plots saved")
+        print("Saving plots...")
+        if figs:
+            folder_path = filedialog.askdirectory()
+            if folder_path:
+                try:
+                    for idx, fig in enumerate(figs):
+                        filepath = os.path.join(folder_path, f"plot_{idx+1}.svg")
+                        fig.savefig(filepath, dpi=300)
+                    print(f"All plots saved successfully in {folder_path}")
+                except Exception as e:
+                    print(f"An error occurred while saving the plots: {e}")
 
-    def save_selected_plot(self):
-        """Placeholder for saving selected plot functionality."""
-        print("Selected plot saved")
+    def save_selected_plot():
+        """Sauvegarde le graphique actuellement affiché"""
+        if figs:
+            if current_index is not None:
+                folder_path = filedialog.askdirectory()
+                if folder_path:
+                    try:
+                        fig = figs[current_index]
+                        filepath = os.path.join(folder_path, f"selected_plot_{current_index + 1}.svg")
+                        fig.savefig(filepath, dpi=300)
+                        print(f"Selected plot saved successfully as {filepath}")
+                    except Exception as e:
+                        print(f"An error occurred while saving the selected plot: {e}")
+            else:
+                print("No plot is currently displayed.")
+        else:
+            print("No plots available to save.")
+
+    def update_ui(self, simulation_type):
+        self.prev_button.configure(state="normal")
+        self.next_button.configure(state="normal")
+        self.save_button.configure(state="normal")
+        self.save_selected_button.configure(state="normal")
+        if simulation_type == "Analysis":
+            self.save_data_button.configure(state="normal")
+            self.checkbox_EI.configure(state="normal")
+            self.checkbox_EI_manu.configure(state="normal")
+            self.checkbox_EI_use.configure(state="normal")
+            self.checkbox_fault_cause.configure(state="normal")
+            self.checkbox_RU_age.configure(state="normal")
 
     def browse_file(self):
         """Placeholder for file browsing functionality."""
-        print("Browse for file")
+        filepath = filedialog.askopenfilename()
+        if filepath:
+            self.entry_file_path.delete(0, ctk.END)
+            self.entry_file_path.insert(0, filepath)
+
+    def reset_interface(self):
+        """Réinitialise l'interface graphique à son état initial."""
+
+        def do_reset():
+            # Effacer les graphiques
+            for widget in self.plot_frame.winfo_children():
+                widget.destroy()
+
+            # Effacer les miniatures des boutons
+            for widget in self.selection_frame.winfo_children():
+                widget.destroy()
+
+            # Réinitialiser les états des boutons
+            self.prev_button.configure(state="disabled")
+            self.next_button.configure(state="disabled")
+            self.save_button.configure(state="disabled")
+            self.save_selected_button.configure(state="disabled")
+            self.save_data_button.configure(state="disabled")
+
+            self.var_EI.set("")
+            self.var_EI_manu.set("")
+            self.var_EI_use.set("")
+            self.var_fault_cause.set("")
+            self.var_RU_age.set("")
+            self.checkbox_EI.configure(state="disabled")
+            self.checkbox_EI_manu.configure(state="disabled")
+            self.checkbox_EI_use.configure(state="disabled")
+            self.checkbox_fault_cause.configure(state="disabled")
+            self.checkbox_RU_age.configure(state="disabled")
+
+        # Planifier la réinitialisation pour le thread principal
+        self.after(100, do_reset)
+
+    def run_script(self):
+        global figs
+        global current_index
+        global EI, EI_manu, EI_use, RU_age, fault_cause
+
+        # Ferme toutes les figures ouvertes
+        plt.close("all")
+
+        full_path_input = self.entry_file_path.get()
+        if not full_path_input:
+            messagebox.showerror("Error", "Please select an input file")
+            return
+
+        path_input = os.path.dirname(full_path_input)
+        name_input = os.path.basename(full_path_input)
+
+        def finish_script_execution(message):
+            self.loading_label.configure(text=message)
+            self.after(0, self.update_ui(dic["simulation"]))  # Planifie la mise à jour de l'UI dans le thread principal
+
+        self.loading_label.configure(text="Running script...")
+        self.update_idletasks()  # Met à jour l'interface pour afficher le message de chargement
+
+        try:
+            # Init du dictionnaire
+            dic = dictionary._init_dic(path_input, name_input)
+
+            # LCA
+            if dic["LCA"] == "yes":
+                LCA.EI_calculation(dic, path_input, name_input)
+
+            if dic["simulation"] == "Analysis":
+                # Création de la courbe de l'escalier
+                print("\nCreating the Staircase Curve...")
+                staircase_instance = staircase.STAIRCASE(path_input, name_input, dic)
+                (
+                    EI,
+                    EI_manu,
+                    EI_use,
+                    usage_time,
+                    number_of_fault,
+                    wcdf,
+                    fault_cause,
+                    RU_age,
+                    EI_maintenance,
+                ) = staircase_instance.get_variables(dic)
+                print("\n... Staircase Curve Completed")
+
+                print("\nDisplaying the results...")
+                plot_instance = plotting.PLOT(
+                    dic,
+                    EI,
+                    EI_manu,
+                    EI_use,
+                    usage_time,
+                    fault_cause,
+                    dic["nb_RU"],
+                    dic["nb_ite_MC"],
+                    dic["step"],
+                    wcdf,
+                    EI_maintenance,
+                )
+                figs = [
+                    plot_instance.fig1,
+                    plot_instance.fig2,
+                    plot_instance.fig3,
+                    plot_instance.fig4,
+                    plot_instance.fig5,
+                    plot_instance.fig6,
+                ]
+
+                print("\nPELCA executed successfully\n")
+
+            if dic["simulation"] == "Monte Carlo":
+                print("\nDisplaying the results...")
+                plot_instance = plotting.PLOT_MC(dic)
+                figs = [plot_instance.fig1, plot_instance.fig2]
+                print("\nPELCA executed successfully\n")
+
+            # Calculer la taille maximale des figures
+            max_width, max_height = get_max_fig_size(figs)
+
+            # Définir la taille de plot_frame
+            self.plot_frame.configure(width=max_width, height=max_height)
+            self.plot_frame.pack_propagate(True)  # Empêche le cadre de se redimensionner pour s'adapter à son contenu
+
+            self.current_index = 0
+
+            self.display_plot(self.current_index)
+
+            # Créer les boutons de sélection des figures avec des miniatures
+            self.create_figure_buttons()
+
+            finish_script_execution("Script executed successfully")
+
+        except InvalidExchange:
+            finish_script_execution("An error occurred : Exchange is missing ‘amount’ or ‘input’")
+        except BaseException as e:
+            finish_script_execution("An error occurred: " + str(e))
+
+    def update_and_display_plot(self, index):
+        self.current_index = index
+        self.display_plot(index=index)
+
+    def create_figure_buttons(self):
+        for widget in self.selection_frame.winfo_children():
+            widget.destroy()
+
+        for idx, fig in enumerate(figs):
+            thumb_image = create_thumbnail(fig)
+            button = ctk.CTkButton(
+                self.selection_frame,
+                image=thumb_image,
+                command=lambda i=idx: self.update_and_display_plot(i),
+                fg_color=BUTTON_COLOR,
+                text_color=FG_COLOR,
+                width=120,
+                height=60,
+                text="",
+            )
+            button.image = thumb_image  # Garder une référence pour éviter la collecte de déchets
+            button.pack(fill="x", padx=5, pady=5)
 
     def run_script_threaded(self):
-        """Placeholder for running script in a threaded way."""
-        print("Script running in thread")
+        import threading
+
+        if self.is_running:
+            self.reset_interface()
+        # Exécuter la fonction run_script dans un thread séparé après un petit délai
+        threading.Thread(target=self.run_script).start()
+        self.is_running = True
