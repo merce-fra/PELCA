@@ -1,7 +1,8 @@
-import os
 import io
-from PIL import Image
+import os
+
 from customtkinter import CTkImage
+from PIL import Image
 
 
 def get_max_fig_size(figs):
@@ -13,7 +14,6 @@ def get_max_fig_size(figs):
         max_width = max(max_width, fig_width)
         max_height = max(max_height, fig_height)
     return (int(max_width), int(max_height))
-
 
 
 def export_data(path, file_name, file):
