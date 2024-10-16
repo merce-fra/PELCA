@@ -412,7 +412,7 @@ class PelcaGUI(ctk.CTk):
     def run_script(self):
         # Ferme toutes les figures ouvertes
         plt.close("all")
-
+        self.button_run.configure(state="disabled")
         full_path_input = self.entry_file_path.get()
         if not full_path_input:
             messagebox.showerror("Error", "Please select an input file")
@@ -422,6 +422,7 @@ class PelcaGUI(ctk.CTk):
         name_input = os.path.basename(full_path_input)
 
         def finish_script_execution(message):
+            self.button_run.configure(state="normal")
             self.loading_label.configure(text=message)
             self.after(0, self.update_ui(dic["simulation"]))  # Planifie la mise à jour de l'UI dans le thread principal
 
@@ -496,7 +497,6 @@ class PelcaGUI(ctk.CTk):
             self.create_figure_buttons()
 
             self.display_plot(self.current_index)
-
 
             finish_script_execution("Script executed successfully")
 
