@@ -94,6 +94,36 @@ There are two options for installation:
 
 3. **Open and Run Code**: Open your project code in Spyder and run it.
 
+### Installation with Poetry
+
+If you prefer to manage project dependencies using **Poetry**, follow the steps below:
+
+1. **Install Poetry**: If you don't have Poetry installed, you can follow the official instructions [here](https://python-poetry.org/docs/#installation).
+
+2. **Clone the Repository**: Clone the PELCA repository to your desired location:
+    ```bash
+    git clone <repository_url>
+    cd PELCA
+    ```
+
+3. **Install Dependencies**: Once inside the project directory, run the following command to install all required dependencies:
+    ```bash
+    poetry install
+    ```
+
+4. **Activate the Virtual Environment**: Poetry automatically creates a virtual environment. To activate it, use:
+    ```bash
+    poetry shell
+    ```
+
+5. **Run the Project**: You can now run the project using Poetry. For example, to launch the graphical interface:
+    ```bash
+    poetry run python src/main_PELCA_GUI.py
+    ```
+
+Using Poetry simplifies dependency management and ensures consistency with modern Python development practices.
+
+
 ## Usage
 If you are using PELCA with an IDE :
 - Click on `clone`, you can either clone the repository or download the .zip file directly (and then extract it). Inside PELCA folder you get Python `.py` files in the folder `src`. To start the tool, execute the file `main_PELCA_GUI.py` in your integrated development environment (IDE).
