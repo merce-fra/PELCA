@@ -32,35 +32,46 @@ def _init_dir(path, directory):
 
 # %% Init
 def _init_dic(path_input, name_input):
-    # %%
+    def read_excel_sheet(excel, sheet_name, header, skiprows, usecols=None):
+        return pd.read_excel(excel, sheet_name=sheet_name, header=header, skiprows=skiprows, usecols=usecols)
+
+    def get_value_from_df(df, search_value, col_index=1):
+        return df.iloc[df[df.isin([search_value]).any(axis=1)].index[0], col_index]
+
+    def save_dict_to_file(dic, path, file_name, file_name_pickle):
+        path_file = os.path.join(path, file_name)
+        path_file_pickle = os.path.join(path, file_name_pickle)
+
+        with open(path_file, "w") as csv_file:
+            writer = csv.writer(csv_file)
+            for key, value in dic.items():
+                writer.writerow([key, value])
+
+        with open(path_file_pickle, "wb") as fp:
+            pickle.dump(dic, fp)
 
     excel = pd.ExcelFile(os.path.join(path_input, name_input))
-    df = pd.read_excel(excel, sheet_name="LCA", header=None, skiprows=1)
-    df_LCIA = pd.read_excel(excel, sheet_name="LCIA", header=0, skiprows=1)
-    df_stair = pd.read_excel(excel, sheet_name="Staircase", header=None, skiprows=1)
-    df_RM = pd.read_excel(
-        excel, sheet_name="Replac. Matrix", header=None, skiprows=[0, 1, 2, 3], usecols=lambda x: x != 0
-    )
+    df = read_excel_sheet(excel, "LCA", header=None, skiprows=1)
+    df_LCIA = read_excel_sheet(excel, "LCIA", header=0, skiprows=1)
+    df_stair = read_excel_sheet(excel, "Staircase", header=None, skiprows=1)
+    df_RM = read_excel_sheet(excel, "Replac. Matrix", header=None, skiprows=[0, 1, 2, 3], usecols=lambda x: x != 0)
     excel.close()
+
     dic = {}
-    ##################### Used to create the test case #####################
-    # dic[""] =
 
-    # %% LCA
-    dic["path_result_EI"] = df.iloc[df[df.isin(["LCA result path"]).any(axis=1)].index[0], 1]
-    dic["filename_result_EI"] = df.iloc[df[df.isin(["LCA result filename"]).any(axis=1)].index[0], 1]
-    dic["filename_result_EI_MC"] = df.iloc[df[df.isin(["LCA Monte Carlo result filename"]).any(axis=1)].index[0], 1]
-
-    dic["simulation"] = df.iloc[df[df.isin(["Type of simulation (Analysis\Monte Carlo)"]).any(axis=1)].index[0], 1]
-
+    dic["path_result_EI"] = get_value_from_df(df, "LCA result path")
+    dic["filename_result_EI"] = get_value_from_df(df, "LCA result filename")
+    dic["filename_result_EI_MC"] = get_value_from_df(df, "LCA Monte Carlo result filename")
+    dic["simulation"] = get_value_from_df(df, "Type of simulation (Analysis\\Monte Carlo)")
     dic["directory"] = "Results PELCA"
     dic["LCA_path"] = os.path.join(dic["path_result_EI"], dic["directory"])
     path = os.path.join(path_input, dic["directory"])
 
-    if dic["simulation"] == "Analysis":
-        file_path = os.path.join(dic["path_result_EI"], dic["directory"], dic["filename_result_EI"])
-    elif dic["simulation"] == "Monte Carlo":
-        file_path = os.path.join(dic["path_result_EI"], dic["directory"], dic["filename_result_EI_MC"])
+    file_path = os.path.join(
+        dic["path_result_EI"],
+        dic["directory"],
+        dic["filename_result_EI"] if dic["simulation"] == "Analysis" else dic["filename_result_EI_MC"],
+    )
 
     if os.path.exists(file_path):
         print("LCA is already calculated.")
@@ -75,73 +86,30 @@ def _init_dic(path_input, name_input):
         dic["LCA"] = "yes"
         _init_dir(dic["LCA_path"], dic["directory"])
 
-        dic["database_ecoinvent"] = df.iloc[df[df.isin(["Database ecoinvent"]).any(axis=1)].index[0], 1]
-        dic["database_ecoinvent_path"] = df.iloc[df[df.isin(["Ecoinvent path"]).any(axis=1)].index[0], 1]
-        dic["inventory_name"] = df.iloc[df[df.isin(["Inventory name"]).any(axis=1)].index[0], 1]
-        dic["proj_name"] = df.iloc[df[df.isin(["Project name (brightway)"]).any(axis=1)].index[0], 1]
-        dic["iterations"] = df.iloc[df[df.isin(["Number of iterations (Monte Carlo)"]).any(axis=1)].index[0], 1]
+        dic["database_ecoinvent"] = get_value_from_df(df, "Database ecoinvent")
+        dic["database_ecoinvent_path"] = get_value_from_df(df, "Ecoinvent path")
+        dic["inventory_name"] = get_value_from_df(df, "Inventory name")
+        dic["proj_name"] = get_value_from_df(df, "Project name (brightway)")
+        dic["iterations"] = get_value_from_df(df, "Number of iterations (Monte Carlo)")
 
         dic["EI_name"] = df_LCIA["Acronym"].tolist()
         dic["LCIA_unit"] = df_LCIA["Unit"].tolist()
         dic["LCIA"] = df_LCIA
 
-    # %% Operating cycle
-
-    dic["service_life"] = df_stair.iloc[df_stair[df_stair.isin(["Service life (year)"]).any(axis=1)].index[0], 1]
-    dic["num_hourPerYear"] = df_stair.iloc[
-        df_stair[df_stair.isin(["Annual usage time (hours/year)"]).any(axis=1)].index[0], 1
-    ]
-    dic["step"] = df_stair.iloc[df_stair[df_stair.isin(["Time step (step/year)"]).any(axis=1)].index[0], 1]
-
-    # %% Staircase curve
-
-    dic["filename_result_staircase"] = df_stair.iloc[
-        df_stair[df_stair.isin(["Staircase result filename"]).any(axis=1)].index[0], 1
-    ]
-
-    # Monte carlo
-    dic["nb_ite_MC"] = df_stair.iloc[
-        df_stair[df_stair.isin(["Monte Carlo (number of iteration)"]).any(axis=1)].index[0], 1
-    ]
-
-    # Select type of fault
-    dic["Early_failure"] = df_stair.iloc[df_stair[df_stair.isin(["Early failure"]).any(axis=1)].index[0], 1]
-    dic["Random_failure"] = df_stair.iloc[df_stair[df_stair.isin(["Random failure"]).any(axis=1)].index[0], 1]
-    dic["Wearout_failure"] = df_stair.iloc[df_stair[df_stair.isin(["Wearout failure"]).any(axis=1)].index[0], 1]
-
-    dic["Maintenance"] = df_stair.iloc[df_stair[df_stair.isin(["Maintenance"]).any(axis=1)].index[0], 1]
-
+    dic["service_life"] = get_value_from_df(df_stair, "Service life (year)")
+    dic["num_hourPerYear"] = get_value_from_df(df_stair, "Annual usage time (hours/year)")
+    dic["step"] = get_value_from_df(df_stair, "Time step (step/year)")
+    dic["filename_result_staircase"] = get_value_from_df(df_stair, "Staircase result filename")
+    dic["nb_ite_MC"] = get_value_from_df(df_stair, "Monte Carlo (number of iteration)")
+    dic["Early_failure"] = get_value_from_df(df_stair, "Early failure")
+    dic["Random_failure"] = get_value_from_df(df_stair, "Random failure")
+    dic["Wearout_failure"] = get_value_from_df(df_stair, "Wearout failure")
+    dic["Maintenance"] = get_value_from_df(df_stair, "Maintenance")
     dic["pre_set_fail"] = False
-
-    # Replacement rate, replacement matrix
-
     dic["Remplacement_matrix"] = df_RM
+    dic["selected_EI"] = get_value_from_df(df_stair, "Plot specific env. impact") - 1
 
-    # plot
-    dic["selected_EI"] = (
-        df_stair.iloc[df_stair[df_stair.isin(["Plot specific env. impact"]).any(axis=1)].index[0], 1] - 1
-    )
-    # %% Saving dictionary
-
-    # Path
-    file_name = "dict_file.csv"
-    path_file = os.path.join(dic["LCA_path"], file_name)
-    file_name_pickel = "dict_file.pkl"
-    path_file_pickel = os.path.join(dic["LCA_path"], file_name_pickel)
-
-    # save csv
-    with open(path_file, "w") as csv_file:
-        writer = csv.writer(csv_file)
-        for key, value in dic.items():
-            writer.writerow([key, value])
-
-    # save pickel
-    with open(path_file_pickel, "wb") as fp:
-        pickle.dump(dic, fp)
+    save_dict_to_file(dic, dic["LCA_path"], "dict_file.csv", "dict_file.pkl")
     print("dictionary saved successfully to file")
-
-    # how to open
-    # with open(path_file_pickel, 'rb') as fp:
-    #     dic = pickle.load(fp)
 
     return dic

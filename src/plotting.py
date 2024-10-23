@@ -496,9 +496,27 @@ class PLOT:
             # Couleurs correspondantes
             couleurs = plt.cm.tab20c(range(3))
 
+            # Filter out zero values
+            filtered_nombres = [n for n in nombres if n > 0]
+            filtered_etiquettes = [label for n, label in zip(nombres, etiquettes) if n > 0]
+
+            # Corresponding colors
+            couleurs = plt.cm.tab20c(range(3))
+
+            # Filter colors based on filtered_nombres
+            filtered_couleurs = [color for n, color in zip(nombres, couleurs) if n > 0]
+
             # Création du diagramme en camembert
             fig, ax = plt.subplots()
-            ax.pie(nombres, labels=etiquettes, autopct="%1.1f%%", startangle=140, colors=couleurs)
+            ax.pie(
+                filtered_nombres,
+                labels=filtered_etiquettes,
+                autopct="%1.1f%%",
+                startangle=140,
+                colors=filtered_couleurs,
+                labeldistance=1.05,
+                pctdistance=0.85,
+            )
 
             # Ajout d'un titre avec une taille de police plus grande
             ax.set_title("Distribution of defects", weight="bold")
