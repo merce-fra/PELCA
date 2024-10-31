@@ -1,11 +1,9 @@
 import os
 
-import dictionary
-import LCA
-import plotting
-import staircase
-from PyQt5.QtCore import QThread
-from PyQt5.QtCore import pyqtSignal as Signal
+from bw2data.errors import InvalidExchange
+from PySide6.QtCore import QThread, Signal
+
+from app.utils import LCA, dictionary, plotting, staircase
 
 
 class ProcessExcel(QThread):
@@ -55,6 +53,7 @@ class ProcessExcel(QThread):
             plot_instance.fig6,
         ]
         self.figs.emit(figs)
+        print("Analysis completed.")
 
     def run_monte_carlo(self, dic):
         """Run Monte Carlo simulations."""
