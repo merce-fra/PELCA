@@ -2,15 +2,23 @@ import sys
 
 from matplotlib.backends.backend_qt5agg import \
     FigureCanvasQTAgg as FigureCanvas
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QObject, Qt, Signal
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import (QMainWindow, QPushButton, QSplitter, QTextEdit,
+from PySide6.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QFrame,
+                               QHBoxLayout, QLabel, QLineEdit, QMainWindow,
+                               QMessageBox, QPushButton, QSplitter, QTextEdit,
                                QVBoxLayout, QWidget)
 
 from app.models.console import ConsoleOutputRedirector
 from app.threads.process_excel import ProcessExcel
 from app.widgets.header import HeaderWidget
+from app.widgets.plot import PlotWindow
+from app.widgets.script import ScriptWidget
 from src.utils import get_max_fig_size
+
+
+class Communicator(QObject):
+    close_window_signal = Signal()
 
 
 class MainWindow(QMainWindow):
@@ -19,6 +27,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("PELCA")
+        self.setGeometry(100, 100, 600, 800)
         self.file_path_edit = None  # Initialize the file path edit field
         self.console_text = None  # Initialize the console text area
         self.is_running = False  # Flag to check if a script is running
@@ -35,3 +44,8 @@ class MainWindow(QMainWindow):
 
         self.header = HeaderWidget()
         main_layout.addWidget(self.header)
+        self.script_widget = ScriptWidget(parent=self)
+        main_layout.addWidget(self.script_widget)
+
+        self.result_window = PlotWindow(parent=self)
+        self.result_window.show()
