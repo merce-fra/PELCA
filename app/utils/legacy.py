@@ -1,8 +1,6 @@
-import io
 import os
 
-from customtkinter import CTkImage
-from PIL import Image
+import numpy as np
 
 
 def get_max_fig_size(figs):
@@ -21,13 +19,3 @@ def export_data(path, file_name, file):
     path_file_pickel = os.path.join(path, "", file_name_pickel)
     with open(path_file_pickel, "wb") as f:
         np.save(f, file)
-
-
-def create_thumbnail(fig, size=(100, 100)):
-    """Crée une image miniature de la figure pour la compatibilité CTkImage"""
-    with io.BytesIO() as buf:
-        fig.savefig(buf, format="png", bbox_inches="tight", pad_inches=0)
-        buf.seek(0)
-        img = Image.open(buf)
-        img.thumbnail(size)
-        return CTkImage(dark_image=img, size=size)
