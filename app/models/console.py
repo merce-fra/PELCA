@@ -1,5 +1,4 @@
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal as Signal
+from PySide6.QtCore import QObject, Signal
 
 
 class ConsoleOutputRedirector(QObject):

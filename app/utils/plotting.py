@@ -226,7 +226,11 @@ class PLOT:
         self.fig5 = self.plot_allEI(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
 
         self.fig6 = self.plot_allEIatServicelife(dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step)
-        self.plot_allEI_manufacturing_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
+        self.fig7 = self.plot_allEI_manufacturing_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
+        self.fig8 = self.plotCDF_plotly(wcdf, usage_time)
+
+        self.mathplotlib_figs = [self.fig1, self.fig2, self.fig3, self.fig4, self.fig5, self.fig6]
+        self.plotly_figs = [self.fig7, self.fig8]
 
     def plot_allEI_manufacturing(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
         excel = pd.ExcelFile(os.path.join(dic["LCA_path"], dic["filename_result_EI"]))
@@ -427,6 +431,29 @@ class PLOT:
 
         adjust_fontsize(fig, ax)
         adjust_figure_size(fig, ax)
+        return fig
+
+    def plotCDF_plotly(self, wcdf, usage_time):
+        import plotly.graph_objects as go
+
+        t = np.arange(0, usage_time, 1)
+
+        # Create a figure with the trace
+        fig = go.Figure()
+
+        # Add the CDF trace (line plot)
+        fig.add_trace(go.Scatter(x=t, y=wcdf, mode="lines", line=dict(color="mediumvioletred", width=2)))
+
+        # Update the layout (title, labels, etc.)
+        fig.update_layout(
+            title="Cumulative Distribution Function - All RU",
+            xaxis_title="Time",
+            yaxis_title="CDF",
+            title_font=dict(size=16, family="Arial", color="black"),
+            xaxis=dict(showgrid=True),
+            yaxis=dict(showgrid=True),
+            plot_bgcolor="white",  # Background color of the plot
+        )
         return fig
 
     def plot_allEI(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):

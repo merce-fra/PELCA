@@ -11,7 +11,7 @@ class ProcessExcel(QThread):
 
     finished = Signal()
     error = Signal(str)
-    figs = Signal(object)
+    figs = Signal(dict)
 
     def __init__(self, file_path):
         super().__init__()
@@ -43,15 +43,10 @@ class ProcessExcel(QThread):
             wcdf,
             EI_maintenance,
         )
-
-        figs = [
-            plot_instance.fig1,
-            plot_instance.fig2,
-            plot_instance.fig3,
-            plot_instance.fig4,
-            plot_instance.fig5,
-            plot_instance.fig6,
-        ]
+        figs = {
+            "matplotlib": plot_instance.mathplotlib_figs,
+            "plotly": plot_instance.plotly_figs,
+        }
         self.figs.emit(figs)
         print("Analysis completed.")
 

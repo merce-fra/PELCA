@@ -1,7 +1,11 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit, QFileDialog, QMessageBox, QHBoxLayout
-from PySide6.QtCore import QThread, Qt
+from PySide6.QtCore import Qt, QThread
+from PySide6.QtWidgets import (QFileDialog, QHBoxLayout, QLabel, QLineEdit,
+                               QMessageBox, QPushButton, QTextEdit,
+                               QVBoxLayout, QWidget)
+
 from app.threads.process_excel import ProcessExcel
-from app.widgets.plot import PlotWindow
+from app.widgets.plot_window.plot import PlotWindow
+
 
 class ScriptWidget(QWidget):
     def __init__(self, parent=None):
@@ -9,7 +13,7 @@ class ScriptWidget(QWidget):
         self.parent = parent
         self.is_running = False  # Initialize running status
         self.initUI()
-    
+
     def initUI(self):
         layout = QVBoxLayout()
         self._add_file_selection_section(layout)
@@ -61,7 +65,7 @@ class ScriptWidget(QWidget):
     def run_script(self):
         """Run the script in a separate thread to keep the UI responsive."""
         if self.is_running:
-           
+            print("Script is already running.")
             return
         else:
             self.is_running = True
@@ -69,20 +73,24 @@ class ScriptWidget(QWidget):
             self.worker = ProcessExcel(file_path)
             self.worker.finished.connect(self.on_finished)
             self.worker.error.connect(self.on_error)
-            # self.worker.figs.connect(self.setup_plot_frame)  # Connect to your data handler if needed
+            self.worker.figs.connect(self.handle_figures)
             self.worker.start()
             self.run_button.setEnabled(False)  # Disable the run button while running
+
+    def handle_figures(self, figs):
+        """Handle the figures emitted by the worker thread."""
+        self.plot_window = PlotWindow(self.parent, figs)
+        self.plot_window.show()
 
     def on_finished(self):
         """Handle the finished signal."""
         print("Script executed successfully in the worker thread.")
         self.run_button.setEnabled(True)
-        self.is_running = False  # Reset running status
-        
+        self.is_running = False
 
     def on_error(self, error_message):
         """Handle errors emitted from the worker."""
         print(f"Error: {error_message}")
         QMessageBox.critical(self, "Error", error_message)
         self.run_button.setEnabled(True)
-        self.is_running = False  # Reset running status
+        self.is_running = False

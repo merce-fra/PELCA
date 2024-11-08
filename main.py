@@ -8,7 +8,6 @@ from app.main_window import MainWindow
 
 matplotlib.use("Agg")
 
-
 if __name__ == "__main__":
     # Create an instance of QApplication
     app = QApplication(sys.argv)

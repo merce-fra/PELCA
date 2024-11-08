@@ -12,9 +12,8 @@ from PySide6.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QFrame,
 from app.models.console import ConsoleOutputRedirector
 from app.threads.process_excel import ProcessExcel
 from app.widgets.header import HeaderWidget
-from app.widgets.plot import PlotWindow
+from app.widgets.plot_window.plot import PlotWindow
 from app.widgets.script import ScriptWidget
-from src.utils import get_max_fig_size
 
 
 class Communicator(QObject):
@@ -34,7 +33,6 @@ class MainWindow(QMainWindow):
         # self.console_output_redirector = ConsoleOutputRedirector()  # Console output redirection
         self._setup_ui()
         # self.console_output_redirector.new_text.connect(self.update_console)
-        self.figs = []
 
     def _setup_ui(self):
         """Set up the main UI components and layout."""
@@ -46,6 +44,3 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(self.header)
         self.script_widget = ScriptWidget(parent=self)
         main_layout.addWidget(self.script_widget)
-
-        self.result_window = PlotWindow(parent=self)
-        self.result_window.show()
