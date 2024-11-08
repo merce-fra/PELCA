@@ -45,7 +45,7 @@ jobs:
       - name: Run tests
         run: |
           source .venv/Scripts/activate  # Activation spécifique à Windows
-          pytest tests/
+          pytest app/tests/
 
       # # Étape pour construire l'exécutable
       # - name: Build Windows Executable
