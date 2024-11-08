@@ -2,7 +2,7 @@
 name = "pelca"
 version = "0.1.0"
 description = ""
-authors = []
+authors = ["Benjamin DUBUS"]
 package-mode = false
 
 [tool.poetry.dependencies]
@@ -100,3 +100,9 @@ pytest-qt = "^4.4.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+testpaths = ["app/tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
