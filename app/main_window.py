@@ -3,12 +3,13 @@ import sys
 from matplotlib.backends.backend_qt5agg import \
     FigureCanvasQTAgg as FigureCanvas
 from PySide6.QtCore import QObject, Qt, Signal
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QFrame,
                                QHBoxLayout, QLabel, QLineEdit, QMainWindow,
                                QMessageBox, QPushButton, QSplitter, QTextEdit,
                                QVBoxLayout, QWidget)
 
+import app.ressources.ressources_rc  # Import des ressources compilées
 from app.models.console import ConsoleOutputRedirector
 from app.threads.process_excel import ProcessExcel
 from app.widgets.header import HeaderWidget
@@ -33,6 +34,7 @@ class MainWindow(QMainWindow):
         # self.console_output_redirector = ConsoleOutputRedirector()  # Console output redirection
         self._setup_ui()
         # self.console_output_redirector.new_text.connect(self.update_console)
+        self.setWindowIcon(QIcon(":/ressources/icons/icon.ico"))
 
     def _setup_ui(self):
         """Set up the main UI components and layout."""

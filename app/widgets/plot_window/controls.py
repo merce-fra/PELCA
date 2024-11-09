@@ -48,7 +48,7 @@ class ControlsWidget(QWidget):
         # Save plot buttons
         self.save_plot_button = QPushButton("Save current plot")
         self.save_all_plot_button = QPushButton("Save all plots")
-        self.switch_plot_button = QPushButton("TEST - Switch to Plotly")
+        self.switch_plot_button = QPushButton("TEST - Init plot frame")
 
         self.parent.mode_switcher = ModeSwitcher()
         self.switch_plot_button.clicked.connect(self.parent.mode_switcher.switch_mode)

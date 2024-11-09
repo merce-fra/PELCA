@@ -53,12 +53,12 @@ class PlotWidget(QWidget):
 
         navigation_layout = QHBoxLayout()
         self.prev_button = QToolButton()
-        self.prev_button.setIcon(QIcon("app/ressources/icons/previous.svg"))
+        self.prev_button.setIcon(QIcon(":/ressources/icons/previous.svg"))
         self.prev_button.clicked.connect(self.parent.index.decrement_index)
         navigation_layout.addWidget(self.prev_button)
 
         self.next_button = QToolButton()
-        self.next_button.setIcon(QIcon("app/ressources/icons/next.svg"))
+        self.next_button.setIcon(QIcon(":/ressources/icons/next.svg"))
         self.next_button.clicked.connect(self.parent.index.increment_index)
         navigation_layout.addWidget(self.next_button)
 
