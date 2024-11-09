@@ -49,17 +49,17 @@ jobs:
         run: | 
             poetry install --no-interaction
 
-      # - name: Run tests
-      #   run: |
-      #     source .venv/Scripts/activate  # Activation spécifique à Windows
-      #     pytest tests/
+      - name: Run tests
+        run: |
+          source .venv/Scripts/activate  # Activation spécifique à Windows
+          pytest app/tests/
 
       # Étape pour construire l'exécutable sous Windows
       - name: Build Windows Executable
         run: |
           source .venv/Scripts/activate
           pip install pyinstaller
-          pyinstaller main_PELCA_GUI.spec
+          pyinstaller main.spec
           cp -R src/assets/ dist/PELCA/
 
       # Étape pour compresser l'exécutable sous Windows (PowerShell)

@@ -2,15 +2,14 @@ import os
 from tkinter import Text, filedialog, messagebox
 
 import customtkinter as ctk
+import dictionary
+import LCA
 import matplotlib.pyplot as plt
+import plotting
+import staircase
 from bw2data.errors import InvalidExchange
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from PIL import Image
-
-import dictionary
-import LCA
-import plotting
-import staircase
 from utils import create_thumbnail, export_data, get_max_fig_size
 
 # Define colors for the dark theme
