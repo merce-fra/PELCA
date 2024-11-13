@@ -59,7 +59,8 @@ jobs:
         run: |
           source .venv/Scripts/activate
           pip install pyinstaller
-          pyinstaller main.py --onefile --distpath dist/PELCA  
+          python config.py
+          pyinstaller main.py --onefile --distpath dist/PELCA --name pelca --datas "version.txt;version.txt"
 
       # Étape pour compresser l'exécutable sous Windows (PowerShell)
       - name: Archive Executable
