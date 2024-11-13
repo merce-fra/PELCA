@@ -58,7 +58,7 @@ jobs:
       - name: Build Windows Executable
         run: |
           source .venv/Scripts/activate
-          pip install pyinstaller
+          pip install pyinstaller GitPython
           python config.py
           pyinstaller main.py --onefile --distpath dist/PELCA --name pelca --datas "version.txt;version.txt"
 
