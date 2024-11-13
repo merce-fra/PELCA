@@ -3,12 +3,12 @@ from matplotlib.backends.backend_qt5agg import \
     FigureCanvasQTAgg as FigureCanvas
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtGui import QIcon
-from PySide6.QtWebEngineWidgets import QWebEngineView
+# from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (QHBoxLayout, QSplitter, QStackedWidget,
                                QToolButton, QVBoxLayout, QWidget)
 
 from app.models.plot import IndexSwitcher, ModeSwitcher
-from app.widgets.plot_window.controls import ControlsWidget, ImageButtonsWidget
+from app.widgets.plot_window.controls import ControlsWidget
 
 
 class PlotWidget(QWidget):
@@ -21,20 +21,20 @@ class PlotWidget(QWidget):
         self.setLayout(self.layout)
 
     def update_plot_mode(self, plotly_mode):
-        if plotly_mode:
-            self.stack.hide()
-            self.html_browser.show()
-        else:
-            self.html_browser.hide()
-            self.stack.show()
+        # if plotly_mode:
+        #     # self.stack.hide()
+        #     # self.html_browser.show()
+        # else:
+        #     # self.html_browser.hide()
+        self.stack.show()
 
-    def init_plotly_plot(self):
-        fig = self.figs["plotly"][self.parent.index.get_index()]
-        html_content = pio.to_html(fig, full_html=False, include_plotlyjs="cdn")
-        self.html_browser = QWebEngineView()
-        self.html_browser.setHtml(html_content, QUrl(""))
-        self.layout.addWidget(self.html_browser)
-        self.html_browser.hide()
+    # def init_plotly_plot(self):
+    #     fig = self.figs["plotly"][self.parent.index.get_index()]
+    #     html_content = pio.to_html(fig, full_html=False, include_plotlyjs="cdn")
+    #     self.html_browser = QWebEngineView()
+    #     self.html_browser.setHtml(html_content, QUrl(""))
+    #     self.layout.addWidget(self.html_browser)
+    #     self.html_browser.hide()
 
     def init_matplotlib_plot(self):
         self.stack = QStackedWidget()
@@ -42,13 +42,13 @@ class PlotWidget(QWidget):
             canvas = FigureCanvas(fig)
             self.stack.addWidget(canvas)
         self.layout.addWidget(self.stack)
-        self.stack.hide()
+        self.stack.show()
 
     def setup_ui(self):
         self.parent.mode_switcher.mode_changed.connect(self.update_plot_mode)
         self.parent.index.index_changed.connect(self.update_plot)
 
-        self.init_plotly_plot()
+        # self.init_plotly_plot()
         self.init_matplotlib_plot()
 
         navigation_layout = QHBoxLayout()
