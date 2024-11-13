@@ -97,6 +97,7 @@ flake8 = "^7.1.1"
 pyside6 = "^6.8.0.2"
 pytest-qt = "^4.4.0"
 plotly = "^5.24.1"
+gitpython = "^3.1.43"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
