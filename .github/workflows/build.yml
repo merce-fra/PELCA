@@ -60,7 +60,7 @@ jobs:
           source .venv/Scripts/activate
           pip install pyinstaller GitPython
           python config.py
-          pyinstaller main.py --onefile  --add-data "version.txt;version.txt --distpath dist/PELCA --name pelca"
+          pyinstaller main.py --onefile  --add-data "version.txt;version.txt --distpath dist/PELCA"
 
       # Étape pour compresser l'exécutable sous Windows (PowerShell)
       - name: Archive Executable
