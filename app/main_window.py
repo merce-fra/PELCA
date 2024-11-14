@@ -10,7 +10,6 @@ from PySide6.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QFrame,
                                QVBoxLayout, QWidget)
 
 import app.ressources.ressources_rc  # Import des ressources compilées
-from app.models.console import ConsoleOutputRedirector
 from app.threads.process_excel import ProcessExcel
 from app.widgets.header import HeaderWidget
 from app.widgets.plot_window.plot import PlotWindow
@@ -31,9 +30,7 @@ class MainWindow(QMainWindow):
         self.file_path_edit = None  # Initialize the file path edit field
         self.console_text = None  # Initialize the console text area
         self.is_running = False  # Flag to check if a script is running
-        # self.console_output_redirector = ConsoleOutputRedirector()  # Console output redirection
         self._setup_ui()
-        # self.console_output_redirector.new_text.connect(self.update_console)
         self.setWindowIcon(QIcon(":/ressources/icons/icon.ico"))
 
     def _setup_ui(self):

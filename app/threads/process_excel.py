@@ -46,6 +46,17 @@ class ProcessExcel(QThread):
         figs = {
             "matplotlib": plot_instance.mathplotlib_figs,
             "plotly": plot_instance.plotly_figs,
+            "plot_data": {
+                "EI": EI,
+                "EI_manu": EI_manu,
+                "EI_use": EI_use,
+                "usage_time": usage_time,
+                "number_of_fault": number_of_fault,
+                "wcdf": wcdf,
+                "fault_cause": fault_cause,
+                "RU_age": RU_age,
+                "EI_maintenance": EI_maintenance,
+            },
         }
         self.figs.emit(figs)
         print("Analysis completed.")
