@@ -1,6 +1,5 @@
 import io
 import os
-
 import plotly.graph_objects as go
 import plotly.io as pio
 from matplotlib.backends.backend_qt5agg import \
@@ -17,10 +16,9 @@ from PySide6.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QFrame,
                                QStackedWidget, QTextEdit, QToolButton,
                                QVBoxLayout, QWidget)
 
-from app.models.console import ConsoleOutputRedirector
 from app.models.plot import ModeSwitcher
 from app.threads.process_excel import ProcessExcel
-from app.utils.legacy import get_max_fig_size
+from app.utils.legacy import export_data, get_max_fig_size, export_data_excel
 from app.widgets.header import HeaderWidget
 
 
@@ -43,7 +41,7 @@ class ControlsWidget(QWidget):
             self.switch_plot_button.setText("DEMO - Switch to Plotly")
 
     def save_plots(self):
-        if self.figs["matplotlib"]:
+        if self.figs['matplotlib']:
             folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Plots")
             if folder_path:
                 try:
@@ -55,7 +53,7 @@ class ControlsWidget(QWidget):
                     print(f"An error occurred while saving the plots: {e}")
 
     def save_selected_plot(self):
-        if self.figs["matplotlib"]:
+        if self.figs['matplotlib']:
             folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Selected Plot")
             if folder_path:
                 try:
@@ -68,23 +66,41 @@ class ControlsWidget(QWidget):
         else:
             print("No plots available to save.")
 
-    def save_data_to_excel(self):
+    def save_data(self):
         folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Data")
         if folder_path:
             try:
-                if self.var_EI.get():
-                    export_data(folder_path, "Impact_total", EI)
-                if self.var_EI_manu.get():
-                    export_data(folder_path, "Impact_manu", EI_manu)
-                if self.var_EI_use.get():
-                    export_data(folder_path, "Impact_use", EI_use)
-                if self.var_fault_cause.get():
-                    export_data(folder_path, "fault_cause", fault_cause)
-                if self.var_RU_age.get():
-                    export_data(folder_path, "RU_age", RU_age)
+                if self.checkbox_impact_total.isChecked():
+                    export_data(folder_path, "Impact_total", self.figs['plot_data']['EI'])
+                if self.checkbox_impact_manufacturing.isChecked():
+                    export_data(folder_path, "Impact_manu", self.figs['plot_data']['EI_manu'])
+                if self.checkbox_impact_use.isChecked():
+                    export_data(folder_path, "Impact_use", self.figs['plot_data']['EI_use'])
+                if self.checkbox_fault_cause.isChecked():
+                    export_data(folder_path, "fault_cause", self.figs['plot_data']['fault_cause'])
+                if self.checkbox_ru_age.isChecked():
+                    export_data(folder_path, "RU_age", self.figs['plot_data']['RU_age'])
                 print(f"Selected data saved successfully in {folder_path}")
             except Exception as e:
                 print(f"An error occurred while saving the data: {e}")
+
+    def save_data_excel(self):
+        folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Data")
+        if folder_path:
+            try:
+                if self.checkbox_impact_total.isChecked():
+                    export_data_excel(folder_path, "Impact_total", self.figs['plot_data']['EI'])
+                if self.checkbox_impact_manufacturing.isChecked():
+                    export_data_excel(folder_path, "Impact_manu", self.figs['plot_data']['EI_manu'])
+                if self.checkbox_impact_use.isChecked():
+                    export_data_excel(folder_path, "Impact_use", self.figs['plot_data']['EI_use'])
+                if self.checkbox_fault_cause.isChecked():
+                    export_data_excel(folder_path, "fault_cause", self.figs['plot_data']['fault_cause'])
+                if self.checkbox_ru_age.isChecked():
+                    export_data_excel(folder_path, "RU_age", self.figs['plot_data']['RU_age'])
+            except Exception as e:
+                print(f"An error occurred while saving the data: {e}")
+
 
     def setup_ui(self):
         # Title Label
@@ -94,6 +110,9 @@ class ControlsWidget(QWidget):
         self.save_plot_button = QPushButton("Save current plot")
         self.save_all_plot_button = QPushButton("Save all plots")
         self.switch_plot_button = QPushButton("TEST - Init plot frame")
+
+        self.save_plot_button.clicked.connect(self.save_selected_plot)
+        self.save_all_plot_button.clicked.connect(self.save_plots)
 
         self.parent.mode_switcher = ModeSwitcher()
         self.switch_plot_button.clicked.connect(self.parent.mode_switcher.switch_mode)
@@ -127,9 +146,12 @@ class ControlsWidget(QWidget):
         self.layout.addWidget(self.checkbox_ru_age)
 
         # Save Data Button
-        self.save_data_button = QPushButton("Save data to Excel")
-        self.save_data_button.clicked.connect(self.save_selection)
+        self.save_data_button = QPushButton("Save data")
+        self.save_excel_button = QPushButton("Save data to excel")
+        self.save_excel_button.clicked.connect(self.save_data_excel)
+        self.save_data_button.clicked.connect(self.save_data)
         self.layout.addWidget(self.save_data_button)
+        self.layout.addWidget(self.save_excel_button)
 
     def add_separator(self):
         # Creating a horizontal line separator
@@ -138,18 +160,7 @@ class ControlsWidget(QWidget):
         separator.setFrameShadow(QFrame.Sunken)
         self.layout.addWidget(separator)
 
-    def save_selection(self):
-        selected_options = []
-        if self.checkbox1.isChecked():
-            selected_options.append(self.checkbox1.text())
-        if self.checkbox2.isChecked():
-            selected_options.append(self.checkbox2.text())
-        if self.checkbox3.isChecked():
-            selected_options.append(self.checkbox3.text())
-        if self.checkbox4.isChecked():
-            selected_options.append(self.checkbox4.text())
-        if self.checkbox5.isChecked():
-            selected_options.append(self.checkbox5.text())
+
 
 
 class ImageButtonsWidget(QWidget):
