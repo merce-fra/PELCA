@@ -10,7 +10,6 @@ from PIL import Image
 from plotly.io import to_html
 from PySide6.QtCore import QObject, Qt, QUrl, Signal
 from PySide6.QtGui import QIcon, QImage, QPixmap
-from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QFrame,
                                QHBoxLayout, QLabel, QLineEdit, QMainWindow,
                                QMessageBox, QPushButton, QSplitter,
