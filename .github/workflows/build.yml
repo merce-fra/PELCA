@@ -49,18 +49,17 @@ jobs:
         run: | 
             poetry install --no-interaction
 
-      # - name: Run tests
-      #   run: |
-      #     source .venv/Scripts/activate  # Activation spécifique à Windows
-      #     pytest app/tests/
+      - name: Run tests
+        run: |
+          source .venv/Scripts/activate  # Activation spécifique à Windows
+          pytest app/tests/
 
       # Étape pour construire l'exécutable sous Windows
       - name: Build Windows Executable
         run: |
           source .venv/Scripts/activate
-          pip install pyinstaller GitPython
-          python config.py
-          pyinstaller main.py --onefile  --add-data "version.txt;version.txt --distpath dist/PELCA"
+          pip install pyinstaller
+          pyinstaller main.py --onefile --distpath dist/PELCA  
 
       # Étape pour compresser l'exécutable sous Windows (PowerShell)
       - name: Archive Executable
