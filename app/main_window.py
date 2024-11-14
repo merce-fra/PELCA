@@ -40,7 +40,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
         version_label = QLabel()
-        
+
         with open("version.txt", "r") as file:
             version = file.read()
             version_label.setText(version)
