@@ -32,7 +32,7 @@ def export_data_excel(path, file_name, file):
     with pd.ExcelWriter(path_file_excel) as writer:
         if isinstance(file, np.ndarray):
             df = pd.DataFrame(file)
-            df.to_excel(writer, sheet_name='Sheet1')
+            df.to_excel(writer, sheet_name="Sheet1")
         elif isinstance(file, dict):
             for key, value in file.items():
                 if isinstance(value, np.ndarray):
@@ -41,12 +41,3 @@ def export_data_excel(path, file_name, file):
                 else:
                     value.to_excel(writer, sheet_name=key)
     print(f"Data saved to {path_file_excel}")
-
-
-
-
-
-
-
-
-

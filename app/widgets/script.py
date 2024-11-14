@@ -1,11 +1,12 @@
+import sys
+
 from PySide6.QtWidgets import (QFileDialog, QHBoxLayout, QLabel, QLineEdit,
                                QMessageBox, QPushButton, QTextEdit,
                                QVBoxLayout, QWidget)
 
+from app.models.console import EmittingStream
 from app.threads.process_excel import ProcessExcel
 from app.widgets.plot_window.plot import PlotWindow
-from app.models.console import EmittingStream
-import sys
 
 
 class ScriptWidget(QWidget):
@@ -36,7 +37,6 @@ class ScriptWidget(QWidget):
 
         layout.addLayout(file_selection_layout)
 
-
     def _add_run_button(self, layout):
         """Add a button to execute a script using the selected file."""
         self.run_button = QPushButton("Run Script")
@@ -52,7 +52,7 @@ class ScriptWidget(QWidget):
         self.text_edit_stderr = QTextEdit(self)
         self.text_edit_stderr.setReadOnly(True)
         self.text_edit_stderr.setPlaceholderText("stderr:")
-         # Mise en page
+        # Mise en page
         layout.addWidget(self.text_edit_stdout)
         layout.addWidget(self.text_edit_stderr)
 

@@ -1,5 +1,6 @@
 import io
 import os
+
 import plotly.graph_objects as go
 import plotly.io as pio
 from matplotlib.backends.backend_qt5agg import \
@@ -18,7 +19,7 @@ from PySide6.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QFrame,
 
 from app.models.plot import ModeSwitcher
 from app.threads.process_excel import ProcessExcel
-from app.utils.legacy import export_data, get_max_fig_size, export_data_excel
+from app.utils.legacy import export_data, export_data_excel, get_max_fig_size
 from app.widgets.header import HeaderWidget
 
 
@@ -41,7 +42,7 @@ class ControlsWidget(QWidget):
             self.switch_plot_button.setText("DEMO - Switch to Plotly")
 
     def save_plots(self):
-        if self.figs['matplotlib']:
+        if self.figs["matplotlib"]:
             folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Plots")
             if folder_path:
                 try:
@@ -53,7 +54,7 @@ class ControlsWidget(QWidget):
                     print(f"An error occurred while saving the plots: {e}")
 
     def save_selected_plot(self):
-        if self.figs['matplotlib']:
+        if self.figs["matplotlib"]:
             folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Selected Plot")
             if folder_path:
                 try:
@@ -71,15 +72,15 @@ class ControlsWidget(QWidget):
         if folder_path:
             try:
                 if self.checkbox_impact_total.isChecked():
-                    export_data(folder_path, "Impact_total", self.figs['plot_data']['EI'])
+                    export_data(folder_path, "Impact_total", self.figs["plot_data"]["EI"])
                 if self.checkbox_impact_manufacturing.isChecked():
-                    export_data(folder_path, "Impact_manu", self.figs['plot_data']['EI_manu'])
+                    export_data(folder_path, "Impact_manu", self.figs["plot_data"]["EI_manu"])
                 if self.checkbox_impact_use.isChecked():
-                    export_data(folder_path, "Impact_use", self.figs['plot_data']['EI_use'])
+                    export_data(folder_path, "Impact_use", self.figs["plot_data"]["EI_use"])
                 if self.checkbox_fault_cause.isChecked():
-                    export_data(folder_path, "fault_cause", self.figs['plot_data']['fault_cause'])
+                    export_data(folder_path, "fault_cause", self.figs["plot_data"]["fault_cause"])
                 if self.checkbox_ru_age.isChecked():
-                    export_data(folder_path, "RU_age", self.figs['plot_data']['RU_age'])
+                    export_data(folder_path, "RU_age", self.figs["plot_data"]["RU_age"])
                 print(f"Selected data saved successfully in {folder_path}")
             except Exception as e:
                 print(f"An error occurred while saving the data: {e}")
@@ -89,18 +90,17 @@ class ControlsWidget(QWidget):
         if folder_path:
             try:
                 if self.checkbox_impact_total.isChecked():
-                    export_data_excel(folder_path, "Impact_total", self.figs['plot_data']['EI'])
+                    export_data_excel(folder_path, "Impact_total", self.figs["plot_data"]["EI"])
                 if self.checkbox_impact_manufacturing.isChecked():
-                    export_data_excel(folder_path, "Impact_manu", self.figs['plot_data']['EI_manu'])
+                    export_data_excel(folder_path, "Impact_manu", self.figs["plot_data"]["EI_manu"])
                 if self.checkbox_impact_use.isChecked():
-                    export_data_excel(folder_path, "Impact_use", self.figs['plot_data']['EI_use'])
+                    export_data_excel(folder_path, "Impact_use", self.figs["plot_data"]["EI_use"])
                 if self.checkbox_fault_cause.isChecked():
-                    export_data_excel(folder_path, "fault_cause", self.figs['plot_data']['fault_cause'])
+                    export_data_excel(folder_path, "fault_cause", self.figs["plot_data"]["fault_cause"])
                 if self.checkbox_ru_age.isChecked():
-                    export_data_excel(folder_path, "RU_age", self.figs['plot_data']['RU_age'])
+                    export_data_excel(folder_path, "RU_age", self.figs["plot_data"]["RU_age"])
             except Exception as e:
                 print(f"An error occurred while saving the data: {e}")
-
 
     def setup_ui(self):
         # Title Label
@@ -159,8 +159,6 @@ class ControlsWidget(QWidget):
         separator.setFrameShape(QFrame.HLine)
         separator.setFrameShadow(QFrame.Sunken)
         self.layout.addWidget(separator)
-
-
 
 
 class ImageButtonsWidget(QWidget):

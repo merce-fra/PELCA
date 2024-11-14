@@ -13,7 +13,6 @@ class ProcessExcel(QThread):
     error = Signal(str)
     figs = Signal(dict)
 
-
     def __init__(self, file_path):
         super().__init__()
         self.file_path = file_path
@@ -47,7 +46,7 @@ class ProcessExcel(QThread):
         figs = {
             "matplotlib": plot_instance.mathplotlib_figs,
             "plotly": plot_instance.plotly_figs,
-            "plot_data" : {
+            "plot_data": {
                 "EI": EI,
                 "EI_manu": EI_manu,
                 "EI_use": EI_use,
@@ -57,7 +56,7 @@ class ProcessExcel(QThread):
                 "fault_cause": fault_cause,
                 "RU_age": RU_age,
                 "EI_maintenance": EI_maintenance,
-            }
+            },
         }
         self.figs.emit(figs)
         print("Analysis completed.")
