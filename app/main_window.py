@@ -15,7 +15,6 @@ from app.widgets.header import HeaderWidget
 from app.widgets.plot_window.plot import PlotWindow
 from app.widgets.script import ScriptWidget
 
-
 class Communicator(QObject):
     close_window_signal = Signal()
 

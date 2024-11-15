@@ -3,7 +3,7 @@ from matplotlib.backends.backend_qt5agg import \
     FigureCanvasQTAgg as FigureCanvas
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtGui import QIcon
-# from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (QHBoxLayout, QSplitter, QStackedWidget,
                                QToolButton, QVBoxLayout, QWidget)
 
@@ -21,20 +21,20 @@ class PlotWidget(QWidget):
         self.setLayout(self.layout)
 
     def update_plot_mode(self, plotly_mode):
-        # if plotly_mode:
-        #     # self.stack.hide()
-        #     # self.html_browser.show()
-        # else:
-        #     # self.html_browser.hide()
+        if plotly_mode:
+            self.stack.hide()
+            self.html_browser.show()
+        else:
+            self.html_browser.hide()
         self.stack.show()
 
-    # def init_plotly_plot(self):
-    #     fig = self.figs["plotly"][self.parent.index.get_index()]
-    #     html_content = pio.to_html(fig, full_html=False, include_plotlyjs="cdn")
-    #     self.html_browser = QWebEngineView()
-    #     self.html_browser.setHtml(html_content, QUrl(""))
-    #     self.layout.addWidget(self.html_browser)
-    #     self.html_browser.hide()
+    def init_plotly_plot(self):
+        fig = self.figs["plotly"][self.parent.index.get_index()]
+        html_content = pio.to_html(fig, full_html=False, include_plotlyjs="cdn")
+        self.html_browser = QWebEngineView()
+        self.html_browser.setHtml(html_content, QUrl(""))
+        self.layout.addWidget(self.html_browser)
+        self.html_browser.hide()
 
     def init_matplotlib_plot(self):
         self.stack = QStackedWidget()

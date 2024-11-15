@@ -8,7 +8,9 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libxkbcommon-x11-0 \
     libxcb-util1 \
+    libgl1 \
     libgl1-mesa-glx \
+    ffmpeg libsm6 libxext6 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy pyproject.toml and poetry.lock first to leverage Docker cache
@@ -27,4 +29,4 @@ COPY . .
 EXPOSE 5000
 
 # Set the default command to run your PySide application
-CMD ["poetry", "run", "python", "app/main.py"]
+CMD ["poetry", "run", "python", "main.py"]

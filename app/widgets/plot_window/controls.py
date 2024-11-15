@@ -57,7 +57,7 @@ class ControlsWidget(QWidget):
             folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Selected Plot")
             if folder_path:
                 try:
-                    fig = self.figs[self.current_index]
+                    fig = self.figs[self.index]
                     filepath = os.path.join(folder_path, f"selected_plot_{self.index + 1}.svg")
                     fig.savefig(filepath, dpi=300)
                     print(f"Selected plot saved successfully as {filepath}")
