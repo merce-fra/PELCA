@@ -15,6 +15,7 @@ from app.widgets.header import HeaderWidget
 from app.widgets.plot_window.plot import PlotWindow
 from app.widgets.script import ScriptWidget
 
+
 class Communicator(QObject):
     close_window_signal = Signal()
 
@@ -40,13 +41,13 @@ class MainWindow(QMainWindow):
 
         version_label = QLabel()
 
-        with open("version.txt", "r") as file:
-            version = file.read()
-            version_label.setText(version)
-            version_label.setAlignment(Qt.AlignRight)
-            main_layout.addWidget(version_label)
+        # with open("version.txt", "r") as file:
+        #     version = file.read()
+        #     version_label.setText(version)
+        #     version_label.setAlignment(Qt.AlignRight)
+        #     main_layout.addWidget(version_label)
 
-        version_label.setText("v2.0.0")
+        version_label.setText("v2.0.4")
 
         self.header = HeaderWidget()
         main_layout.addWidget(self.header)
