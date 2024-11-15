@@ -40,15 +40,9 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
         version_label = QLabel()
-
-        with open("version.txt", "r") as file:
-            version = file.read()
-            version_label.setText(version)
-            version_label.setAlignment(Qt.AlignRight)
-            main_layout.addWidget(version_label)
-
+        version_label.setAlignment(Qt.AlignRight)
+        main_layout.addWidget(version_label)
         version_label.setText("v2.0.0")
-
         self.header = HeaderWidget()
         main_layout.addWidget(self.header)
         self.script_widget = ScriptWidget(parent=self)
