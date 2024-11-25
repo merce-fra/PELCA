@@ -12,9 +12,10 @@ from PySide6.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QFrame,
 import app.ressources.ressources_rc  # Import des ressources compilées
 from app.threads.process_excel import ProcessExcel
 from app.widgets.header import HeaderWidget
+from app.widgets.params import FormWidget
 from app.widgets.plot_window.plot import PlotWindow
 from app.widgets.script import ScriptWidget
-from app.widgets.params import FormWidget
+
 
 class Communicator(QObject):
     close_window_signal = Signal()

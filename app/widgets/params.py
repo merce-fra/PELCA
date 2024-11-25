@@ -1,10 +1,12 @@
-from PySide6.QtWidgets import QApplication, QWidget, QFormLayout, QLineEdit, QPushButton, QVBoxLayout
-from PySide6.QtWidgets import QLabel, QCheckBox, QSpinBox, QDoubleSpinBox
+from PySide6.QtWidgets import (QApplication, QCheckBox, QDoubleSpinBox,
+                               QFormLayout, QLabel, QLineEdit, QPushButton,
+                               QSpinBox, QVBoxLayout, QWidget)
+
 
 class FormWidget(QWidget):
     def __init__(self):
         # Create form fields for additional parameters
-       
+
         super().__init__()
 
         self.setWindowTitle("Form Widget")
@@ -56,7 +58,7 @@ class FormWidget(QWidget):
 
         self.setLayout(main_layout)
 
-    
+
 if __name__ == "__main__":
     app = QApplication([])
 
@@ -64,7 +66,3 @@ if __name__ == "__main__":
     widget.show()
 
     app.exec()
-
-
-
-

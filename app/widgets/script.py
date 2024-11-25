@@ -6,8 +6,8 @@ from PySide6.QtWidgets import (QFileDialog, QHBoxLayout, QLabel, QLineEdit,
 
 from app.models.console import EmittingStream
 from app.threads.process_excel import ProcessExcel
-from app.widgets.plot_window.plot import PlotWindow
 from app.widgets.params import FormWidget
+from app.widgets.plot_window.plot import PlotWindow
 
 
 class ScriptWidget(QWidget):

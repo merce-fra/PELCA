@@ -293,7 +293,7 @@ class STAIRCASE:
             # remplacement_or.dot(dic["RU_raw_cost"]+dic["RU_des_cost"]+dic["RU_ass_cost"]) +cost_maintenance
             # self.cost_total_use[year,:,:] = self.cost_total_use[year-1,:,:]+ self.cost_use_onestep_total
             # self.cost_total_maintenance[year,:,:] = self.cost_total_maintenance[year-1,:,:]+cost_maintenance
-            # self.cost_total[year,:,:] = self.cost_total_use[year,:,:]+self.cost_total_manufacture[year,:,:] 
+            # self.cost_total[year,:,:] = self.cost_total_use[year,:,:]+self.cost_total_manufacture[year,:,:]
 
             # Calcul de l'âge moyen pondéré par rapport à la matrice de rempacement, arrondis à l'entier le plus proche
             self.RU_age[year, :, :] = np.round((1 - remplacement_or[:, :nb_RU])) * self.RU_age[year, :, :]

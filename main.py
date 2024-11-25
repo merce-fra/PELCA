@@ -5,16 +5,16 @@ from PySide6.QtGui import QColor, QPalette
 from PySide6.QtWidgets import QApplication
 
 from app.main_window import MainWindow
-from brightway2 import *
-
 
 matplotlib.use("Agg")
+
 
 # Réinitialiser stdout et stderr quand l'application se ferme
 def reset_streams():
     sys.stdout = sys.__stdout__
     sys.stderr = sys.__stderr__
     print("Streams reset.")
+
 
 if __name__ == "__main__":
     # Create an instance of QApplication
@@ -26,7 +26,6 @@ if __name__ == "__main__":
 
     # Create the main window
     window = MainWindow()
-    bw2setup()
 
     # Apply the dark palette
     dark_palette = QPalette()
