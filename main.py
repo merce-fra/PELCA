@@ -8,11 +8,13 @@ from app.main_window import MainWindow
 
 matplotlib.use("Agg")
 
+
 # Réinitialiser stdout et stderr quand l'application se ferme
 def reset_streams():
     sys.stdout = sys.__stdout__
     sys.stderr = sys.__stderr__
     print("Streams reset.")
+
 
 if __name__ == "__main__":
     # Create an instance of QApplication

@@ -91,5 +91,5 @@ class ProcessExcel(QThread):
             self.error.emit("An error occurred: Exchange is missing ‘amount’ or ‘input’")
         except KeyError as ke:
             self.error.emit(f"KeyError: Missing key in dictionary: {str(ke)}")
-        except Exception as e:
-            self.error.emit(f"An error occurred: {str(e)}")
+        # except Exception as e:
+        #     self.error.emit(f"An error occurred: {str(e)}")
