@@ -61,7 +61,7 @@ jobs:
           pip install pyinstaller bw2io
           ls
           pyinstaller main.py --hidden-import=bw2io --distpath dist/PELCA  
-          cp -r .venv/Lib/site-packages/bw2io dist/PELCA/_internal/
+          cp -r .venv/Lib/site-packages/bw2io dist/PELCA/main/_internal/bw2io
 
       # Étape pour compresser l'exécutable sous Windows (PowerShell)
       - name: Archive Executable
