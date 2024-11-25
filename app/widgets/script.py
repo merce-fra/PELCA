@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (QFileDialog, QHBoxLayout, QLabel, QLineEdit,
 from app.models.console import EmittingStream
 from app.threads.process_excel import ProcessExcel
 from app.widgets.plot_window.plot import PlotWindow
+from app.widgets.params import FormWidget
 
 
 class ScriptWidget(QWidget):
@@ -70,12 +71,6 @@ class ScriptWidget(QWidget):
 
     def append_output_stderr(self, text):
         self.text_edit_stderr.append(f"Error : {text}")
-
-    def test_output(self):
-        print("Ceci est un message stdout.")
-        print("Encore un message stdout.")
-        print("Voici un test stderr.", file=sys.stderr)
-        raise ValueError("Erreur simulée dans stderr")
 
     def browse_file(self):
         """Open a file dialog to select a file."""

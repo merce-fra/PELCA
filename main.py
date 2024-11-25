@@ -5,6 +5,8 @@ from PySide6.QtGui import QColor, QPalette
 from PySide6.QtWidgets import QApplication
 
 from app.main_window import MainWindow
+from brightway2 import *
+
 
 matplotlib.use("Agg")
 
@@ -24,6 +26,7 @@ if __name__ == "__main__":
 
     # Create the main window
     window = MainWindow()
+    bw2setup()
 
     # Apply the dark palette
     dark_palette = QPalette()
