@@ -59,7 +59,8 @@ jobs:
         run: |
           source .venv/Scripts/activate
           pip install pyinstaller bw2io
-          pyinstaller main.py --distpath dist/PELCA  
+          ls
+          pyinstaller main.py --hidden-import=bw2io --distpath dist/PELCA  
 
       # Étape pour compresser l'exécutable sous Windows (PowerShell)
       - name: Archive Executable
