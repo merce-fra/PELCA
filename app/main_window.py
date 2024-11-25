@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QFrame,
 import app.ressources.ressources_rc  # Import des ressources compilées
 from app.threads.process_excel import ProcessExcel
 from app.widgets.header import HeaderWidget
+from app.widgets.params import FormWidget
 from app.widgets.plot_window.plot import PlotWindow
 from app.widgets.script import ScriptWidget
 
@@ -26,7 +27,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("PELCA")
-        self.setGeometry(100, 100, 600, 800)
+        self.setGeometry(200, 200, 600, 800)
         self.file_path_edit = None  # Initialize the file path edit field
         self.console_text = None  # Initialize the console text area
         self.is_running = False  # Flag to check if a script is running
@@ -40,16 +41,17 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
         version_label = QLabel()
-
-        with open("version.txt", "r") as file:
-            version = file.read()
-            version_label.setText(version)
-            version_label.setAlignment(Qt.AlignRight)
-            main_layout.addWidget(version_label)
-
-        version_label.setText("v2.0.0")
-
+        version_label.setAlignment(Qt.AlignRight)
+        main_layout.addWidget(version_label)
+        version_label.setText("v2.0.5")
         self.header = HeaderWidget()
         main_layout.addWidget(self.header)
+
+        # Create a horizontal layout for script and form widgets
+        script_form_layout = QHBoxLayout()
         self.script_widget = ScriptWidget(parent=self)
-        main_layout.addWidget(self.script_widget)
+        script_form_layout.addWidget(self.script_widget)
+        self.form_widget = FormWidget()
+        script_form_layout.addWidget(self.form_widget)
+
+        main_layout.addLayout(script_form_layout)
