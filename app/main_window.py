@@ -43,15 +43,22 @@ class MainWindow(QMainWindow):
         version_label = QLabel()
         version_label.setAlignment(Qt.AlignRight)
         main_layout.addWidget(version_label)
-        version_label.setText("v2.0.5")
+        version_label.setText("v2.0.6")
         self.header = HeaderWidget()
         main_layout.addWidget(self.header)
 
         # Create a horizontal layout for script and form widgets
-        script_form_layout = QHBoxLayout()
+        self.script_form_layout = QHBoxLayout()
         self.script_widget = ScriptWidget(parent=self)
-        script_form_layout.addWidget(self.script_widget)
-        self.form_widget = FormWidget()
-        script_form_layout.addWidget(self.form_widget)
+        self.script_form_layout.addWidget(self.script_widget)
+        self.params = False
+        main_layout.addLayout(self.script_form_layout)
 
-        main_layout.addLayout(script_form_layout)
+    def print_params(self, params):
+        """Print the parameters in the console."""
+        for key, value in params.items():
+            if key == "LCA_path" and not self.params:
+                config_path = value + r"\dict_file.csv"
+                self.form_widget = FormWidget(config_path)
+                self.script_form_layout.addWidget(self.form_widget)
+                self.params = True

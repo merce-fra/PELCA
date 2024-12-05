@@ -90,6 +90,7 @@ class ScriptWidget(QWidget):
             self.worker.finished.connect(self.on_finished)
             self.worker.error.connect(self.on_error)
             self.worker.figs.connect(self.handle_figures)
+            self.worker.data_dict.connect(self.parent.print_params)
             self.worker.start()
             self.run_button.setEnabled(False)  # Disable the run button while running
 
