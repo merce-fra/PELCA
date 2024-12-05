@@ -43,7 +43,7 @@ class MainWindow(QMainWindow):
         version_label = QLabel()
         version_label.setAlignment(Qt.AlignRight)
         main_layout.addWidget(version_label)
-        version_label.setText("v2.0.5")
+        version_label.setText("v2.0.6")
         self.header = HeaderWidget()
         main_layout.addWidget(self.header)
 

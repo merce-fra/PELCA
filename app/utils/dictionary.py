@@ -55,7 +55,7 @@ def _init_dic(path_input, name_input):
     df_LCIA = read_excel_sheet(excel, "LCIA", header=0, skiprows=1)
     df_stair = read_excel_sheet(excel, "Staircase", header=None, skiprows=1)
     df_RM = read_excel_sheet(excel, "Replac. Matrix", header=None, skiprows=[0, 1, 2, 3], usecols=lambda x: x != 0)
-    # df_cost = read_excel_sheet(excel, "Cost - Price", header=None, skiprows=[0, 1, 2, 3, 4], usecols=lambda x: x != 0)
+    df_cost = read_excel_sheet(excel, "Cost - Price", header=None, skiprows=[0, 1, 2, 3, 4], usecols=lambda x: x != 0)
     excel.close()
 
     dic = {}
@@ -106,12 +106,14 @@ def _init_dic(path_input, name_input):
     dic["Random_failure"] = get_value_from_df(df_stair, "Random failure")
     dic["Wearout_failure"] = get_value_from_df(df_stair, "Wearout failure")
     dic["Maintenance"] = get_value_from_df(df_stair, "Maintenance")
-    # dic["Cost"] = get_value_from_df(df_stair, "Cost - Price")
+    dic["Cost"] = get_value_from_df(df_stair, "Cost / Price")
     dic["pre_set_fail"] = False
     dic["Remplacement_matrix"] = df_RM
+    dic["Cost_matrix"] = df_cost
     dic["selected_EI"] = get_value_from_df(df_stair, "Plot specific env. impact") - 1
 
     save_dict_to_file(dic, dic["LCA_path"], "dict_file.csv", "dict_file.pkl")
+    print(dic["LCA_path"])
     print("dictionary saved successfully to file")
 
     return dic

@@ -4,7 +4,7 @@ from matplotlib.backends.backend_qt5agg import \
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtGui import QIcon
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QHBoxLayout, QSplitter, QStackedWidget,
+from PySide6.QtWidgets import (QHBoxLayout, QSplitter,QTabWidget, QStackedWidget,
                                QToolButton, QVBoxLayout, QWidget)
 
 from app.models.plot import IndexSwitcher, ModeSwitcher
@@ -12,10 +12,11 @@ from app.widgets.plot_window.controls import ControlsWidget
 
 
 class PlotWidget(QWidget):
-    def __init__(self, parent):
+    def __init__(self, parent, data):
         super().__init__()
         self.parent = parent
-        self.figs = parent.figs
+
+        self.figs = data
         self.layout = QVBoxLayout()
         self.setup_ui()
         self.setLayout(self.layout)
@@ -26,7 +27,7 @@ class PlotWidget(QWidget):
             self.html_browser.show()
         else:
             self.html_browser.hide()
-        self.stack.show()
+            self.stack.show()
 
     def init_plotly_plot(self):
         fig = self.figs["plotly"][self.parent.index.get_index()]
@@ -48,7 +49,7 @@ class PlotWidget(QWidget):
         self.parent.mode_switcher.mode_changed.connect(self.update_plot_mode)
         self.parent.index.index_changed.connect(self.update_plot)
 
-        # self.init_plotly_plot()
+        self.init_plotly_plot()
         self.init_matplotlib_plot()
 
         navigation_layout = QHBoxLayout()
@@ -67,6 +68,7 @@ class PlotWidget(QWidget):
     def update_plot(self, index):
         if self.parent.mode_switcher.plotly_mode:
             fig = self.figs["plotly"][index]
+            
             html_content = pio.to_html(fig, full_html=False, include_plotlyjs="cdn")
             self.html_browser.setHtml(html_content, QUrl(""))
         else:
@@ -89,8 +91,15 @@ class PlotWindow(QWidget):
 
     def setup_ui(self):
         self.controls_widget = ControlsWidget(parent=self)
-        self.plot_widget = PlotWidget(parent=self)
         splitter = QSplitter(Qt.Horizontal)
         splitter.addWidget(self.controls_widget)
-        splitter.addWidget(self.plot_widget)
+        self.tab_widget = QTabWidget()
+        eco_impact = {
+            "matplotlib": self.figs['matplotlib'],
+            "plotly": [self.figs['plotly']],
+        }
+         # Ajouter deux instances de PlotWidget dans des onglets séparés
+        self.tab_widget.addTab(PlotWidget(parent=self, data=self.figs), "Environmental Impact")
+        # self.tab_widget.addTab(PlotWidget(parent=self, data=eco_impact), "Economic Impact")
+        splitter.addWidget(self.tab_widget)
         self.layout.addWidget(splitter)
