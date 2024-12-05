@@ -43,6 +43,9 @@ class ProcessExcel(QThread):
             "Total": cost_total,
         }
 
+        print(impact_eco)
+        
+
         plot_instance = plotting.PLOT(
             dic,
             EI,

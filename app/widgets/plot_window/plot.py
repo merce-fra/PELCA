@@ -81,10 +81,10 @@ class PlotWindow(QWidget):
         self.setWindowTitle(f"Pelca Results")
         self.mode_switcher = ModeSwitcher()
         self.index = IndexSwitcher(figs, self.mode_switcher)
-        x = parent.pos().x() + 500
+        x = parent.pos().x() + 300
         y = parent.pos().y()
         self.figs = figs
-        self.setGeometry(x, y, 800, 600)
+        self.setGeometry(x, y, 1500, 600)
         self.layout = QHBoxLayout()
         self.setup_ui()
         self.setLayout(self.layout)
