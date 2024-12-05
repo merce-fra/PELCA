@@ -46,12 +46,15 @@ class MainWindow(QMainWindow):
         version_label.setText("v2.0.6")
         self.header = HeaderWidget()
         main_layout.addWidget(self.header)
+        
 
+        config_path = r"C:\Users\BenjaminDubus\PELCA\Results PELCA\dict_file.csv"
         # Create a horizontal layout for script and form widgets
         script_form_layout = QHBoxLayout()
         self.script_widget = ScriptWidget(parent=self)
         script_form_layout.addWidget(self.script_widget)
-        self.form_widget = FormWidget()
+        self.form_widget = FormWidget(parent=self, config_file=config_path)
         script_form_layout.addWidget(self.form_widget)
+
 
         main_layout.addLayout(script_form_layout)

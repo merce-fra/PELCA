@@ -106,7 +106,6 @@ def _init_dic(path_input, name_input):
     dic["Random_failure"] = get_value_from_df(df_stair, "Random failure")
     dic["Wearout_failure"] = get_value_from_df(df_stair, "Wearout failure")
     dic["Maintenance"] = get_value_from_df(df_stair, "Maintenance")
-    dic["Cost"] = get_value_from_df(df_stair, "Cost / Price")
     dic["pre_set_fail"] = False
     dic["Remplacement_matrix"] = df_RM
     dic["Cost_matrix"] = df_cost
