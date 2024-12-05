@@ -12,6 +12,7 @@ class ProcessExcel(QThread):
     finished = Signal()
     error = Signal(str)
     figs = Signal(dict)
+    data_dict = Signal(dict)
 
     def __init__(self, file_path):
         super().__init__()
@@ -88,10 +89,12 @@ class ProcessExcel(QThread):
     def run(self):
         try:
             full_path_input = self.file_path
+            print(f"Processing file: {full_path_input}")
             # Replace with actual dictionary initialization and script execution
             path_input = os.path.dirname(full_path_input)
             name_input = os.path.basename(full_path_input)
             dic = dictionary._init_dic(path_input, name_input)
+            self.data_dict.emit(dic)
 
             if "LCA" in dic and dic["LCA"] == "yes":
                 LCA.EI_calculation(dic, path_input, name_input)
