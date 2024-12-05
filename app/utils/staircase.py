@@ -215,20 +215,6 @@ class STAIRCASE:
 
         for year in range(1, self.usage_time):
             self.RU_age[year, :, :] = self.RU_age[year - 1, :, :] + 1
-
-            if dic["pre_set_fail"] == True:
-                if year in dic["year_pre_set_fail"]:
-                    indice_tuple = np.where(year == dic["year_pre_set_fail"])
-                    indice = indice_tuple[0][0]
-                    self.fault_cause[year, 0, dic["UR_set_fail"][indice]] = dic["typefault_pre_set_fail"][indice]
-                    remplacement[0, dic["UR_set_fail"][indice], :] = (
-                        dic["Remplacement_matrix"]
-                        .loc[dic["Remplacement_matrix"]["Fault"] == dic["typefault_pre_set_fail"][indice]]
-                        .drop(["Fault"], axis=1)
-                        .reset_index(drop=True)
-                        .loc[dic["UR_set_fail"][indice]]
-                    )
-
             # part maintenance
             EI_maintenance = 0
             cost_maintenance = 0
@@ -242,48 +228,48 @@ class STAIRCASE:
                 # Remettre l'âge des composants à zéro (RU) pour ceux qui ont subi une maintenance
                 self.RU_age[year, :, :] = np.round((1 - remplacement_or[:, :nb_RU])) * self.RU_age[year, :, :]
                 EI_maintenance = self.EI_manufacturing.dot(remplacement_or.T).T
-                cost_maintenance = remplacement_or.dot(dic["RU_raw_cost"] + dic["RU_des_cost"] + dic["RU_ass_cost"])
                 remplacement_or = remplacement_or * 0
 
-                # part faut
+            # part faut
+            cost_maintenance = remplacement_or.dot(dic["RU_raw_cost"] + dic["RU_des_cost"] + dic["RU_ass_cost"])
 
-                # probabilité de défaillance individuelle de tout le système
-                wcdf_oldyear = wcdf_year
-                wcdf_year = _wcdf(self, year, dic, nb_RU, weibull_Efault, weibull_Rfault, weibull_Wfault)
+            # probabilité de défaillance individuelle de tout le système
+            wcdf_oldyear = wcdf_year
+            wcdf_year = _wcdf(self, year, dic, nb_RU, weibull_Efault, weibull_Rfault, weibull_Wfault)
 
-                # détection des fautes pour chaque composant
-                Fault = np.where((wcdf_oldyear <= random_fault_time) & (random_fault_time <= wcdf_year))
-                notFault = np.where((wcdf_oldyear > random_fault_time) | (random_fault_time > wcdf_year))
+            # détection des fautes pour chaque composant
+            Fault = np.where((wcdf_oldyear <= random_fault_time) & (random_fault_time <= wcdf_year))
+            notFault = np.where((wcdf_oldyear > random_fault_time) | (random_fault_time > wcdf_year))
 
-                age_component = self.RU_age[year, Fault[0], Fault[1]]
+            age_component = self.RU_age[year, Fault[0], Fault[1]]
 
-                # Find the type of the fault for each RU
-                Fault_E = np.where(
-                    random_fault_type[Fault] <= prob_weibull_Efault[self.RU_age[year, Fault[0], Fault[1]], Fault[1]]
-                )
-                self.fault_cause[year, Fault[0][Fault_E], Fault[1][Fault_E]] = "Early"
-                remplacement[Fault[0][Fault_E], Fault[1][Fault_E], :] = dic["Remplacement_matrix"].loc[
-                    Fault[1][Fault_E]
-                ]
+            # Find the type of the fault for each RU
+            Fault_E = np.where(
+                random_fault_type[Fault] <= prob_weibull_Efault[self.RU_age[year, Fault[0], Fault[1]], Fault[1]]
+            )
+            self.fault_cause[year, Fault[0][Fault_E], Fault[1][Fault_E]] = "Early"
+            remplacement[Fault[0][Fault_E], Fault[1][Fault_E], :] = dic["Remplacement_matrix"].loc[
+                Fault[1][Fault_E]
+            ]
 
-                down = prob_weibull_Efault[self.RU_age[year, Fault[0], Fault[1]], Fault[1]]
-                up = down + prob_weibull_Rfault[age_component, Fault[1]]
-                Fault_R = np.where((random_fault_type[Fault] > down) & (random_fault_type[Fault] <= up))
-                self.fault_cause[year, Fault[0][Fault_R], Fault[1][Fault_R]] = "Random"
-                remplacement[Fault[0][Fault_R], Fault[1][Fault_R], :] = dic["Remplacement_matrix"].loc[
-                    Fault[1][Fault_R]
-                ]
+            down = prob_weibull_Efault[self.RU_age[year, Fault[0], Fault[1]], Fault[1]]
+            up = down + prob_weibull_Rfault[age_component, Fault[1]]
+            Fault_R = np.where((random_fault_type[Fault] > down) & (random_fault_type[Fault] <= up))
+            self.fault_cause[year, Fault[0][Fault_R], Fault[1][Fault_R]] = "Random"
+            remplacement[Fault[0][Fault_R], Fault[1][Fault_R], :] = dic["Remplacement_matrix"].loc[
+                Fault[1][Fault_R]
+            ]
 
-                down = up
-                Fault_W = np.where((random_fault_type[Fault] > down))
-                self.fault_cause[year, Fault[0][Fault_W], Fault[1][Fault_W]] = "Wearout"
-                remplacement[Fault[0][Fault_W], Fault[1][Fault_W], :] = dic["Remplacement_matrix"].loc[
-                    Fault[1][Fault_W]
-                ]
+            down = up
+            Fault_W = np.where((random_fault_type[Fault] > down))
+            self.fault_cause[year, Fault[0][Fault_W], Fault[1][Fault_W]] = "Wearout"
+            remplacement[Fault[0][Fault_W], Fault[1][Fault_W], :] = dic["Remplacement_matrix"].loc[
+                Fault[1][Fault_W]
+            ]
 
-                # new random number for new component
-                random_fault_time[Fault] = [random.uniform(0, 1) for y in Fault[1]]
-                random_fault_type[Fault] = [random.uniform(0, 1) for y in Fault[1]]
+            # new random number for new component
+            random_fault_time[Fault] = [random.uniform(0, 1) for y in Fault[1]]
+            random_fault_type[Fault] = [random.uniform(0, 1) for y in Fault[1]]
 
             # Remplacement vector (RV)
             remplacement_or = remplacement.sum(axis=1)
