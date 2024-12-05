@@ -95,11 +95,11 @@ class PlotWindow(QWidget):
         splitter.addWidget(self.controls_widget)
         self.tab_widget = QTabWidget()
         eco_impact = {
-            "matplotlib": self.figs['matplotlib'],
-            "plotly": [self.figs['plotly']],
+            "matplotlib": [self.figs['matplotlib'].pop()],
+            "plotly": [self.figs['plotly'].pop()],
         }
          # Ajouter deux instances de PlotWidget dans des onglets séparés
         self.tab_widget.addTab(PlotWidget(parent=self, data=self.figs), "Environmental Impact")
-        # self.tab_widget.addTab(PlotWidget(parent=self, data=eco_impact), "Economic Impact")
+        self.tab_widget.addTab(PlotWidget(parent=self, data=eco_impact), "Economic Impact")
         splitter.addWidget(self.tab_widget)
         self.layout.addWidget(splitter)

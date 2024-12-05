@@ -55,7 +55,7 @@ class ProcessExcel(QThread):
             dic["step"],
             wcdf,
             EI_maintenance,
-            impact_eco, 
+            impact_eco,
         )
         figs = {
             "matplotlib": plot_instance.mathplotlib_figs,
@@ -105,7 +105,7 @@ class ProcessExcel(QThread):
                     self.run_monte_carlo(dic)
         except InvalidExchange:
             self.error.emit("An error occurred: Exchange is missing ‘amount’ or ‘input’")
-        # except KeyError as ke:
-        #     self.error.emit(f"KeyError: Missing key in dictionary: {str(ke)}")
-        # except Exception as e:
-        #     self.error.emit(f"An error occurred: {str(e)}")
+        except KeyError as ke:
+            self.error.emit(f"KeyError: Missing key in dictionary: {str(ke)}")
+        except Exception as e:
+            self.error.emit(f"An error occurred: {str(e)}")

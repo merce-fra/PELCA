@@ -239,8 +239,8 @@ class PLOT:
         self.fig12 = self.plot_allEIatServicelife_plotly(dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step)
 
 
-        self.mathplotlib_figs = [self.fig1, self.fig2, self.fig3, self.fig4, self.fig5, self.fig6]
-        self.plotly_figs = [self.fig7, self.fig8, self.fig9, self.fig10, self.fig11, self.fig12]
+        self.mathplotlib_figs = [self.fig1, self.fig2, self.fig3, self.fig4, self.fig5, self.fig6, self.eco]
+        self.plotly_figs = [self.fig7, self.fig8, self.fig9, self.fig10, self.fig11, self.fig12, self.fig12]
         
     def fault_repartition_plotly(self, dic, fault_cause):
         if dic["Wearout_failure"] == "False" and dic["Random_failure"] == "False" and dic["Early_failure"] == "False":
@@ -424,6 +424,9 @@ class PLOT:
         return fig
     
     def plot_selectEI_eco(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
+
+        print(dic, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
+
         t = np.arange(0, usage_time, 1)
         result_MC = EI[:, dic["selected_EI"]]
         result = EI[:, dic["selected_EI"]]
@@ -468,7 +471,7 @@ class PLOT:
         adjust_fontsize(fig, ax)
 
         # Ajuster les tailles des polices
-        ax.set_ylabel(dic["EI_name"][dic["selected_EI"]], rotation=90)
+        ax.set_ylabel("Cost", rotation=90)
         ax.set_xlabel("Time (years)")
         ax.grid(True)
         adjust_figure_size(fig, ax)
@@ -928,7 +931,7 @@ class PLOT:
         result_use = EI_use[:, :, :]
 
         # Créer une figure avec des sous-graphiques
-        num_cols = 2  # Nombre de colonnes dans la grille
+        num_cols = 4  # Nombre de colonnes dans la grille
         num_rows = math.ceil(number_of_EI / num_cols)  # Nombre de lignes dans la grille
         fig = sp.make_subplots(rows=num_rows, cols=num_cols, subplot_titles=methods)
 

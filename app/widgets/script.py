@@ -94,7 +94,6 @@ class ScriptWidget(QWidget):
             self.worker.start()
             self.run_button.setEnabled(False)  # Disable the run button while running
 
-
     def handle_figures(self, figs):
         """Handle the figures emitted by the worker thread."""
         self.plot_window = PlotWindow(self.parent, figs)

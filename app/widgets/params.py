@@ -49,7 +49,6 @@ class FormWidget(QWidget):
         self.plot_specific_env_impact.setRange(0, 1000000)
         self.plot_specific_env_impact.setValue(0)
 
-
         # Add additional form fields to the layout
         form_layout.addRow("Staircase result filename:", self.staircase_result_filename)
         form_layout.addRow("Number of Replac. Unit (RU):", self.num_replac_unit)
@@ -69,7 +68,6 @@ class FormWidget(QWidget):
         # Create a main layout
         main_layout = QVBoxLayout()
         main_layout.addLayout(form_layout)
-
 
         self.setLayout(main_layout)
 
