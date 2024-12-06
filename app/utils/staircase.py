@@ -142,6 +142,7 @@ class STAIRCASE:
         self.driver_age = np.array(
             [[[0 for i in range(nb_RU)] for z in range(nb_ite_MC)] for y in range(self.usage_time)]
         )
+        # Initialisation of EI matrices
         self.EI_total = np.array(
             [[self.EI_manufacturing_total for z in range(nb_ite_MC)] for y in range(self.usage_time)], dtype="float"
         )
@@ -154,10 +155,19 @@ class STAIRCASE:
         self.EI_total_use = np.array(
             [[self.EI_manufacturing_total * 0 for z in range(nb_ite_MC)] for y in range(self.usage_time)], dtype="float"
         )
-        self.cost_total = np.array([[self.cost_manufacturing_total for z in range (nb_ite_MC)] for y in range (self.usage_time)], dtype='float')
-        self.cost_total_manufacturing = np.array([[self.cost_manufacturing_total for z in range (nb_ite_MC)] for y in range (self.usage_time)], dtype='float')
-        self.cost_total_maintenance = np.array([[self.cost_manufacturing_total*0 for z in range (nb_ite_MC)] for y in range (self.usage_time)], dtype='float')
-        self.cost_total_use = np.array([[self.cost_manufacturing_total*0 for z in range (nb_ite_MC)] for y in range (self.usage_time)], dtype='float')
+        # Initialisation of cost matrices
+        self.cost_total = np.array(
+            [[self.cost_manufacturing_total for z in range (nb_ite_MC)] for y in range (self.usage_time)], dtype='float'
+        )
+        self.cost_total_manufacturing = np.array(
+            [[self.cost_manufacturing_total for z in range (nb_ite_MC)] for y in range (self.usage_time)], dtype='float'
+        )
+        self.cost_total_maintenance = np.array(
+            [[self.cost_manufacturing_total*0 for z in range (nb_ite_MC)] for y in range (self.usage_time)], dtype='float'
+        )
+        self.cost_total_use = np.array(
+            [[self.cost_manufacturing_total*0 for z in range (nb_ite_MC)] for y in range (self.usage_time)], dtype='float'
+        )
 
         self.number_of_fault = np.array(
             [[[0 for i in range(nb_RU)] for z in range(nb_ite_MC)] for y in range(self.usage_time)]
@@ -215,6 +225,20 @@ class STAIRCASE:
 
         for year in range(1, self.usage_time):
             self.RU_age[year, :, :] = self.RU_age[year - 1, :, :] + 1
+
+            if dic["pre_set_fail"] == True:
+                if year in dic["year_pre_set_fail"]:
+                    indice_tuple = np.where(year == dic["year_pre_set_fail"])
+                    indice = indice_tuple[0][0]
+                    self.fault_cause[year, 0, dic["UR_set_fail"][indice]] = dic["typefault_pre_set_fail"][indice]
+                    remplacement[0, dic["UR_set_fail"][indice], :] = (
+                        dic["Remplacement_matrix"]
+                        .loc[dic["Remplacement_matrix"]["Fault"] == dic["typefault_pre_set_fail"][indice]]
+                        .drop(["Fault"], axis=1)
+                        .reset_index(drop=True)
+                        .loc[dic["UR_set_fail"][indice]]
+                    )
+
             # part maintenance
             EI_maintenance = 0
             cost_maintenance = 0
@@ -228,10 +252,10 @@ class STAIRCASE:
                 # Remettre l'âge des composants à zéro (RU) pour ceux qui ont subi une maintenance
                 self.RU_age[year, :, :] = np.round((1 - remplacement_or[:, :nb_RU])) * self.RU_age[year, :, :]
                 EI_maintenance = self.EI_manufacturing.dot(remplacement_or.T).T
+                cost_maintenance = remplacement_or.dot(dic["RU_raw_cost"] + dic["RU_des_cost"] + dic["RU_ass_cost"])
                 remplacement_or = remplacement_or * 0
 
             # part faut
-            cost_maintenance = remplacement_or.dot(dic["RU_raw_cost"] + dic["RU_des_cost"] + dic["RU_ass_cost"])
 
             # probabilité de défaillance individuelle de tout le système
             wcdf_oldyear = wcdf_year
@@ -284,6 +308,12 @@ class STAIRCASE:
             self.EI_total[year, :, :] = self.EI_total_use[year, :, :] + self.EI_total_manu[year, :, :]
             self.EI_total_maintenance[year, :, :] = self.EI_total_maintenance[year - 1, :, :] + EI_maintenance
 
+            # Cost Calculation
+            self.cost_total_manufacturing[year,:] = self.cost_total_manufacturing[year-1,:]+remplacement_or.dot(dic["RU_raw_cost"]+dic["RU_des_cost"]+dic["RU_ass_cost"]) +cost_maintenance
+            self.cost_total_use[year,:] = self.cost_total_use[year-1,:]+self.cost_use_onestep_total
+            self.cost_total_maintenance[year,:] = self.cost_total_maintenance[year-1,:]+cost_maintenance
+            self.cost_total[year,:] = self.cost_total_use[year,:]+self.cost_total_manufacturing[year,:]
+
             # Calcul de l'âge moyen pondéré par rapport à la matrice de rempacement, arrondis à l'entier le plus proche
             self.RU_age[year, :, :] = np.round((1 - remplacement_or[:, :nb_RU])) * self.RU_age[year, :, :]
 
@@ -321,6 +351,9 @@ class STAIRCASE:
 
         print(f"The data were written to the Excel file: : {excel_path}")
 
+        #test to be removed
+        print(self.cost_total_use)
+        # test end
         return (
             self.EI_total,
             self.EI_total_manu,
