@@ -229,7 +229,7 @@ class PLOT:
         self.fig4 = self.plot_selectEI(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig5 = self.plot_allEI(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig6 = self.plot_allEIatServicelife(dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step)
-        self.eco = self.plot_selectEI_eco(dic, impact_eco['Manufacturing'], impact_eco['Use'], impact_eco['Maintenance'], usage_time, nb_RU, nb_ite_MC, step)
+        self.eco = self.plot_selectEI_eco(dic, impact_eco['Total'], impact_eco['Manufacturing'], impact_eco['Use'], usage_time, nb_RU, nb_ite_MC, step)
 
         self.fig7 = self.plot_allEI_manufacturing_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig8 = self.plotCDF_plotly(wcdf, usage_time)
@@ -428,10 +428,10 @@ class PLOT:
         print(dic, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
 
         t = np.arange(0, usage_time, 1)
-        result_MC = EI[:, dic["selected_EI"]]
-        result = EI[:, dic["selected_EI"]]
-        result_fab = EI_manu[:, dic["selected_EI"]]
-        result_use = EI_use[:,  dic["selected_EI"]]
+        result_MC = EI[:, :]
+        result = EI[:, :]
+        result_fab = EI_manu[:, :]
+        result_use = EI_use[:,  :]
 
         if nb_ite_MC != 1:
             if result_MC.ndim == 1:
