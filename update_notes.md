@@ -1,5 +1,12 @@
 # Pull Request: Debug strcase (#18)
+## Date 
+
+06/12/2024
+
+## Description
+
 This pull request addresses an issue with the `strcase` and `plotting` file.
+
 
 ## Changes
 1. **Bug Fixes**  
@@ -14,6 +21,10 @@ This pull request addresses an issue with the `strcase` and `plotting` file.
 
 
 # Pull Request: Update Script Widget with New Functionality and Validation (#19)
+
+## Date 
+
+06/12/2024
 
 ## Description
 This pull request introduces several updates and improvements to the script widget:
