@@ -7,7 +7,7 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (QHBoxLayout, QSplitter, QStackedWidget,
                                QToolButton, QVBoxLayout, QWidget)
 
-from app.models.plot import IndexSwitcher, ModeSwitcher
+from app.models.plot import IndexSwitcher
 from app.widgets.plot_window.controls import ControlsWidget
 
 
@@ -22,20 +22,18 @@ class PlotWidget(QWidget):
 
 
     def init_plotly_plot(self):
+        print("Initializing plotly plot")
         fig = self.figs["plotly"][self.parent.index.get_index()]
         html_content = pio.to_html(fig, full_html=False, include_plotlyjs="cdn")
         self.html_browser = QWebEngineView()
         self.html_browser.setHtml(html_content, QUrl(""))
         self.layout.addWidget(self.html_browser)
-        self.html_browser.hide()
+        self.html_browser.show()
 
 
     def setup_ui(self):
-        self.parent.mode_switcher.mode_changed.connect(self.update_plot_mode)
-        self.parent.index.index_changed.connect(self.update_plot)
 
         self.init_plotly_plot()
-        self.init_matplotlib_plot()
 
         navigation_layout = QHBoxLayout()
         self.prev_button = QToolButton()
@@ -51,20 +49,16 @@ class PlotWidget(QWidget):
         self.layout.addLayout(navigation_layout)
 
     def update_plot(self, index):
-        if self.parent.mode_switcher.plotly_mode:
-            fig = self.figs["plotly"][index]
-            html_content = pio.to_html(fig, full_html=False, include_plotlyjs="cdn")
-            self.html_browser.setHtml(html_content, QUrl(""))
-        else:
-            self.stack.setCurrentIndex(index)
-
+        fig = self.figs["plotly"][index]
+        html_content = pio.to_html(fig, full_html=False, include_plotlyjs="cdn")
+        self.html_browser.setHtml(html_content, QUrl(""))
+        self.html_browser.show()
 
 class PlotWindow(QWidget):
     def __init__(self, parent, figs):
         super().__init__()
         self.setWindowTitle(f"Pelca Results")
-        self.mode_switcher = ModeSwitcher()
-        self.index = IndexSwitcher(figs, self.mode_switcher)
+        self.index = IndexSwitcher(figs)
         x = parent.pos().x() + 500
         y = parent.pos().y()
         self.figs = figs

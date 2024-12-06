@@ -16,8 +16,6 @@ from PySide6.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QFrame,
                                QStackedWidget, QTextEdit, QToolButton,
                                QVBoxLayout, QWidget)
 
-from app.models.plot import ModeSwitcher
-from app.threads.process_excel import ProcessExcel
 from app.utils.legacy import export_data, export_data_excel, get_max_fig_size
 from app.widgets.header import HeaderWidget
 
@@ -31,14 +29,6 @@ class ControlsWidget(QWidget):
         self.layout = QVBoxLayout()
         self.setup_ui()
         self.setLayout(self.layout)
-
-    def update_mode_label(self, plotly_mode):
-        if plotly_mode:
-            self.mode_label.setText("Current mode: Plotly")
-            self.switch_plot_button.setText("DEMO - Switch to Matplotlib")
-        else:
-            self.mode_label.setText("Current mode: Matplotlib")
-            self.switch_plot_button.setText("DEMO - Switch to Plotly")
 
     def save_plots(self):
         if self.figs["matplotlib"]:
@@ -113,11 +103,7 @@ class ControlsWidget(QWidget):
         self.save_plot_button.clicked.connect(self.save_selected_plot)
         self.save_all_plot_button.clicked.connect(self.save_plots)
 
-        self.parent.mode_switcher = ModeSwitcher()
-        self.switch_plot_button.clicked.connect(self.parent.mode_switcher.switch_mode)
         # Adding a separator between title and buttons
-        self.mode_label = QLabel("Current mode: Matplotlib")
-        self.parent.mode_switcher.mode_changed.connect(self.update_mode_label)
         self.add_separator()
 
         self.layout.addWidget(self.save_plot_button)
