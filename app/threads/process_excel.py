@@ -14,7 +14,7 @@ class ProcessExcel(QThread):
     figs = Signal(dict)
     data_dict = Signal(dict)
 
-    def __init__(self, file_path):
+    def __init__(self, file_path, lca=False):
         super().__init__()
         self.file_path = file_path
 
@@ -42,10 +42,7 @@ class ProcessExcel(QThread):
             "Maintenance": cost_total_maintenance,
             "Total": cost_total,
         }
-
-        print(impact_eco)
         
-
         plot_instance = plotting.PLOT(
             dic,
             EI,
