@@ -424,9 +424,6 @@ class PLOT:
         return fig
     
     def plot_selectEI_eco(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
-
-        print(dic, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
-
         t = np.arange(0, usage_time, 1)
         result_MC = EI[:, :]
         result = EI[:, :]

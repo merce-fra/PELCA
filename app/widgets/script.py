@@ -15,6 +15,7 @@ class ScriptWidget(QWidget):
         super().__init__(parent)
         self.parent = parent
         self.is_running = False  # Initialize running status
+        self.buttons = False
         self.initUI()
 
     def initUI(self):
@@ -40,9 +41,27 @@ class ScriptWidget(QWidget):
 
     def _add_run_button(self, layout):
         """Add a button to execute a script using the selected file."""
-        self.run_button = QPushButton("Run Script")
-        self.run_button.clicked.connect(self.run_script)
-        layout.addWidget(self.run_button)
+        button_layout = QHBoxLayout()
+
+        self.run_button = QPushButton("Run Staircase only")
+
+        self.run_button.clicked.connect(self.run_staircase)
+
+        self.run_button2 = QPushButton("Run LCA + Staircase")
+        self.run_button2.clicked.connect(self.run_lca_staircase)
+        button_layout.addWidget(self.run_button2)
+        button_layout.addWidget(self.run_button)
+
+        layout.addLayout(button_layout)
+
+        self.run_button.hide()
+        self.run_button2.hide()
+
+    def run_lca_staircase(self):
+        self.run_script(True)
+
+    def run_staircase(self):
+        self.run_script(False)
 
     def _add_console(self, layout):
         """Add a console text area to display output."""
@@ -77,22 +96,29 @@ class ScriptWidget(QWidget):
         file_path, _ = QFileDialog.getOpenFileName(self, "Select Input File")
         if file_path:
             self.file_path_edit.setText(file_path)
+            if self.buttons is False:
+                self.run_button.show()
+                self.run_button2.show()
+                self.buttons = True
+            
 
-    def run_script(self):
+    def run_script(self, lca):
         """Run the script in a separate thread to keep the UI responsive."""
+        self.run_button.setEnabled(False)
+        self.run_button2.setEnabled(False)
         if self.is_running:
             print("Script is already running.")
             return
         else:
             self.is_running = True
             file_path = self.file_path_edit.text()
-            self.worker = ProcessExcel(file_path)
+            self.worker = ProcessExcel(file_path, lca=lca)
             self.worker.finished.connect(self.on_finished)
             self.worker.error.connect(self.on_error)
             self.worker.figs.connect(self.handle_figures)
-            self.worker.data_dict.connect(self.parent.print_params)
             self.worker.start()
-            self.run_button.setEnabled(False)  # Disable the run button while running
+        self.run_button.setEnabled(True)
+        self.run_button2.setEnabled(True)
 
     def handle_figures(self, figs):
         """Handle the figures emitted by the worker thread."""

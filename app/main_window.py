@@ -54,11 +54,11 @@ class MainWindow(QMainWindow):
         self.params = False
         main_layout.addLayout(self.script_form_layout)
 
-    def print_params(self, params):
-        """Print the parameters in the console."""
-        for key, value in params.items():
-            if key == "LCA_path" and not self.params:
-                config_path = value + r"\dict_file.csv"
-                self.form_widget = FormWidget(config_path)
-                self.script_form_layout.addWidget(self.form_widget)
-                self.params = True
+    # def print_params(self, params):
+    #     """Print the parameters in the console."""
+    #     for key, value in params.items():
+    #         if key == "LCA_path" and not self.params:
+    #             config_path = value + r"\dict_file.csv"
+    #             self.form_widget = FormWidget(config_path)
+    #             self.script_form_layout.addWidget(self.form_widget)
+    #             self.params = True

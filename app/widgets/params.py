@@ -109,5 +109,3 @@ class FormWidget(QWidget):
             self.monte_carlo_iterations.setValue(int(value))
         elif key == "selected_EI":
             self.plot_specific_env_impact.setValue(int(value))
-        else:
-            print(f"Unknown key: {key}")
