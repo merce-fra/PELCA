@@ -4,7 +4,7 @@ from matplotlib.backends.backend_qt5agg import \
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtGui import QIcon
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QHBoxLayout, QSplitter,QTabWidget, QStackedWidget,
+from PySide6.QtWidgets import (QHBoxLayout, QSplitter, QStackedWidget,
                                QToolButton, QVBoxLayout, QWidget)
 
 from app.models.plot import IndexSwitcher, ModeSwitcher
@@ -12,11 +12,10 @@ from app.widgets.plot_window.controls import ControlsWidget
 
 
 class PlotWidget(QWidget):
-    def __init__(self, parent, data):
+    def __init__(self, parent):
         super().__init__()
         self.parent = parent
-
-        self.figs = data
+        self.figs = parent.figs
         self.layout = QVBoxLayout()
         self.setup_ui()
         self.setLayout(self.layout)
@@ -27,7 +26,7 @@ class PlotWidget(QWidget):
             self.html_browser.show()
         else:
             self.html_browser.hide()
-            self.stack.show()
+        self.stack.show()
 
     def init_plotly_plot(self):
         fig = self.figs["plotly"][self.parent.index.get_index()]
@@ -68,7 +67,6 @@ class PlotWidget(QWidget):
     def update_plot(self, index):
         if self.parent.mode_switcher.plotly_mode:
             fig = self.figs["plotly"][index]
-            
             html_content = pio.to_html(fig, full_html=False, include_plotlyjs="cdn")
             self.html_browser.setHtml(html_content, QUrl(""))
         else:
@@ -81,25 +79,18 @@ class PlotWindow(QWidget):
         self.setWindowTitle(f"Pelca Results")
         self.mode_switcher = ModeSwitcher()
         self.index = IndexSwitcher(figs, self.mode_switcher)
-        x = parent.pos().x() + 300
+        x = parent.pos().x() + 500
         y = parent.pos().y()
         self.figs = figs
-        self.setGeometry(x, y, 1500, 600)
+        self.setGeometry(x, y, 800, 600)
         self.layout = QHBoxLayout()
         self.setup_ui()
         self.setLayout(self.layout)
 
     def setup_ui(self):
         self.controls_widget = ControlsWidget(parent=self)
+        self.plot_widget = PlotWidget(parent=self)
         splitter = QSplitter(Qt.Horizontal)
         splitter.addWidget(self.controls_widget)
-        self.tab_widget = QTabWidget()
-        eco_impact = {
-            "matplotlib": [self.figs['matplotlib'].pop()],
-            "plotly": [self.figs['plotly'].pop()],
-        }
-         # Ajouter deux instances de PlotWidget dans des onglets séparés
-        self.tab_widget.addTab(PlotWidget(parent=self, data=self.figs), "Environmental Impact")
-        self.tab_widget.addTab(PlotWidget(parent=self, data=eco_impact), "Economic Impact")
-        splitter.addWidget(self.tab_widget)
+        splitter.addWidget(self.plot_widget)
         self.layout.addWidget(splitter)
