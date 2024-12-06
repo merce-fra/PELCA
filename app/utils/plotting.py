@@ -399,18 +399,17 @@ class PLOT:
         fig = go.Figure()
 
         # Barres empilées
-        for i in range(normalized_EI_manu.shape[0]):
-            for j in range(len(index_labels)):
-                fig.add_trace(
-                    go.Bar(
-                        x=[combined_labels[i]],
-                        y=[normalized_EI_manu[i, j]],
-                        name=index_labels[j],
-                        marker_color=colors[j % len(colors)],
-                        text=[f"{self.EI_manufacturing[i, j]:.1e}"],
-                        textposition="inside",
-                    )
+        for j in range(len(index_labels)):
+            fig.add_trace(
+                go.Bar(
+                    x=combined_labels,
+                    y=normalized_EI_manu[:, j],
+                    name=index_labels[j],
+                    marker_color=colors[j % len(colors)],
+                    text=[f"{val:.1e}" for val in self.EI_manufacturing[:, j]],
+                    textposition="inside",
                 )
+            )
 
         fig.update_layout(
             barmode="stack",
