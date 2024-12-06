@@ -34,7 +34,7 @@ class PlotWidget(QWidget):
     def setup_ui(self):
 
         self.init_plotly_plot()
-
+        self.parent.index.index_changed.connect(self.update_plot)
         navigation_layout = QHBoxLayout()
         self.prev_button = QToolButton()
         self.prev_button.setIcon(QIcon(":/ressources/icons/previous.svg"))
