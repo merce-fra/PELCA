@@ -28,7 +28,6 @@ def EI_calculation(dic, path_input, name_input):
 
     bw2setup()  # Importing elementary flows, LCIA methods and some other data
 
-    print(bw.databases)
     # ecoinvent
     if dic["database_ecoinvent"] in bw.databases:
         print("Database has already been imported.")

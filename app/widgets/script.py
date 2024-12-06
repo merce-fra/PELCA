@@ -44,15 +44,13 @@ class ScriptWidget(QWidget):
         button_layout = QHBoxLayout()
 
         self.run_button = QPushButton("Run Staircase only")
-        self.run_button.setDisabled(True)
 
         self.run_button.clicked.connect(self.run_staircase)
-        button_layout.addWidget(self.run_button)
 
         self.run_button2 = QPushButton("Run LCA + Staircase")
-        self.run_button2.setDisabled(True)
         self.run_button2.clicked.connect(self.run_lca_staircase)
         button_layout.addWidget(self.run_button2)
+        button_layout.addWidget(self.run_button)
 
         layout.addLayout(button_layout)
 

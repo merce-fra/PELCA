@@ -351,9 +351,6 @@ class STAIRCASE:
 
         print(f"The data were written to the Excel file: : {excel_path}")
 
-        #test to be removed
-        print(self.cost_total_use)
-        # test end
         return (
             self.EI_total,
             self.EI_total_manu,

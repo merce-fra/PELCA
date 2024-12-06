@@ -31,7 +31,7 @@ def _init_dir(path, directory):
 
 
 # %% Init
-def _init_dic(path_input, name_input):
+def _init_dic(path_input, name_input, lca):
     def read_excel_sheet(excel, sheet_name, header, skiprows, usecols=None):
         return pd.read_excel(excel, sheet_name=sheet_name, header=header, skiprows=skiprows, usecols=usecols)
 
@@ -75,27 +75,25 @@ def _init_dic(path_input, name_input):
     )
 
     if os.path.exists(file_path):
-        print("LCA is already calculated.")
-        dic["LCA"] = "no"
         excel = pd.ExcelFile(file_path)
         df_result = pd.read_excel(excel, header=0)
         excel.close()
         dic["EI_name"] = df_result["Method"].tolist()
         dic["LCIA_unit"] = df_result["Unit"].tolist()
-    else:
-        print("LCA not yet calculated.")
-        dic["LCA"] = "yes"
-        _init_dir(dic["LCA_path"], dic["directory"])
-
-        dic["database_ecoinvent"] = get_value_from_df(df, "Database ecoinvent")
-        dic["database_ecoinvent_path"] = get_value_from_df(df, "Ecoinvent path")
-        dic["inventory_name"] = get_value_from_df(df, "Inventory name")
         dic["proj_name"] = get_value_from_df(df, "Project name (brightway)")
-        dic["iterations"] = get_value_from_df(df, "Number of iterations (Monte Carlo)")
 
-        dic["EI_name"] = df_LCIA["Acronym"].tolist()
-        dic["LCIA_unit"] = df_LCIA["Unit"].tolist()
-        dic["LCIA"] = df_LCIA
+    else:
+        _init_dir(dic["LCA_path"], dic["directory"])
+    dic["database_ecoinvent"] = get_value_from_df(df, "Database ecoinvent")
+    dic["database_ecoinvent_path"] = get_value_from_df(df, "Ecoinvent path")
+    dic["inventory_name"] = get_value_from_df(df, "Inventory name")
+    dic["proj_name"] = get_value_from_df(df, "Project name (brightway)")
+    dic["iterations"] = get_value_from_df(df, "Number of iterations (Monte Carlo)")
+
+    dic["EI_name"] = df_LCIA["Acronym"].tolist()
+    dic["LCIA_unit"] = df_LCIA["Unit"].tolist()
+    dic["LCIA"] = df_LCIA
+
 
     dic["service_life"] = get_value_from_df(df_stair, "Service life (year)")
     dic["num_hourPerYear"] = get_value_from_df(df_stair, "Annual usage time (hours/year)")
