@@ -16,8 +16,6 @@ from PySide6.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QFrame,
                                QStackedWidget, QTextEdit, QToolButton,
                                QVBoxLayout, QWidget)
 
-from app.models.plot import ModeSwitcher
-from app.threads.process_excel import ProcessExcel
 from app.utils.legacy import export_data, export_data_excel, get_max_fig_size
 from app.widgets.header import HeaderWidget
 
@@ -31,14 +29,6 @@ class ControlsWidget(QWidget):
         self.layout = QVBoxLayout()
         self.setup_ui()
         self.setLayout(self.layout)
-
-    def update_mode_label(self, plotly_mode):
-        if plotly_mode:
-            self.mode_label.setText("Current mode: Plotly")
-            self.switch_plot_button.setText("DEMO - Switch to Matplotlib")
-        else:
-            self.mode_label.setText("Current mode: Matplotlib")
-            self.switch_plot_button.setText("DEMO - Switch to Plotly")
 
     def save_plots(self):
         if self.figs["matplotlib"]:
@@ -113,11 +103,7 @@ class ControlsWidget(QWidget):
         self.save_plot_button.clicked.connect(self.save_selected_plot)
         self.save_all_plot_button.clicked.connect(self.save_plots)
 
-        self.parent.mode_switcher = ModeSwitcher()
-        self.switch_plot_button.clicked.connect(self.parent.mode_switcher.switch_mode)
         # Adding a separator between title and buttons
-        self.mode_label = QLabel("Current mode: Matplotlib")
-        self.parent.mode_switcher.mode_changed.connect(self.update_mode_label)
         self.add_separator()
 
         self.layout.addWidget(self.save_plot_button)
@@ -165,22 +151,29 @@ class ImageButtonsWidget(QWidget):
         super().__init__(parent)
 
         def create_thumbnail(fig, size=(100, 100)):
-            """Crée une image miniature de la figure pour la compatibilité avec PySide6"""
-            with io.BytesIO() as buf:
-                fig.savefig(buf, format="png", bbox_inches="tight", pad_inches=0)
-                buf.seek(0)
-                img = Image.open(buf)
-                img.thumbnail(size)
-                qimage = QImage(img.tobytes(), img.width, img.height, QImage.Format_RGBA8888)
-                pixmap = QPixmap.fromImage(qimage)
-                label = QLabel()
-                label.setPixmap(pixmap)
-                return label
+            """Crée une image miniature de la figure Plotly pour la compatibilité avec PySide6"""
+            # Utiliser plotly.io.to_image pour convertir la figure Plotly en image PNG
+            print("Creating thumbnail")
+            img_bytes = pio.to_image(fig, format="png")
+            
+            # Ouvrir l'image avec PIL
+            img = Image.open(io.BytesIO(img_bytes))
+            img.thumbnail(size)  # Créer la miniature
+            img = img.convert("RGBA")  # Convertir l'image en mode RGBA pour assurer la compatibilité avec PySide6
+
+            # Convertir l'image en QImage pour l'affichage avec PySide6
+            qimage = QImage(img.tobytes(), img.width, img.height, img.width * 4, QImage.Format_RGBA8888)
+            pixmap = QPixmap.fromImage(qimage)
+            
+            # Créer un QLabel pour afficher l'image
+            label = QLabel()
+            label.setPixmap(pixmap)
+            return label
 
         self.layout = QHBoxLayout()
         self.setLayout(self.layout)
         self.thumbnails = []
-        for idx, fig in enumerate(parent.figs["matplotlib"]):
+        for idx, fig in enumerate(parent.figs["plotly"]):
             thumbnail = create_thumbnail(fig)
             button = QPushButton()
             button.setIcon(QIcon(thumbnail.pixmap()))
