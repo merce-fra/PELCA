@@ -238,7 +238,7 @@ class PLOT:
         self.fig12 = self.plot_allEIatServicelife_plotly(dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step)
 
 
-        self.mathplotlib_figs = [self.fig1, self.fig2, self.fig3, self.fig4, self.fig5, self.fig6, self.eco]
+        self.mathplotlib_figs = [self.fig2, self.fig3, self.fig4, self.fig5, self.fig6, self.eco]
         self.plotly_figs = [self.fig7, self.fig8, self.fig9, self.fig10, self.fig11, self.fig12, self.fig12]
         
     def fault_repartition_plotly(self, dic, fault_cause):
@@ -576,6 +576,20 @@ class PLOT:
             yaxis=dict(showgrid=True),
             plot_bgcolor="white",  # Background color of the plot
         )
+
+        fig.update_layout(
+            xaxis=dict(
+                showgrid=True,
+                gridcolor='lightgray',
+                gridwidth=1
+            ),
+            yaxis=dict(
+                showgrid=True,
+                gridcolor='lightgray',
+                gridwidth=1
+            )
+        )
+        
         return fig
     
     def plot_allEIatServicelife(self, dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step):
