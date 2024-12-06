@@ -223,7 +223,6 @@ def radar_factory(num_vars, frame="circle"):
 
 class PLOT:
     def __init__(self, dic, EI, EI_manu, EI_use, usage_time, fault_cause, nb_RU, nb_ite_MC, step, wcdf, EI_maintenance, impact_eco):
-        self.fig1 = self.plot_allEI_manufacturing(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig2 = self.CDF(wcdf, usage_time)
         self.fig3 = self.fault_repartition(dic, fault_cause)
         self.fig4 = self.plot_selectEI(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
@@ -290,88 +289,6 @@ class PLOT:
                 title_font=dict(size=24),
                 showlegend=False
             )
-
-        return fig
-
-    def plot_allEI_manufacturing(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
-        excel = pd.ExcelFile(os.path.join(dic["LCA_path"], dic["filename_result_EI"]))
-
-        # EI manufacturing of each RU
-        self.EI_manufacturing = pd.read_excel(excel, sheet_name="Manufacturing", index_col=0)
-
-        self.EI_manufacturing = self.EI_manufacturing.drop(columns=["Unit"])
-
-        index_labels = self.EI_manufacturing.columns.to_numpy()
-
-        self.EI_manufacturing = self.EI_manufacturing.to_numpy()
-
-        # EI manufacturing of total RU
-        self.EI_manufacturing_total = self.EI_manufacturing.sum(axis=1)
-        # Normalisation pour que chaque ligne somme à 1
-        normalized_EI_manu = self.EI_manufacturing * 100 / self.EI_manufacturing_total[:, np.newaxis]
-
-        # Création du graphique en barres empilées
-        fig, ax = plt.subplots()
-        adjust_figure_size(fig, ax)
-        # Nombre de lignes
-        num_rows = normalized_EI_manu.shape[0]
-        num_columns = len(index_labels)
-
-        # Récupérer les noms des lignes
-        line_names = dic["EI_name"]
-
-        combined_labels = [f"{name} ({unit})" for name, unit in zip(line_names, dic["LCIA_unit"])]
-
-        # Utilisation d'une colormap pour obtenir les couleurs
-        cmap = matplotlib.colormaps.get_cmap("tab20b")
-        colors = [cmap(i) for i in np.linspace(0, 1, num_columns)]
-
-        fig_width, fig_height = fig.get_size_inches()
-        font_size = min(fig_width, fig_height) * 1.3
-
-        # Barres empilées
-        for i in range(num_rows):
-            bottom = 0
-            for j in range(num_columns):
-                bar_color = colors[j % len(colors)]  # Utilisation des couleurs cycliquement
-                ax.bar(i, normalized_EI_manu[i, j], color=bar_color, bottom=bottom)
-
-                # Annotation pour les valeurs
-                height = normalized_EI_manu[i, j]
-                val = self.EI_manufacturing[i, j]
-                ax.text(
-                    i,
-                    bottom + height / 2,
-                    f"{val:.1e}",
-                    ha="center",
-                    va="center",
-                    fontsize=font_size,
-                    color="black",
-                    rotation=45,
-                    bbox=dict(facecolor="white", alpha=0.5, edgecolor="none", boxstyle="round,pad=0.2"),  # Fond gris
-                )
-
-                bottom += height
-
-        # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
-        # adjust_fontsize(fig, ax)
-
-        # Labels et légende
-        ax.set_ylabel("Normalized Value (%)")
-        ax.set_title("Manufacturing env. impact", weight="bold")
-        ax.set_xticks(range(num_rows))
-        ax.set_xticklabels(combined_labels, rotation=45, ha="right")
-        # ax.legend(index_labels, loc='center left')
-        ax.set_ylim(0, 100)
-        ax.set_yticks(np.arange(0, 101, 10))
-        ax.grid(True, axis="y", alpha=0.7)
-
-        # Ajouter une légende en haut du graphique
-        ax.legend(index_labels, loc="center left", bbox_to_anchor=(1, 0.5))
-
-        adjust_fontsize(fig, ax)
-
-        plt.tight_layout()
 
         return fig
 
