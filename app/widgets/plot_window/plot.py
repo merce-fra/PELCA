@@ -20,13 +20,6 @@ class PlotWidget(QWidget):
         self.setup_ui()
         self.setLayout(self.layout)
 
-    def update_plot_mode(self, plotly_mode):
-        if plotly_mode:
-            self.stack.hide()
-            self.html_browser.show()
-        else:
-            self.html_browser.hide()
-        self.stack.show()
 
     def init_plotly_plot(self):
         fig = self.figs["plotly"][self.parent.index.get_index()]
@@ -36,13 +29,6 @@ class PlotWidget(QWidget):
         self.layout.addWidget(self.html_browser)
         self.html_browser.hide()
 
-    def init_matplotlib_plot(self):
-        self.stack = QStackedWidget()
-        for fig in self.figs["matplotlib"]:
-            canvas = FigureCanvas(fig)
-            self.stack.addWidget(canvas)
-        self.layout.addWidget(self.stack)
-        self.stack.show()
 
     def setup_ui(self):
         self.parent.mode_switcher.mode_changed.connect(self.update_plot_mode)
