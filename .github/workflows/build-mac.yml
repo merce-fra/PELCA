@@ -1,0 +1,75 @@
+name: Build and release Mac executable
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python-version: [3.12]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+
+      - name: Install library
+        run: |
+          poetry install --no-interaction
+
+      - name: Run tests
+        run: |
+          source .venv/bin/activate  # Activation spécifique à Mac
+          pytest app/tests/
+
+      - name: Update VERSION in main_window.py
+        run: sed -i "s/^VERSION = \".*\"/VERSION = \"${GITHUB_REF##*/}\"/" app/main_window.py
+
+      # Étape pour construire l'exécutable
+      - name: Build Executable for Mac
+        run: |
+          source .venv/bin/activate
+          pip install pyinstaller bw2io kaleido==0.1.0.post1
+          pyinstaller main.py --hidden-import=bw2io --distpath dist/mac/PELCA  
+          cp -r .venv/lib/python${{ matrix.python-version }}/site-packages/bw2io dist/mac/PELCA/main/_internal/bw2io
+
+      # Étape pour compresser l'exécutable
+      - name: Archive Executable for Mac
+        run: |
+          zip -r dist/mac/PELCA.zip dist/mac/PELCA
+        shell: bash
+
+      # Étape pour sauvegarder l'artefact
+      - name: Upload Build Artifact for Mac
+        uses: actions/upload-artifact@v3
+        with:
+          name: pelca-${{ github.ref_name }}-mac
+          path: dist/mac/PELCA.zip
