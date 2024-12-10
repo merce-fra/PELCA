@@ -10,3 +10,6 @@ class EmittingStream(QObject):
 
     def flush(self):
         pass
+
+    def fileno(self):
+        return 1

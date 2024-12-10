@@ -63,14 +63,14 @@ jobs:
           source .venv/Scripts/activate
           pip install pyinstaller bw2io kaleido==0.1.0.post1
           ls
-          pyinstaller main.py --hidden-import=bw2io --distpath dist/PELCA  
-          cp -r .venv/Lib/site-packages/bw2io dist/PELCA/main/_internal/bw2io
+            pyinstaller main.py --hidden-import=bw2io --distpath dist/PELCA --noconsole --name PELCA
+            cp -r .venv/Lib/site-packages/bw2io dist/PELCA/PELCA/_internal/bw2io
 
       # Étape pour compresser l'exécutable sous Windows (PowerShell)
       - name: Archive Executable
         if: matrix.os == 'windows-latest'
         run: |
-          Compress-Archive -Path dist/PELCA -DestinationPath pelca.zip
+          Compress-Archive -Path dist/PELCA -DestinationPath pelca-${{ github.ref_name }}.zip
         shell: powershell
 
       # # Étape pour publier une release GitHub et y attacher le fichier zip
@@ -94,11 +94,4 @@ jobs:
       #     asset_path: pelca.zip
       #     asset_name: pelca.zip
       #     asset_content_type: application/zip
-
-      # Étape pour sauvegarder l'artefact
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3
-        with:
-              name: pelca-${{ github.ref_name }}
-              path: pelca.zip
 
