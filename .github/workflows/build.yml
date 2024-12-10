@@ -95,3 +95,9 @@ jobs:
       #     asset_name: pelca.zip
       #     asset_content_type: application/zip
 
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+            name: pelca-${{ github.ref_name }}
+            path: pelca-${{ github.ref_name }}.zip
+
