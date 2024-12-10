@@ -49,18 +49,19 @@ jobs:
         run: | 
             poetry install --no-interaction
 
-      # - name: Run tests
-      #   run: |
-      #     source .venv/Scripts/activate  # Activation spécifique à Windows
-      #     pytest tests/
+      - name: Run tests
+        run: |
+          source .venv/Scripts/activate  # Activation spécifique à Windows
+          pytest app/tests/
 
       # Étape pour construire l'exécutable sous Windows
       - name: Build Windows Executable
         run: |
           source .venv/Scripts/activate
-          pip install pyinstaller
-          pyinstaller main_PELCA_GUI.spec
-          cp -R src/assets/ dist/PELCA/
+          pip install pyinstaller bw2io
+          ls
+          pyinstaller main.py --hidden-import=bw2io --distpath dist/PELCA  
+          cp -r .venv/Lib/site-packages/bw2io dist/PELCA/main/_internal/bw2io
 
       # Étape pour compresser l'exécutable sous Windows (PowerShell)
       - name: Archive Executable
