@@ -54,6 +54,9 @@ jobs:
           source .venv/Scripts/activate  # Activation spécifique à Windows
           pytest app/tests/
 
+      - name: Update VERSION in main_window.py
+        run: sed -i 's/^VERSION = ".*"/VERSION = "${GITHUB_REF##*/}"/' app/main_window.py
+
       # Étape pour construire l'exécutable sous Windows
       - name: Build Windows Executable
         run: |

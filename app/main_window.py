@@ -16,6 +16,8 @@ from app.widgets.params import FormWidget
 from app.widgets.plot_window.plot import PlotWindow
 from app.widgets.script import ScriptWidget
 
+VERSION = "Development version"
+
 
 class Communicator(QObject):
     close_window_signal = Signal()
@@ -43,7 +45,7 @@ class MainWindow(QMainWindow):
         version_label = QLabel()
         version_label.setAlignment(Qt.AlignRight)
         main_layout.addWidget(version_label)
-        version_label.setText("v2.0.6")
+        version_label.setText(VERSION)
         self.header = HeaderWidget()
         main_layout.addWidget(self.header)
 

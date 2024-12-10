@@ -156,6 +156,7 @@ class ControlsWidget(QWidget):
 
             self.save_excel_button = QPushButton("Save data to excel")
             self.save_excel_button.setFixedHeight(30)
+            self.save_excel_button.setDisabled(True)
 
             self.save_excel_button.clicked.connect(self.save_data_excel)
             self.save_data_button.clicked.connect(self.save_data)
