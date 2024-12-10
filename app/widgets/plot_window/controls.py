@@ -113,7 +113,6 @@ class ControlsWidget(QWidget):
 
             self.layout.addWidget(self.save_plot_button)
             self.layout.addWidget(self.save_all_plot_button)
-            self.layout.addWidget(self.switch_plot_button)
             # self.layout.addWidget(ImageButtonsWidget(self))
             self.add_separator()
 
