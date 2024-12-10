@@ -20,6 +20,24 @@ from app.utils.legacy import export_data, export_data_excel, get_max_fig_size
 from app.widgets.header import HeaderWidget
 
 
+
+
+def fig_to_image(fig, dpi=300):
+    if fig["type"] == "plotly":
+        img_bytes = pio.to_image(fig["plot"], format="png", scale=1)
+        img = Image.open(io.BytesIO(img_bytes))
+        img = img.convert("RGBA")
+        return img
+    else:
+        # Save the Matplotlib figure to a BytesIO object
+        buf = io.BytesIO()
+        fig["plot"].savefig(buf, format="png", dpi=dpi)
+        buf.seek(0)  # Move to the beginning of the buffer
+        img = Image.open(buf)
+        img = img.convert("RGBA")
+        return img
+
+
 class ControlsWidget(QWidget):
     def __init__(self, parent):
         super().__init__()
@@ -31,30 +49,31 @@ class ControlsWidget(QWidget):
         self.setLayout(self.layout)
 
     def save_plots(self):
-        if self.figs["matplotlib"]:
-            folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Plots")
-            if folder_path:
-                try:
-                    for idx, fig in enumerate(self.figs["matplotlib"]):
-                        filepath = os.path.join(folder_path, f"plot_{idx+1}.svg")
-                        fig.savefig(filepath, dpi=300)
-                    print(f"All plots saved successfully in {folder_path}")
-                except Exception as e:
-                    print(f"An error occurred while saving the plots: {e}")
+        folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Plots")
+        if folder_path:
+            # Create a folder for the plots
+            folder_path = os.path.join(folder_path, "plots")
+            os.makedirs(folder_path, exist_ok=True)
+            try:
+                for idx, fig in enumerate(self.figs["plots"]):
+                    img = fig_to_image(fig)
+                    filepath = os.path.join(folder_path, f"{fig['title']}.png")
+                    img.save(filepath, format="PNG")
+                print(f"All plots saved successfully in {folder_path}")
+            except Exception as e:
+                print(f"An error occurred while saving the plots: {e}")
 
     def save_selected_plot(self):
-        if self.figs["matplotlib"]:
-            folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Selected Plot")
-            if folder_path:
-                try:
-                    fig = self.figs[self.index]
-                    filepath = os.path.join(folder_path, f"selected_plot_{self.index + 1}.svg")
-                    fig.savefig(filepath, dpi=300)
-                    print(f"Selected plot saved successfully as {filepath}")
-                except Exception as e:
-                    print(f"An error occurred while saving the selected plot: {e}")
-        else:
-            print("No plots available to save.")
+        folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Plot")
+        if folder_path:
+            try:
+                fig = self.figs["plots"][self.index.get_index()]
+                img = fig_to_image(fig)
+                filepath = os.path.join(folder_path, f"{fig['title']}.png")
+                img.save(filepath, format="PNG")
+                print(f"Selected plot saved successfully in {folder_path}")
+            except Exception as e:
+                print(f"An error occurred while saving the plot: {e}")
 
     def save_data(self):
         folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Data")
@@ -101,9 +120,6 @@ class ControlsWidget(QWidget):
 
             self.save_all_plot_button = QPushButton("Save all plots")
             self.save_all_plot_button.setFixedHeight(30)
-
-            self.switch_plot_button = QPushButton("TEST - Init plot frame")
-            self.switch_plot_button.setFixedHeight(30)
 
             self.save_plot_button.clicked.connect(self.save_selected_plot)
             self.save_all_plot_button.clicked.connect(self.save_plots)
