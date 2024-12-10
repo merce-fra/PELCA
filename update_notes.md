@@ -58,3 +58,87 @@ These changes enhance usability by:
 - Tested the visibility toggle for script buttons when an Excel file is (or isn’t) loaded.  
 - Simulated scenarios where the LCA result file or path is missing to ensure proper error handling.
 
+
+# Pull Request: Fix Plot Widget (#20)
+
+## Date 
+06/12/2024 - 09/12/2024
+
+## Description  
+This pull request introduces several improvements and fixes to the plot widget functionality:
+
+1. **Widget Improvements:**  
+   - Moved `ImageButtonsWidget` to `PlotWidget` for easier rendering of plot thumbnails under the plot.
+
+2. **Plot Display Updates:**  
+   - Implemented dynamic switching between `WebEngine` and `canvas` for plot rendering.
+
+3. **Data Structure Update:**  
+   - Changed the plot data structure to support multiple plot types, starting with `matplotlib` and transitioning to `plotly`.
+
+4. **Grid Addition:**  
+   - Added a grid to the Cumulative Distribution Plot for improved readability.
+
+5. **Code Cleanup:**  
+   - Removed the `matplotlib` version of the plot and the Manufacturing environment impact plot.
+   - Deleted the `matplotlib` dependencies from the interface and streamlined the plot widget.
+
+6. **UI Improvements:**  
+   - Updated the plot thumbnail button to display the `plotly` plot.
+   - Removed switch logic from the control widget for better simplicity.
+
+## Impact
+- Provides dynamic rendering options between `WebEngine` and `canvas` for greater flexibility.
+- Enhanced the structure to support diverse plot types and improved the UI for a more intuitive experience.
+
+## Testing
+- Functional tests on dynamic switching (passed).  
+- Verified plot grid addition (successfully added).  
+- Confirmed functionality with `plotly` (working as expected).  
+- Ensured the eco impact plot integration with other plots is seamless (completed).  
+- Checked UI changes, including the thumbnail button update (successful).
+
+
+# Pull Request: Fix Export Image (#21)
+
+## Date 
+10/12/2024
+
+## Description  
+This pull request addresses issues with saving plots:
+
+1. **Save Current Plot:**  
+   - Fixed the "Save Current Plot" button to save the plot with the title from `plotting.py`.
+
+2. **Save All Plots:**  
+   - Fixed the "Save All Plots" button to allow saving all plots with the appropriate titles.
+
+## Impact
+- Ensures users can save individual and all plots correctly, with proper titles based on the plot data.
+
+## Testing
+- Verified functionality of both "Save Current Plot" and "Save All Plots" buttons.  
+- Confirmed saved images have the correct titles from `plotting.py`.
+
+
+# Pull Request: Move Monte Carlo Plotting Class and Update Bar Chart (#22)
+
+## Date 
+10/12/2024
+
+## Description  
+This pull request refactors the Monte Carlo plotting logic and updates the bar chart functionality:
+
+1. **Refactor Monte Carlo Plotting:**  
+   - Moved the Monte Carlo plotting class to a new file `plotting_MC.py` for better organization.
+
+2. **Bar Chart Update:**  
+   - Updated the bar chart functionality to enhance performance and visualization.
+
+## Impact
+- Improved the code organization by separating the Monte Carlo plotting logic into its own module.
+- Enhanced the bar chart plotting for better visual representation.
+
+## Testing
+- Verified that the Monte Carlo plotting logic works after refactor.  
+- Tested bar chart updates for visual correctness.
