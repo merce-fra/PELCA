@@ -92,54 +92,63 @@ class ControlsWidget(QWidget):
                 print(f"An error occurred while saving the data: {e}")
 
     def setup_ui(self):
-        # Title Label
-        self.layout.addWidget(HeaderWidget())
+            # Title Label
+            self.layout.addWidget(HeaderWidget())
 
-        # Save plot buttons
-        self.save_plot_button = QPushButton("Save current plot")
-        self.save_all_plot_button = QPushButton("Save all plots")
-        self.switch_plot_button = QPushButton("TEST - Init plot frame")
+            # Save plot buttons
+            self.save_plot_button = QPushButton("Save current plot")
+            self.save_plot_button.setFixedHeight(30)
 
-        self.save_plot_button.clicked.connect(self.save_selected_plot)
-        self.save_all_plot_button.clicked.connect(self.save_plots)
+            self.save_all_plot_button = QPushButton("Save all plots")
+            self.save_all_plot_button.setFixedHeight(30)
 
-        # Adding a separator between title and buttons
-        self.add_separator()
+            self.switch_plot_button = QPushButton("TEST - Init plot frame")
+            self.switch_plot_button.setFixedHeight(30)
 
-        self.layout.addWidget(self.save_plot_button)
-        self.layout.addWidget(self.save_all_plot_button)
-        self.layout.addWidget(self.switch_plot_button)
-        self.layout.addWidget(ImageButtonsWidget(self))
-        self.add_separator()
+            self.save_plot_button.clicked.connect(self.save_selected_plot)
+            self.save_all_plot_button.clicked.connect(self.save_plots)
 
-        # Options Label
-        options_label = QLabel(f"Select Options for data export :")
-        self.layout.addWidget(options_label)
+            # Adding a separator between title and buttons
+            self.add_separator()
 
-        # Checkboxes
-        self.checkbox_impact_total = QCheckBox("Impact total")
-        self.checkbox_impact_manufacturing = QCheckBox("Impact manufacturing")
-        self.checkbox_impact_use = QCheckBox("Impact use")
-        self.checkbox_fault_cause = QCheckBox("Fault cause")
-        self.checkbox_ru_age = QCheckBox("RU age")
+            self.layout.addWidget(self.save_plot_button)
+            self.layout.addWidget(self.save_all_plot_button)
+            self.layout.addWidget(self.switch_plot_button)
+            # self.layout.addWidget(ImageButtonsWidget(self))
+            self.add_separator()
 
-        # Adding checkboxes to the layout
-        self.layout.addWidget(self.checkbox_impact_total)
-        self.layout.addWidget(self.checkbox_impact_manufacturing)
-        self.layout.addWidget(self.checkbox_impact_use)
-        self.layout.addWidget(self.checkbox_fault_cause)
-        self.layout.addWidget(self.checkbox_ru_age)
+            # Options Label
+            options_label = QLabel("Select Options for data export :")
+            options_label.setFixedHeight(20)
+            self.layout.addWidget(options_label)
 
-        # Save Data Button
-        self.save_data_button = QPushButton("Save data")
-        self.save_excel_button = QPushButton("Save data to excel")
-        self.save_excel_button.clicked.connect(self.save_data_excel)
-        self.save_data_button.clicked.connect(self.save_data)
-        self.layout.addWidget(self.save_data_button)
-        self.layout.addWidget(self.save_excel_button)
+            # Checkboxes
+            self.checkbox_impact_total = QCheckBox("Impact total")
+            self.checkbox_manufacturing = QCheckBox("Impact manufacturing")
+            self.checkbox_use = QCheckBox("Impact use")
+            self.checkbox_fault_cause = QCheckBox("Fault cause")
+            self.checkbox_ru_age = QCheckBox("RU age")
+
+            self.layout.addWidget(self.checkbox_impact_total)
+            self.layout.addWidget(self.checkbox_manufacturing)
+            self.layout.addWidget(self.checkbox_use)
+            self.layout.addWidget(self.checkbox_fault_cause)
+            self.layout.addWidget(self.checkbox_ru_age)
+
+            # Save Data Button
+            self.save_data_button = QPushButton("Save data")
+            self.save_data_button.setFixedHeight(30)
+
+            self.save_excel_button = QPushButton("Save data to excel")
+            self.save_excel_button.setFixedHeight(30)
+
+            self.save_excel_button.clicked.connect(self.save_data_excel)
+            self.save_data_button.clicked.connect(self.save_data)
+            
+            self.layout.addWidget(self.save_data_button)
+            self.layout.addWidget(self.save_excel_button)
 
     def add_separator(self):
-        # Creating a horizontal line separator
         separator = QFrame()
         separator.setFrameShape(QFrame.HLine)
         separator.setFrameShadow(QFrame.Sunken)
@@ -149,36 +158,47 @@ class ControlsWidget(QWidget):
 class ImageButtonsWidget(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
+        self.parent = parent
 
         def create_thumbnail(fig, size=(100, 100)):
             """Crée une image miniature de la figure Plotly pour la compatibilité avec PySide6"""
             # Utiliser plotly.io.to_image pour convertir la figure Plotly en image PNG
-            print("Creating thumbnail")
-            img_bytes = pio.to_image(fig, format="png")
-            
-            # Ouvrir l'image avec PIL
-            img = Image.open(io.BytesIO(img_bytes))
-            img.thumbnail(size)  # Créer la miniature
-            img = img.convert("RGBA")  # Convertir l'image en mode RGBA pour assurer la compatibilité avec PySide6
+            if fig['type'] == 'plotly':
+                img_bytes = pio.to_image(fig['plot'], format="png")
+                
+                # Ouvrir l'image avec PIL
+                img = Image.open(io.BytesIO(img_bytes))
+                img.thumbnail(size)  # Créer la miniature
+                img = img.convert("RGBA")  # Convertir l'image en mode RGBA pour assurer la compatibilité avec PySide6
 
             # Convertir l'image en QImage pour l'affichage avec PySide6
-            qimage = QImage(img.tobytes(), img.width, img.height, img.width * 4, QImage.Format_RGBA8888)
-            pixmap = QPixmap.fromImage(qimage)
-            
-            # Créer un QLabel pour afficher l'image
-            label = QLabel()
-            label.setPixmap(pixmap)
-            return label
+                qimage = QImage(img.tobytes(), img.width, img.height, img.width * 4, QImage.Format_RGBA8888)
+                pixmap = QPixmap.fromImage(qimage)
+                
+                # Créer un QLabel pour afficher l'image
+                label = QLabel()
+                label.setPixmap(pixmap)
+                return label
+            else:
+                with io.BytesIO() as buf:
+                    fig['plot'].savefig(buf, format="png", bbox_inches="tight", pad_inches=0)
+                    buf.seek(0)
+                    img = Image.open(buf)
+                    img.thumbnail(size)
+                    qimage = QImage(img.tobytes(), img.width, img.height, QImage.Format_RGBA8888)
+                    pixmap = QPixmap.fromImage(qimage)
+                    label = QLabel()
+                    label.setPixmap(pixmap)
+                    return label
 
         self.layout = QHBoxLayout()
         self.setLayout(self.layout)
         self.thumbnails = []
-        for idx, fig in enumerate(parent.figs["plotly"]):
+        for idx, fig in enumerate(parent.figs["plots"]):
             thumbnail = create_thumbnail(fig)
             button = QPushButton()
             button.setIcon(QIcon(thumbnail.pixmap()))
             button.setIconSize(thumbnail.pixmap().rect().size())
-            button.clicked.connect(lambda checked, index=idx: parent.index.set_index(index))
-
+            button.clicked.connect(lambda checked, index=idx: self.parent.index.set_index(index))
             self.layout.addWidget(button)
             self.thumbnails.append(button)

@@ -223,23 +223,72 @@ def radar_factory(num_vars, frame="circle"):
 
 class PLOT:
     def __init__(self, dic, EI, EI_manu, EI_use, usage_time, fault_cause, nb_RU, nb_ite_MC, step, wcdf, EI_maintenance, impact_eco):
-        self.fig2 = self.CDF(wcdf, usage_time)
-        self.fig3 = self.fault_repartition(dic, fault_cause)
         self.fig4 = self.plot_selectEI(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig5 = self.plot_allEI(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig6 = self.plot_allEIatServicelife(dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step)
         self.eco = self.plot_selectEI_eco(dic, impact_eco['Total'], impact_eco['Manufacturing'], impact_eco['Use'], usage_time, nb_RU, nb_ite_MC, step)
 
-        self.fig7 = self.plot_allEI_manufacturing_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
+        self.allEI_manufacturing = self.plot_allEI_manufacturing_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig8 = self.plotCDF_plotly(wcdf, usage_time)
         self.fig9 = self.fault_repartition_plotly(dic, fault_cause)
         self.fig10 = self.plot_selectEI_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig11 = self.plot_allEI_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig12 = self.plot_allEIatServicelife_plotly(dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step)
 
+        self.figs = [
+            {
+                "title" : "All EI Manufacturing",
+                "plot": self.allEI_manufacturing,
+                "type": "plotly"
+            },
+            {
+                "title" : "CDF",
+                "plot": self.fig8,
+                "type": "plotly"
+            },
+            {
+                "title" : "Fault Repartition",
+                "plot": self.fig9,
+                "type": "plotly"
+            },
+            {
+                "title" : "Select EI",
+                "plot": self.fig10,
+                "type": "plotly"
+            },
+            {
+                "title" : "Select EI (Matplotlib)",
+                "plot": self.fig4,
+                "type": "matplotlib"
+            },
+            {
+                "title" : "All EI",
+                "plot": self.fig11,
+                "type": "plotly"
+            },
+            {
+                "title" : "All EI (Matplotlib)",
+                "plot": self.fig5,
+                "type": "matplotlib"
+            },
+            {
+                "title" : "All EI at Service Life",
+                "plot": self.fig12,
+                "type": "plotly"
+            },
+            {
+                "title" : "All EI at Service Life (Matplotlib)",
+                "plot": self.fig6,
+                "type": "matplotlib"
+            },
+            {
+                "title" : "Economic Impact",
+                "plot": self.eco,
+                "type": "matplotlib"
+            }
+        ]
 
-        self.mathplotlib_figs = [self.fig2, self.fig3, self.fig4, self.fig5, self.fig6, self.eco]
-        self.plotly_figs = [self.fig7, self.fig8, self.fig9, self.fig10, self.fig11, self.fig12, self.fig12]
+        
         
     def fault_repartition_plotly(self, dic, fault_cause):
         if dic["Wearout_failure"] == "False" and dic["Random_failure"] == "False" and dic["Early_failure"] == "False":
@@ -272,7 +321,7 @@ class PLOT:
             filtered_etiquettes = [label for n, label in zip(nombres, etiquettes) if n > 0]
 
             # Couleurs correspondantes
-            couleurs = ["#f4a300", "#2ca02c", "#d62728"]  # Exemple de couleurs
+            couleurs = px.colors.qualitative.Plotly
 
             # Création du diagramme en camembert
             fig = go.Figure(data=[go.Pie(
@@ -534,25 +583,6 @@ class PLOT:
             )
         )
 
-        return fig
-
-    def CDF(self, wcdf, usage_time):
-        t = np.arange(0, usage_time, 1)
-        # Créer la figure et l'axe
-        fig, ax = plt.subplots()  # Dimensions et résolution de la figure
-        # Tracer les données
-        ax.plot(t, wcdf, color="mediumvioletred", linewidth=2)
-        # Ajouter des titres et des labels
-        ax.set_title("Cumulative Distribution Function - All RU", weight="bold")
-        ax.set_xlabel("Time")
-        # Ajouter une grille
-        ax.grid(True)
-
-        # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
-        # adjust_fontsize(fig, ax)
-
-        adjust_fontsize(fig, ax)
-        adjust_figure_size(fig, ax)
         return fig
 
     def plotCDF_plotly(self, wcdf, usage_time):
@@ -1177,6 +1207,19 @@ class PLOT_MC:
     def __init__(self, dic):
         self.fig1 = self.radar_montecarlo(dic)
         self.fig2 = self.bar_with_uncertainty(dic)
+
+        self.figs = [
+            {
+                "title": "Uncertainty Analysis - Monte Carlo (Radar Chart)",
+                "plot": self.fig1,
+                "type" : "matplotlib"
+            }, 
+            {
+                "title": "Uncertainty Analysis - Monte Carlo (Bar Chart)",
+                "plot": self.fig2,
+                "type" : "matplotlib"
+            }
+        ]
 
     def radar_montecarlo(self, dic):
         N = len(dic["EI_name"])

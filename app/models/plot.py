@@ -10,7 +10,7 @@ class IndexSwitcher(QObject):
         self.figs = figs
 
     def get_max_index(self):
-        return len(self.figs["plotly"])
+        return len(self.figs["plots"]) - 1
 
     def set_index(self, index):
         self.index = index

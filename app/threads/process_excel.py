@@ -59,8 +59,7 @@ class ProcessExcel(QThread):
             impact_eco,
         )
         figs = {
-            "matplotlib": plot_instance.mathplotlib_figs,
-            "plotly": plot_instance.plotly_figs,
+            "plots": plot_instance.figs,
             "plot_data": {
                 "EI": EI,
                 "EI_manu": EI_manu,
@@ -81,7 +80,9 @@ class ProcessExcel(QThread):
         try:
             print("Running Monte Carlo simulation...")
             plot_instance = plotting.PLOT_MC(dic)
-            figs = [plot_instance.fig1, plot_instance.fig2]
+            figs = {"plot_data": {
+                
+            }, "plots": plot_instance.figs}
             self.figs.emit(figs)
             self.finished.emit()
         except Exception as e:
