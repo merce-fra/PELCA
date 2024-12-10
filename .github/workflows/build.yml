@@ -91,3 +91,11 @@ jobs:
       #     asset_path: pelca.zip
       #     asset_name: pelca.zip
       #     asset_content_type: application/zip
+
+      # Étape pour sauvegarder l'artefact
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: pelca-executable
+          path: pelca.zip
+

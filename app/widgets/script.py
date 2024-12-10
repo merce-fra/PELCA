@@ -76,9 +76,9 @@ class ScriptWidget(QWidget):
         layout.addWidget(self.text_edit_stdout)
         layout.addWidget(self.text_edit_stderr)
 
-        # self.stdout_stream = EmittingStream()
-        # self.stdout_stream.text_written.connect(self.append_output_stdout)
-        # sys.stdout = self.stdout_stream
+        self.stdout_stream = EmittingStream()
+        self.stdout_stream.text_written.connect(self.append_output_stdout)
+        sys.stdout = self.stdout_stream
 
         # # Redirection de stderr
         # self.stderr_stream = EmittingStream()

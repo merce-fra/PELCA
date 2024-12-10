@@ -119,6 +119,8 @@ class PlotWindow(QWidget):
     def __init__(self, parent, figs):
         super().__init__()
         self.setWindowTitle(f"Pelca Results")
+        self.setWindowIcon(QIcon(":/ressources/icons/icon.ico"))
+
         self.index = IndexSwitcher(figs)
         x = parent.pos().x() + 500
         y = parent.pos().y()
