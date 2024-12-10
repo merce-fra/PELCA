@@ -101,5 +101,4 @@ jobs:
         with:
               name: pelca-${{ github.ref_name }}
               path: pelca.zip
-          path: pelca.zip
 
