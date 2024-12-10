@@ -223,24 +223,72 @@ def radar_factory(num_vars, frame="circle"):
 
 class PLOT:
     def __init__(self, dic, EI, EI_manu, EI_use, usage_time, fault_cause, nb_RU, nb_ite_MC, step, wcdf, EI_maintenance, impact_eco):
-        self.fig1 = self.plot_allEI_manufacturing(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
-        self.fig2 = self.CDF(wcdf, usage_time)
-        self.fig3 = self.fault_repartition(dic, fault_cause)
         self.fig4 = self.plot_selectEI(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig5 = self.plot_allEI(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig6 = self.plot_allEIatServicelife(dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step)
         self.eco = self.plot_selectEI_eco(dic, impact_eco['Total'], impact_eco['Manufacturing'], impact_eco['Use'], usage_time, nb_RU, nb_ite_MC, step)
 
-        self.fig7 = self.plot_allEI_manufacturing_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
+        self.allEI_manufacturing = self.plot_allEI_manufacturing_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig8 = self.plotCDF_plotly(wcdf, usage_time)
         self.fig9 = self.fault_repartition_plotly(dic, fault_cause)
         self.fig10 = self.plot_selectEI_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig11 = self.plot_allEI_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig12 = self.plot_allEIatServicelife_plotly(dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step)
 
+        self.figs = [
+            {
+                "title" : "All EI Manufacturing",
+                "plot": self.allEI_manufacturing,
+                "type": "plotly"
+            },
+            {
+                "title" : "CDF",
+                "plot": self.fig8,
+                "type": "plotly"
+            },
+            {
+                "title" : "Fault Repartition",
+                "plot": self.fig9,
+                "type": "plotly"
+            },
+            {
+                "title" : "Select EI",
+                "plot": self.fig10,
+                "type": "plotly"
+            },
+            {
+                "title" : "Select EI (Matplotlib)",
+                "plot": self.fig4,
+                "type": "matplotlib"
+            },
+            {
+                "title" : "All EI",
+                "plot": self.fig11,
+                "type": "plotly"
+            },
+            {
+                "title" : "All EI (Matplotlib)",
+                "plot": self.fig5,
+                "type": "matplotlib"
+            },
+            {
+                "title" : "All EI at Service Life",
+                "plot": self.fig12,
+                "type": "plotly"
+            },
+            {
+                "title" : "All EI at Service Life (Matplotlib)",
+                "plot": self.fig6,
+                "type": "matplotlib"
+            },
+            {
+                "title" : "Economic Impact",
+                "plot": self.eco,
+                "type": "matplotlib"
+            }
+        ]
 
-        self.mathplotlib_figs = [self.fig1, self.fig2, self.fig3, self.fig4, self.fig5, self.fig6, self.eco]
-        self.plotly_figs = [self.fig7, self.fig8, self.fig9, self.fig10, self.fig11, self.fig12, self.fig12]
+        
         
     def fault_repartition_plotly(self, dic, fault_cause):
         if dic["Wearout_failure"] == "False" and dic["Random_failure"] == "False" and dic["Early_failure"] == "False":
@@ -273,7 +321,7 @@ class PLOT:
             filtered_etiquettes = [label for n, label in zip(nombres, etiquettes) if n > 0]
 
             # Couleurs correspondantes
-            couleurs = ["#f4a300", "#2ca02c", "#d62728"]  # Exemple de couleurs
+            couleurs = px.colors.qualitative.Plotly
 
             # Création du diagramme en camembert
             fig = go.Figure(data=[go.Pie(
@@ -290,88 +338,6 @@ class PLOT:
                 title_font=dict(size=24),
                 showlegend=False
             )
-
-        return fig
-
-    def plot_allEI_manufacturing(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
-        excel = pd.ExcelFile(os.path.join(dic["LCA_path"], dic["filename_result_EI"]))
-
-        # EI manufacturing of each RU
-        self.EI_manufacturing = pd.read_excel(excel, sheet_name="Manufacturing", index_col=0)
-
-        self.EI_manufacturing = self.EI_manufacturing.drop(columns=["Unit"])
-
-        index_labels = self.EI_manufacturing.columns.to_numpy()
-
-        self.EI_manufacturing = self.EI_manufacturing.to_numpy()
-
-        # EI manufacturing of total RU
-        self.EI_manufacturing_total = self.EI_manufacturing.sum(axis=1)
-        # Normalisation pour que chaque ligne somme à 1
-        normalized_EI_manu = self.EI_manufacturing * 100 / self.EI_manufacturing_total[:, np.newaxis]
-
-        # Création du graphique en barres empilées
-        fig, ax = plt.subplots()
-        adjust_figure_size(fig, ax)
-        # Nombre de lignes
-        num_rows = normalized_EI_manu.shape[0]
-        num_columns = len(index_labels)
-
-        # Récupérer les noms des lignes
-        line_names = dic["EI_name"]
-
-        combined_labels = [f"{name} ({unit})" for name, unit in zip(line_names, dic["LCIA_unit"])]
-
-        # Utilisation d'une colormap pour obtenir les couleurs
-        cmap = matplotlib.colormaps.get_cmap("tab20b")
-        colors = [cmap(i) for i in np.linspace(0, 1, num_columns)]
-
-        fig_width, fig_height = fig.get_size_inches()
-        font_size = min(fig_width, fig_height) * 1.3
-
-        # Barres empilées
-        for i in range(num_rows):
-            bottom = 0
-            for j in range(num_columns):
-                bar_color = colors[j % len(colors)]  # Utilisation des couleurs cycliquement
-                ax.bar(i, normalized_EI_manu[i, j], color=bar_color, bottom=bottom)
-
-                # Annotation pour les valeurs
-                height = normalized_EI_manu[i, j]
-                val = self.EI_manufacturing[i, j]
-                ax.text(
-                    i,
-                    bottom + height / 2,
-                    f"{val:.1e}",
-                    ha="center",
-                    va="center",
-                    fontsize=font_size,
-                    color="black",
-                    rotation=45,
-                    bbox=dict(facecolor="white", alpha=0.5, edgecolor="none", boxstyle="round,pad=0.2"),  # Fond gris
-                )
-
-                bottom += height
-
-        # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
-        # adjust_fontsize(fig, ax)
-
-        # Labels et légende
-        ax.set_ylabel("Normalized Value (%)")
-        ax.set_title("Manufacturing env. impact", weight="bold")
-        ax.set_xticks(range(num_rows))
-        ax.set_xticklabels(combined_labels, rotation=45, ha="right")
-        # ax.legend(index_labels, loc='center left')
-        ax.set_ylim(0, 100)
-        ax.set_yticks(np.arange(0, 101, 10))
-        ax.grid(True, axis="y", alpha=0.7)
-
-        # Ajouter une légende en haut du graphique
-        ax.legend(index_labels, loc="center left", bbox_to_anchor=(1, 0.5))
-
-        adjust_fontsize(fig, ax)
-
-        plt.tight_layout()
 
         return fig
 
@@ -399,18 +365,17 @@ class PLOT:
         fig = go.Figure()
 
         # Barres empilées
-        for i in range(normalized_EI_manu.shape[0]):
-            for j in range(len(index_labels)):
-                fig.add_trace(
-                    go.Bar(
-                        x=[combined_labels[i]],
-                        y=[normalized_EI_manu[i, j]],
-                        name=index_labels[j],
-                        marker_color=colors[j % len(colors)],
-                        text=[f"{self.EI_manufacturing[i, j]:.1e}"],
-                        textposition="inside",
-                    )
+        for j in range(len(index_labels)):
+            fig.add_trace(
+                go.Bar(
+                    x=combined_labels,
+                    y=normalized_EI_manu[:, j],
+                    name=index_labels[j],
+                    marker_color=colors[j % len(colors)],
+                    text=[f"{val:.1e}" for val in self.EI_manufacturing[:, j]],
+                    textposition="inside",
                 )
+            )
 
         fig.update_layout(
             barmode="stack",
@@ -620,25 +585,6 @@ class PLOT:
 
         return fig
 
-    def CDF(self, wcdf, usage_time):
-        t = np.arange(0, usage_time, 1)
-        # Créer la figure et l'axe
-        fig, ax = plt.subplots()  # Dimensions et résolution de la figure
-        # Tracer les données
-        ax.plot(t, wcdf, color="mediumvioletred", linewidth=2)
-        # Ajouter des titres et des labels
-        ax.set_title("Cumulative Distribution Function - All RU", weight="bold")
-        ax.set_xlabel("Time")
-        # Ajouter une grille
-        ax.grid(True)
-
-        # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
-        # adjust_fontsize(fig, ax)
-
-        adjust_fontsize(fig, ax)
-        adjust_figure_size(fig, ax)
-        return fig
-
     def plotCDF_plotly(self, wcdf, usage_time):
         import plotly.graph_objects as go
 
@@ -660,6 +606,20 @@ class PLOT:
             yaxis=dict(showgrid=True),
             plot_bgcolor="white",  # Background color of the plot
         )
+
+        fig.update_layout(
+            xaxis=dict(
+                showgrid=True,
+                gridcolor='lightgray',
+                gridwidth=1
+            ),
+            yaxis=dict(
+                showgrid=True,
+                gridcolor='lightgray',
+                gridwidth=1
+            )
+        )
+        
         return fig
     
     def plot_allEIatServicelife(self, dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step):
@@ -1247,6 +1207,19 @@ class PLOT_MC:
     def __init__(self, dic):
         self.fig1 = self.radar_montecarlo(dic)
         self.fig2 = self.bar_with_uncertainty(dic)
+
+        self.figs = [
+            {
+                "title": "Uncertainty Analysis - Monte Carlo (Radar Chart)",
+                "plot": self.fig1,
+                "type" : "matplotlib"
+            }, 
+            {
+                "title": "Uncertainty Analysis - Monte Carlo (Bar Chart)",
+                "plot": self.fig2,
+                "type" : "matplotlib"
+            }
+        ]
 
     def radar_montecarlo(self, dic):
         N = len(dic["EI_name"])
