@@ -172,11 +172,11 @@ class PLOT:
                 "plot": self.fig9,
                 "type": "plotly"
             },
-            {
-                "title" : "Select EI",
-                "plot": self.fig10,
-                "type": "plotly"
-            },
+            # {
+            #     "title" : "Select EI", 
+            #     "plot": self.fig10,
+            #     "type": "plotly"
+            # },
             {
                 "title" : "Select EI (Matplotlib)",
                 "plot": self.fig4,
@@ -197,11 +197,11 @@ class PLOT:
                 "plot": self.fig12,
                 "type": "plotly"
             },
-            {
-                "title" : "All EI at Service Life (Matplotlib)",
-                "plot": self.fig6,
-                "type": "matplotlib"
-            },
+            # {
+            #     "title" : "All EI at Service Life (Matplotlib)",
+            #     "plot": self.fig6,
+            #     "type": "matplotlib"
+            # },
             {
                 "title" : "Economic Impact",
                 "plot": self.eco,

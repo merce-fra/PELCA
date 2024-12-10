@@ -7,7 +7,7 @@ from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QFrame,
                                QHBoxLayout, QLabel, QLineEdit, QMainWindow,
                                QMessageBox, QPushButton, QSplitter, QTextEdit,
-                               QVBoxLayout, QWidget)
+                               QVBoxLayout, QWidget,QSystemTrayIcon)
 
 import app.ressources.ressources_rc  # Import des ressources compilées
 from app.threads.process_excel import ProcessExcel
@@ -35,6 +35,11 @@ class MainWindow(QMainWindow):
         self.is_running = False  # Flag to check if a script is running
         self._setup_ui()
         self.setWindowIcon(QIcon(":/ressources/icons/icon.ico"))
+         # Créer une icône pour la barre des tâches
+        self.tray_icon = QSystemTrayIcon(self)
+        self.tray_icon.setIcon(QIcon(":/ressources/icons/icon.ico"))
+        self.tray_icon.show()
+
 
     def _setup_ui(self):
         """Set up the main UI components and layout."""

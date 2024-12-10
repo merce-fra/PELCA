@@ -1,7 +1,7 @@
 import sys
 
 import matplotlib
-from PySide6.QtGui import QColor, QPalette
+from PySide6.QtGui import QColor, QPalette, QIcon
 from PySide6.QtWidgets import QApplication
 
 from app.main_window import MainWindow
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     # Create an instance of QApplication
 
     app = QApplication(sys.argv)
-
+    app.setWindowIcon(QIcon(":/ressources/icons/icon.ico"))
     # Set the application style
     app.setStyle("Fusion")
 
