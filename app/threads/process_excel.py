@@ -3,7 +3,7 @@ import os
 from bw2data.errors import InvalidExchange
 from PySide6.QtCore import QThread, Signal
 
-from app.utils import LCA, dictionary, plotting, staircase
+from app.utils import LCA, dictionary, plotting, staircase, plotting_MC
 
 
 class ProcessExcel(QThread):
@@ -79,7 +79,7 @@ class ProcessExcel(QThread):
         """Run Monte Carlo simulations."""
         try:
             print("Running Monte Carlo simulation...")
-            plot_instance = plotting.PLOT_MC(dic)
+            plot_instance = plotting_MC.PLOT_MC(dic)
             figs = {"plot_data": {
                 
             }, "plots": plot_instance.figs}
