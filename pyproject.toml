@@ -99,6 +99,7 @@ pytest-qt = "^4.4.0"
 plotly = "^5.24.1"
 gitpython = "^3.1.43"
 pyside6-addons = "^6.8.0.2"
+kaleido = "0.1.0.post1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
