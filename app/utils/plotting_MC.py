@@ -10,6 +10,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+from plotly.tools import mpl_to_plotly
 
 
 class PLOT_MC:
@@ -38,6 +39,7 @@ class PLOT_MC:
                 "plot": self.fig2_plotly,
                 "type": "plotly",
             },
+            
         ]
 
     def radar_montecarlo(self, dic):

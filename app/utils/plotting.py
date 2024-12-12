@@ -26,6 +26,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.subplots as sp
+from plotly.tools import mpl_to_plotly
+
 
 
 def get_screen_size():
@@ -145,7 +147,6 @@ def _decile(
 class PLOT:
     def __init__(self, dic, EI, EI_manu, EI_use, usage_time, fault_cause, nb_RU, nb_ite_MC, step, wcdf, EI_maintenance, impact_eco):
         self.fig4 = self.plot_selectEI(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
-        self.fig6 = self.plot_allEIatServicelife(dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step)
         self.eco = self.plot_selectEI_eco(dic, impact_eco['Total'], impact_eco['Manufacturing'], impact_eco['Use'], usage_time, nb_RU, nb_ite_MC, step)
 
         self.allEI_manufacturing = self.plot_allEI_manufacturing_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
@@ -154,6 +155,17 @@ class PLOT:
         self.fig10 = self.plot_selectEI_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig11 = self.plot_allEI_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig12 = self.plot_allEIatServicelife_plotly(dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step)
+
+
+        self.selectEI = mpl_to_plotly(fig=self.fig4)
+        self.selectEI.update_layout(
+            autosize=True
+        )
+
+        self.eco_impact = mpl_to_plotly(fig=self.eco)
+        self.eco_impact.update_layout(
+            autosize=True
+        )
 
         self.figs = [
             {
@@ -171,13 +183,13 @@ class PLOT:
                 "plot": self.fig9,
                 "type": "plotly"
             },
-            # {
-            #     "title" : "Select EI", 
-            #     "plot": self.fig10,
-            #     "type": "plotly"
-            # },
             {
-                "title" : "Select EI (Matplotlib)",
+                "title" : "Select EI", 
+                "plot": self.selectEI,
+                "type": "plotly"
+            },
+            {
+                "title" : "Select EI",
                 "plot": self.fig4,
                 "type": "matplotlib"
             },
@@ -189,6 +201,11 @@ class PLOT:
             {
                 "title" : "All EI at Service Life",
                 "plot": self.fig12,
+                "type": "plotly"
+            },
+            {
+                "title" : "Economic Impact",
+                "plot": self.eco_impact,
                 "type": "plotly"
             },
             {
@@ -349,6 +366,9 @@ class PLOT:
         adjust_figure_size(fig, ax)
         # set title of the plot
         ax.set_title("Economic Impact")
+        for ax in fig.get_axes():
+            ax.xaxis.set_major_formatter(ticker.NullFormatter())
+            ax.yaxis.set_major_formatter(ticker.NullFormatter())
         return fig
     
 
@@ -399,6 +419,9 @@ class PLOT:
         ax.set_xlabel("Time (years)")
         ax.grid(True)
         adjust_figure_size(fig, ax)
+        for ax in fig.get_axes():
+            ax.xaxis.set_major_formatter(ticker.NullFormatter())
+            ax.yaxis.set_major_formatter(ticker.NullFormatter())
         return fig
     
     def plot_selectEI_plotly(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
@@ -494,7 +517,6 @@ class PLOT:
                 x=1
             )
         )
-
         return fig
 
     def plotCDF_plotly(self, wcdf, usage_time):
@@ -772,97 +794,6 @@ class PLOT:
             adjust_fontsize(fig, ax)
         return fig
     
-    def plot_allEIatServicelife(self, dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step):
-        # Charger les données à partir du fichier Excel
-        excel = pd.ExcelFile(os.path.join(dic["LCA_path"], dic["filename_result_EI"]))
-
-        # Lire les données de la feuille Manufacturing
-        self.EI_manufacturing = pd.read_excel(excel, sheet_name="Manufacturing", index_col=0)
-        self.EI_manufacturing = self.EI_manufacturing.drop(columns=["Unit"])
-        self.EI_manufacturing = self.EI_manufacturing.to_numpy()
-        self.EI_manufacturing = np.sum(self.EI_manufacturing, axis=1)
-
-        # Calculer la moyenne des EI pour les autres catégories
-        self.EI_use = np.mean(EI_use[dic["service_life"] - 1, :, :], axis=0)
-        self.EI_maintenance = np.mean(EI_maintenance[dic["service_life"] - 1, :, :], axis=0)
-        self.EI_replacement = (
-            np.mean(EI_manu[dic["service_life"] - 1, :, :], axis=0) - self.EI_manufacturing - self.EI_maintenance
-        )
-
-        # Calculer le total des EI
-        self.EI_total = np.mean(EI[dic["service_life"] - 1, :, :], axis=0)
-
-        # Normaliser les valeurs
-        normalized_EI_manu = self.EI_manufacturing * 100 / self.EI_total
-        normalized_EI_use = self.EI_use * 100 / self.EI_total
-        normalized_EI_replacement = self.EI_replacement * 100 / self.EI_total
-        normalized_EI_maintenance = self.EI_maintenance * 100 / self.EI_total
-
-        # Empiler les valeurs
-        combined_EI = np.column_stack((self.EI_manufacturing, self.EI_use, self.EI_replacement, self.EI_maintenance))
-        combined_normalized_EI = np.column_stack(
-            (normalized_EI_manu, normalized_EI_use, normalized_EI_replacement, normalized_EI_maintenance)
-        )
-
-        # Création du graphique en barres empilées
-        fig, ax = plt.subplots(figsize=(10, 6))
-        
-        # Nombre de lignes et colonnes pour les barres empilées
-        num_rows = normalized_EI_manu.shape[0]
-        num_columns = 4
-
-        # Récupérer les noms des lignes
-        line_names = dic["EI_name"]
-
-        # Créer des étiquettes combinées
-        combined_labels = [f"{name} ({unit})" for name, unit in zip(line_names, dic["LCIA_unit"])]
-
-        # Utilisation d'une colormap pour les couleurs
-        cmap = matplotlib.cm.get_cmap("tab20b")
-        colors = [cmap(i) for i in np.linspace(0, 1, num_columns)]
-
-        # Ajuster la taille des polices
-        fig_width, fig_height = fig.get_size_inches()
-        font_size = min(fig_width, fig_height) * 1.3
-
-        # Tracer les barres empilées
-        for i in range(num_rows):
-            bottom = 0
-            for j in range(num_columns):
-                bar_color = colors[j % len(colors)]  # Utiliser les couleurs cycliquement
-                ax.bar(i, combined_normalized_EI[i, j], color=bar_color, bottom=bottom)
-
-                # Annotation pour chaque barre
-                height = combined_normalized_EI[i, j]
-                val = combined_EI[i, j]
-                ax.text(
-                    i,
-                    bottom + height / 2,
-                    f"{val:.1e}",
-                    ha="center",
-                    va="center",
-                    fontsize=font_size,
-                    color="black",
-                    rotation=45,
-                    bbox=dict(facecolor="white", alpha=0.5, edgecolor="none", boxstyle="round,pad=0.2"),
-                )
-
-                bottom += height
-
-        # Configuration des axes
-        ax.set_ylabel("Normalized Value (%)")
-        ax.set_title(f'Total environmental impact at {dic["service_life"]} years (Mean)', weight="bold")
-        ax.set_xticks(range(num_rows))
-        ax.set_xticklabels(combined_labels, rotation=45, ha="right")
-        ax.set_ylim(0, 100)
-        ax.set_yticks(np.arange(0, 101, 10))
-        ax.grid(True, axis="y", alpha=0.7)
-
-        # Ajouter une légende
-        index_labels = ["Manufacture", "Use", "Replacement", "Maintenance"]
-        ax.legend(index_labels, loc="center left", bbox_to_anchor=(1, 0.5))
-
-        return fig
     
 
     def plot_allEIatServicelife_plotly(self, dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step):
