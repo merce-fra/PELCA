@@ -188,11 +188,6 @@ class PLOT:
                 "type": "plotly"
             },
             {
-                "title" : "All EI (Matplotlib)",
-                "plot": self.fig5,
-                "type": "matplotlib"
-            },
-            {
                 "title" : "All EI at Service Life",
                 "plot": self.fig12,
                 "type": "plotly"
