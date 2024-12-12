@@ -354,7 +354,7 @@ class PLOT:
         adjust_fontsize(fig, ax)
 
         # Ajuster les tailles des polices
-        ax.set_ylabel("Cost", rotation=90)
+        ax.set_ylabel("Cost/Price (€)", rotation=90)
         ax.set_xlabel("Time (years)")
         ax.grid(True)
         adjust_figure_size(fig, ax)
