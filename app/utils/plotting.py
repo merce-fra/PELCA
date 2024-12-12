@@ -799,6 +799,9 @@ class PLOT:
         return fig
     
 
+
+
+
     def plot_allEI_plotly(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
         methods = dic["EI_name"]
         number_of_EI = len(methods)
@@ -827,39 +830,47 @@ class PLOT:
                 min_vals = result_MC_EI.min(axis=1)
                 max_vals = result_MC_EI.max(axis=1)
 
-                # Ajouter le graphique des déciles
+                # Ajouter les graphiques pour Mean, Min, Max, et Median
                 fig.add_trace(
                     go.Scatter(
-                        x=var, y=mean_vals, mode="lines", name=f"Mean ({methods[EI_index]})",
+                        x=var, y=mean_vals, mode="lines", name="Mean",
                         line=dict(color="blue"),
-                        hovertemplate=f"<b>Mean</b>: %{{y:.2e}}<br><b>Time</b>: %{{x}} years<extra></extra>"
+                        hovertemplate="<b>Mean</b>: %{y:.2e}<br><b>Time</b>: %{x} years<extra></extra>",
+                        showlegend=(EI_index == 0),  # Montrer la légende une seule fois
+                        legendgroup="mean"  # Groupe "mean"
                     ),
                     row=row, col=col
                 )
 
                 fig.add_trace(
                     go.Scatter(
-                        x=var, y=min_vals, mode="lines", name=f"Min ({methods[EI_index]})",
+                        x=var, y=min_vals, mode="lines", name="Min",
                         line=dict(dash="dot", color="lightblue"),
-                        hovertemplate=f"<b>Min</b>: %{{y:.2e}}<br><b>Time</b>: %{{x}} years<extra></extra>"
+                        hovertemplate="<b>Min</b>: %{y:.2e}<br><b>Time</b>: %{x} years<extra></extra>",
+                        showlegend=(EI_index == 0),  # Montrer la légende une seule fois
+                        legendgroup="min"  # Groupe "min"
                     ),
                     row=row, col=col
                 )
 
                 fig.add_trace(
                     go.Scatter(
-                        x=var, y=max_vals, mode="lines", name=f"Max ({methods[EI_index]})",
+                        x=var, y=max_vals, mode="lines", name="Max",
                         line=dict(dash="dot", color="lightblue"),
-                        hovertemplate=f"<b>Max</b>: %{{y:.2e}}<br><b>Time</b>: %{{x}} years<extra></extra>"
+                        hovertemplate="<b>Max</b>: %{y:.2e}<br><b>Time</b>: %{x} years<extra></extra>",
+                        showlegend=(EI_index == 0),  # Montrer la légende une seule fois
+                        legendgroup="max"  # Groupe "max"
                     ),
                     row=row, col=col
                 )
 
                 fig.add_trace(
                     go.Scatter(
-                        x=var, y=median_vals, mode="lines", name=f"Median ({methods[EI_index]})",
+                        x=var, y=median_vals, mode="lines", name="Median",
                         line=dict(color="green"),
-                        hovertemplate=f"<b>Median</b>: %{{y:.2e}}<br><b>Time</b>: %{{x}} years<extra></extra>"
+                        hovertemplate="<b>Median</b>: %{y:.2e}<br><b>Time</b>: %{x} years<extra></extra>",
+                        showlegend=(EI_index == 0),  # Montrer la légende une seule fois
+                        legendgroup="median"  # Groupe "median"
                     ),
                     row=row, col=col
                 )
@@ -870,7 +881,7 @@ class PLOT:
                     go.Bar(
                         x=var, y=result_fab[:, 0, EI_index], name=f"Manufacturing ({methods[EI_index]})",
                         marker_color="blue",
-                        hovertemplate=f"<b>Manufacturing</b>: %{{y:.2e}}<br><b>Time</b>: %{{x}} years<extra></extra>"
+                        hovertemplate="<b>Manufacturing</b>: %{y:.2e}<br><b>Time</b>: %{x} years<extra></extra>"
                     ),
                     row=row, col=col
                 )
@@ -880,7 +891,7 @@ class PLOT:
                         x=var, y=result_use[:, 0, EI_index], name=f"Use ({methods[EI_index]})",
                         marker_color="pink",
                         base=result_fab[:, 0, EI_index],
-                        hovertemplate=f"<b>Use</b>: %{{y:.2e}}<br><b>Time</b>: %{{x}} years<extra></extra>"
+                        hovertemplate="<b>Use</b>: %{y:.2e}<br><b>Time</b>: %{x} years<extra></extra>"
                     ),
                     row=row, col=col
                 )
@@ -889,23 +900,26 @@ class PLOT:
                     go.Scatter(
                         x=var, y=result_MC[:, 0, EI_index], mode="lines", name=f"Total ({methods[EI_index]})",
                         line=dict(color="black", width=2),
-                        hovertemplate=f"<b>Total</b>: %{{y:.2e}}<br><b>Time</b>: %{{x}} years<extra></extra>"
+                        hovertemplate="<b>Total</b>: %{y:.2e}<br><b>Time</b>: %{x} years<extra></extra>"
                     ),
                     row=row, col=col
                 )
 
         # Configuration générale des axes et du titre
         fig.update_layout(
-            title=f"Environmental Impact Over Time",
+            title="Environmental Impact Over Time",
             xaxis_title="Time (years)",
             yaxis_title="Environmental Impact",
             barmode="stack",
             legend=dict(x=1.05, y=1),
             template="plotly_white",
-            height=300 * num_rows,  # Ajuster la hauteur en fonction du nombre de lignes
-            width=700  # Largeur fixe
+            autosize=True
         )
 
+        for i in range(1, num_rows + 1):
+            for j in range(1, num_cols + 1):
+                fig.update_xaxes(title_text="Time (years)", row=i, col=j)
+                # fig.update_yaxes(title_text="Environmental Impact", row=i, col=j)
         return fig
 
 
