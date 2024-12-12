@@ -353,6 +353,8 @@ class PLOT:
         ax.set_xlabel("Time (years)")
         ax.grid(True)
         adjust_figure_size(fig, ax)
+        # set title of the plot
+        ax.set_title("Economic Impact")
         return fig
     
 
