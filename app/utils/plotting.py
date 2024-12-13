@@ -533,7 +533,7 @@ class PLOT:
         # Update the layout (title, labels, etc.)
         fig.update_layout(
             title="Cumulative Distribution Function - All RU",
-            xaxis_title="Time",
+            xaxis_title="Time (years)",
             yaxis_title="CDF",
             title_font=dict(size=16, family="Arial", color="black"),
             xaxis=dict(showgrid=True),
