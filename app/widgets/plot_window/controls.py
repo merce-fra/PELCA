@@ -151,7 +151,7 @@ class ControlsWidget(QWidget):
             self.layout.addWidget(self.checkbox_ru_age)
 
             # Save Data Button
-            self.save_data_button = QPushButton("Save data")
+            self.save_data_button = QPushButton("Save data to numpy array")
             self.save_data_button.setFixedHeight(30)
 
             self.save_excel_button = QPushButton("Save data to excel")
