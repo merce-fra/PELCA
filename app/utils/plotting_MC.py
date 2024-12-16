@@ -11,7 +11,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 from plotly.tools import mpl_to_plotly
-
+import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+import numpy as np
+from PIL import Image
+import io
 
 class PLOT_MC:
     def __init__(self, dic):
@@ -19,7 +23,6 @@ class PLOT_MC:
         self.fig1_matplotlib = self.radar_montecarlo(dic)
 
         # Graphiques Plotly
-        self.fig1_plotly = self.radar_montecarlo_plotly(dic)
         self.fig2_plotly = self.bar_with_uncertainty_plotly(dic)
 
         # Liste des graphiques
@@ -29,11 +32,6 @@ class PLOT_MC:
                 "plot": self.fig1_matplotlib,
                 "type": "matplotlib",
             },
-            # {
-            #     "title": "Uncertainty Analysis - Monte Carlo (Radar Chart)",
-            #     "plot": self.fig1_plotly,
-            #     "type": "plotly",
-            # },
             {
                 "title": "Uncertainty Analysis - Monte Carlo (Bar Chart)",
                 "plot": self.fig2_plotly,
@@ -59,7 +57,7 @@ class PLOT_MC:
 
         categories = [f"{name} ({unit})" for name, unit in zip(dic["EI_name"], dic["LCIA_unit"])]
 
-        fig, ax = plt.subplots(subplot_kw=dict(projection="radar"), figsize=(7, 5))
+        fig, ax = plt.subplots(subplot_kw=dict(projection="radar"), figsize=(15, 5))
         ax.set_title("Uncertainty Analysis - Monte Carlo", fontsize=20, weight="bold")
 
         for data, color, alpha in zip(
@@ -69,33 +67,11 @@ class PLOT_MC:
             ax.fill(theta, data, color=color, alpha=alpha)
 
         ax.set_varlabels(categories)
-        ax.legend(["μ+2σ", "Mean (μ)", "μ-2σ"], loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=3)
+        ax.legend(["μ+2σ", "Mean (μ)", "μ-2σ"], loc="center left", bbox_to_anchor=(1.2, 0.5),ncol=1)
 
         return fig
 
 
-    def radar_montecarlo_plotly(self, dic):
-        excel_LCA = pd.ExcelFile(os.path.join(dic["LCA_path"], dic["filename_result_EI_MC"]))
-        df_LCA = pd.read_excel(excel_LCA, 0)
-        excel_LCA.close()
-
-        mean = df_LCA.loc[:, "Mean"].to_numpy()
-        sd = df_LCA.loc[:, "SD"].to_numpy()
-
-        mean_sum_norm = 100 * mean / mean
-        min_sum_norm = 100 * (mean - 2 * sd) / mean
-        max_sum_norm = 100 * (mean + 2 * sd) / mean
-
-        categories = [f"{name} ({unit})" for name, unit in zip(dic["EI_name"], dic["LCIA_unit"])]
-        categories.append(categories[0])
-
-        fig = go.Figure()
-        fig.add_trace(go.Scatterpolar(r=max_sum_norm, theta=categories, fill="toself", name="μ+2σ"))
-        fig.add_trace(go.Scatterpolar(r=mean_sum_norm, theta=categories, fill="toself", name="Mean (μ)"))
-        fig.add_trace(go.Scatterpolar(r=min_sum_norm, theta=categories, fill="toself", name="μ-2σ"))
-        fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100])), title="Radar Chart")
-
-        return fig
 
     def bar_with_uncertainty_plotly(self, dic):
         excel_LCA = pd.ExcelFile(os.path.join(dic["LCA_path"], dic["filename_result_EI_MC"]))
