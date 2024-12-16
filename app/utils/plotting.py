@@ -12,142 +12,133 @@ Created on 2024
 
 @author: baudais
 """
-import ctypes
 import math
 import os
-import tkinter as tk
 
-import matplotlib
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
+# import matplotlib.pyplot as plt
+# import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import plotly.subplots as sp
-from plotly.tools import mpl_to_plotly
 
 
 
-def get_screen_size():
-    root = tk.Tk()
-    root.withdraw()  # Cache la fenêtre principale
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-    return screen_width, screen_height
+# def get_screen_size():
+#     root = tk.Tk()
+#     root.withdraw()  # Cache la fenêtre principale
+#     screen_width = root.winfo_screenwidth()
+#     screen_height = root.winfo_screenheight()
+#     return screen_width, screen_height
 
 
-def get_dpi_scaling():
-    if os.name == "nt":  # Windows
-        hdc = ctypes.windll.user32.GetDC(0)
-        dpi = ctypes.windll.gdi32.GetDeviceCaps(hdc, 88)  # 88 est le LOGPIXELSX
-        ctypes.windll.user32.ReleaseDC(0, hdc)
-        scaling_factor = dpi / 96.0  # 96 DPI est la référence pour 100% de mise à l'échelle
-    else:  # Linux et autres systèmes
-        root = tk.Tk()
-        root.withdraw()  # Ne pas afficher la fenêtre
-        dpi = root.winfo_fpixels("1i")  # Obtenir les pixels par pouce
-        scaling_factor = dpi / 96.0  # 96 DPI est la référence pour 100% de mise à l'échelle
-        root.destroy()  # Détruire la fenêtre après utilisation
+# def get_dpi_scaling():
+#     if os.name == "nt":  # Windows
+#         hdc = ctypes.windll.user32.GetDC(0)
+#         dpi = ctypes.windll.gdi32.GetDeviceCaps(hdc, 88)  # 88 est le LOGPIXELSX
+#         ctypes.windll.user32.ReleaseDC(0, hdc)
+#         scaling_factor = dpi / 96.0  # 96 DPI est la référence pour 100% de mise à l'échelle
+#     else:  # Linux et autres systèmes
+#         root = tk.Tk()
+#         root.withdraw()  # Ne pas afficher la fenêtre
+#         dpi = root.winfo_fpixels("1i")  # Obtenir les pixels par pouce
+#         scaling_factor = dpi / 96.0  # 96 DPI est la référence pour 100% de mise à l'échelle
+#         root.destroy()  # Détruire la fenêtre après utilisation
 
-    return scaling_factor
-
-
-def adjust_figure_size(fig, ax):
-    screen_width, screen_height = get_screen_size()
-    scaling_factor = get_dpi_scaling()
-
-    # Ajustement des dimensions de la figure en tenant compte de la mise à l'échelle
-    fig_width = (screen_width / 210) / scaling_factor  # Adapter à la mise à l'échelle
-    fig_height = (screen_height / 210) / scaling_factor
-    fig.set_size_inches(fig_width, fig_height)
+#     return scaling_factor
 
 
-def adjust_fontsize(fig, ax):
-    # Ajuster les tailles des polices en fonction de la taille de la figure
-    fig_width, fig_height = fig.get_size_inches()
-    base_font_size = min(fig_width, fig_height) * 2.5  # Ajustez ce coefficient selon vos besoins
+# def adjust_figure_size(fig, ax):
+#     screen_width, screen_height = get_screen_size()
+#     scaling_factor = get_dpi_scaling()
 
-    # Ajustement des éléments du graphique
-    for item in [ax.title, ax.xaxis.label, ax.yaxis.label] + ax.get_xticklabels() + ax.get_yticklabels():
-        item.set_fontsize(base_font_size)
-
-    # Ajuster la taille des légendes
-    if ax.get_legend() is not None:
-        for legend in ax.get_legend().get_texts():
-            legend.set_fontsize(base_font_size * 1)
+#     # Ajustement des dimensions de la figure en tenant compte de la mise à l'échelle
+#     fig_width = (screen_width / 210) / scaling_factor  # Adapter à la mise à l'échelle
+#     fig_height = (screen_height / 210) / scaling_factor
+#     fig.set_size_inches(fig_width, fig_height)
 
 
-def _decile(
-    data,
-    ax,
-    var,
-    display_decile,
-    display_median,
-    display_mean,
-    display_max,
-    display_legend,
-    xlabel,
-    ylabel,
-    title,
-    symlog=0,
-    y_legend=1,
-    xlog=False,
-    ylim_min=0,
-    x_legend=0.3,
-):
-    # Plot
+# def adjust_fontsize(fig, ax):
+#     # Ajuster les tailles des polices en fonction de la taille de la figure
+#     fig_width, fig_height = fig.get_size_inches()
+#     base_font_size = min(fig_width, fig_height) * 2.5  # Ajustez ce coefficient selon vos besoins
 
-    n_percentile = 10
-    percent = np.linspace(0, 100 * (1 - 1 / n_percentile), n_percentile)[1:]
-    n_ite = len(data)
-    n_percentile = len(percent)
-    n_var = len(var)
-    data_plot = np.zeros((n_var, n_percentile))
-    data_max = np.zeros((n_var))
-    data_min = np.zeros((n_var))
-    for k in range(n_var):
-        data_plot[k] = np.percentile(data[k], percent)
-        data_max[k] = np.max(data[k])
-        data_min[k] = np.min(data[k])
-    if display_decile:
-        for k in range(n_percentile):
-            fill = ax.fill_between(
-                var, data_plot[:, k], data_plot[:, n_percentile - 1 - k], color="b", alpha=0.1, linewidth=0
-            )
-        fill.set_label("Decile")
-    if display_median:
-        ax.plot(var, data_plot[:, int(n_percentile / 2)], "b", alpha=0.7, label="Median")
-    if display_mean:
-        ax.plot(var, np.mean(data_plot, axis=1), "r", alpha=0.7, label="Mean")
-    if xlog:
-        ax.set_xscale("log")
-    if display_max:
-        ax.plot(var, data_min, "b--", alpha=0.2, label="min max")
-        ax.plot(var, data_max, "b--", alpha=0.2)
-    if symlog != 0:
-        ax.set_yscale("symlog", linthresh=symlog)
-        ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: "{:g}".format(y)))
+#     # Ajustement des éléments du graphique
+#     for item in [ax.title, ax.xaxis.label, ax.yaxis.label] + ax.get_xticklabels() + ax.get_yticklabels():
+#         item.set_fontsize(base_font_size)
 
-    ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: "{:g}".format(y)))
-    # ax.set_xlabel(xlabel)
-    if ylabel:
-        ax.set_ylabel(ylabel, rotation=0, ha="right", va="bottom")  # va="center" / "bottom"
-    # ax.set_title(title)
-    if display_legend:
-        ax.legend(bbox_to_anchor=(x_legend, y_legend), loc="upper right")
-    ax.set(xlim=(min(var), max(var)), ylim=(ylim_min, None))
-    return ax
+#     # Ajuster la taille des légendes
+#     if ax.get_legend() is not None:
+#         for legend in ax.get_legend().get_texts():
+#             legend.set_fontsize(base_font_size * 1)
 
 
+# def _decile(
+#     data,
+#     ax,
+#     var,
+#     display_decile,
+#     display_median,
+#     display_mean,
+#     display_max,
+#     display_legend,
+#     xlabel,
+#     ylabel,
+#     title,
+#     symlog=0,
+#     y_legend=1,
+#     xlog=False,
+#     ylim_min=0,
+#     x_legend=0.3,
+# ):
+#     # Plot
 
+#     n_percentile = 10
+#     percent = np.linspace(0, 100 * (1 - 1 / n_percentile), n_percentile)[1:]
+#     n_ite = len(data)
+#     n_percentile = len(percent)
+#     n_var = len(var)
+#     data_plot = np.zeros((n_var, n_percentile))
+#     data_max = np.zeros((n_var))
+#     data_min = np.zeros((n_var))
+#     for k in range(n_var):
+#         data_plot[k] = np.percentile(data[k], percent)
+#         data_max[k] = np.max(data[k])
+#         data_min[k] = np.min(data[k])
+#     if display_decile:
+#         for k in range(n_percentile):
+#             fill = ax.fill_between(
+#                 var, data_plot[:, k], data_plot[:, n_percentile - 1 - k], color="b", alpha=0.1, linewidth=0
+#             )
+#         fill.set_label("Decile")
+#     if display_median:
+#         ax.plot(var, data_plot[:, int(n_percentile / 2)], "b", alpha=0.7, label="Median")
+#     if display_mean:
+#         ax.plot(var, np.mean(data_plot, axis=1), "r", alpha=0.7, label="Mean")
+#     if xlog:
+#         ax.set_xscale("log")
+#     if display_max:
+#         ax.plot(var, data_min, "b--", alpha=0.2, label="min max")
+#         ax.plot(var, data_max, "b--", alpha=0.2)
+#     if symlog != 0:
+#         ax.set_yscale("symlog", linthresh=symlog)
+#         ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: "{:g}".format(y)))
 
+#     ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: "{:g}".format(y)))
+#     # ax.set_xlabel(xlabel)
+#     if ylabel:
+#         ax.set_ylabel(ylabel, rotation=0, ha="right", va="bottom")  # va="center" / "bottom"
+#     # ax.set_title(title)
+#     if display_legend:
+#         ax.legend(bbox_to_anchor=(x_legend, y_legend), loc="upper right")
+#     ax.set(xlim=(min(var), max(var)), ylim=(ylim_min, None))
+#     return ax
 
 class PLOT:
     def __init__(self, dic, EI, EI_manu, EI_use, usage_time, fault_cause, nb_RU, nb_ite_MC, step, wcdf, EI_maintenance, impact_eco):
-        self.fig4 = self.plot_selectEI(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
-        self.eco = self.plot_selectEI_eco(dic, impact_eco['Total'], impact_eco['Manufacturing'], impact_eco['Use'], usage_time, nb_RU, nb_ite_MC, step)
+        # self.fig4 = self.plot_selectEI(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
+        # self.eco = self.plot_selectEI_eco(dic, impact_eco['Total'], impact_eco['Manufacturing'], impact_eco['Use'], usage_time, nb_RU, nb_ite_MC, step)
 
         self.allEI_manufacturing = self.plot_allEI_manufacturing_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig8 = self.plotCDF_plotly(wcdf, usage_time)
@@ -155,17 +146,12 @@ class PLOT:
         self.fig10 = self.plot_selectEI_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig11 = self.plot_allEI_plotly(dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step)
         self.fig12 = self.plot_allEIatServicelife_plotly(dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step)
+        self.eco_plotly = self.plot_selectEI_eco_plotly(dic, impact_eco['Total'], impact_eco['Manufacturing'], impact_eco['Use'], usage_time, nb_RU, nb_ite_MC, step)
 
-
-        self.selectEI = mpl_to_plotly(fig=self.fig4)
-        self.selectEI.update_layout(
-            autosize=True
-        )
-
-        self.eco_impact = mpl_to_plotly(fig=self.eco)
-        self.eco_impact.update_layout(
-            autosize=True
-        )
+        # self.eco_impact = mpl_to_plotly(fig=self.eco)
+        # self.eco_impact.update_layout(
+        #     autosize=True
+        # )
 
         self.figs = [
             {
@@ -185,14 +171,14 @@ class PLOT:
             },
             {
                 "title" : "Select EI", 
-                "plot": self.selectEI,
+                "plot": self.fig10,
                 "type": "plotly"
             },
-            {
-                "title" : "Select EI",
-                "plot": self.fig4,
-                "type": "matplotlib"
-            },
+            # {
+            #     "title" : "Select EI m",
+            #     "plot": self.fig4,
+            #     "type": "matplotlib"
+            # },
             {
                 "title" : "All EI",
                 "plot": self.fig11,
@@ -205,18 +191,129 @@ class PLOT:
             },
             {
                 "title" : "Economic Impact",
-                "plot": self.eco_impact,
+                "plot": self.eco_plotly,
                 "type": "plotly"
             },
-            {
-                "title" : "Economic Impact",
-                "plot": self.eco,
-                "type": "matplotlib"
-            }
+            # {
+            #     "title" : "Economic Impact",
+            #     "plot": self.eco,
+            #     "type": "matplotlib"
+            # }
         ]
 
-        
-        
+
+    def plot_selectEI_eco_plotly(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
+        t = np.arange(0, usage_time, 1)
+        result_MC = EI[:, :]
+        result = EI[:, :]
+        result_fab = EI_manu[:, :]
+        result_use = EI_use[:, :]
+
+        fig = go.Figure()
+
+        if nb_ite_MC > 1:
+            # Calcul des déciles, min, max, médiane et moyenne
+            percentiles = np.percentile(result_MC, [10, 20, 30, 40, 50, 60, 70, 80, 90], axis=1)
+            median = np.percentile(result_MC, 50, axis=1)
+            mean = np.mean(result_MC, axis=1)
+            min_values = np.min(result_MC, axis=1)
+            max_values = np.max(result_MC, axis=1)
+
+            var = np.arange(result_MC.shape[0]) / step
+
+            # Ajouter les bandes des déciles
+            for i in range(0, len(percentiles) // 2):
+                fig.add_trace(go.Scatter(
+                    x=var,
+                    y=percentiles[i],
+                    mode='lines',
+                    fill='tonexty',
+                    line=dict(width=0),
+                    fillcolor="rgba(0, 0, 255, 0.1)",
+                    showlegend=False
+                ))
+                fig.add_trace(go.Scatter(
+                    x=var,
+                    y=percentiles[-(i + 1)],
+                    mode='lines',
+                    fill='tonexty',
+                    line=dict(width=0),
+                    fillcolor="rgba(0, 0, 255, 0.1)",
+                    showlegend=False
+                ))
+
+            # Ajouter la médiane
+            fig.add_trace(go.Scatter(
+                x=var,
+                y=median,
+                mode='lines',
+                line=dict(color='blue', width=2),
+                name="Median"
+            ))
+
+            # Ajouter la moyenne
+            fig.add_trace(go.Scatter(
+                x=var,
+                y=mean,
+                mode='lines',
+                line=dict(color='red', width=2),
+                name="Mean"
+            ))
+
+            # Ajouter les min et max
+            fig.add_trace(go.Scatter(
+                x=var,
+                y=min_values,
+                mode='lines',
+                line=dict(color='blue', dash='dash'),
+                name="Min"
+            ))
+            fig.add_trace(go.Scatter(
+                x=var,
+                y=max_values,
+                mode='lines',
+                line=dict(color='blue', dash='dash'),
+                name="Max"
+            ))
+
+        else:
+            # Affichage des barres empilées
+            var = np.arange(result_fab.shape[0]) / step
+
+            fig.add_trace(go.Bar(
+                x=var,
+                y=np.sum(result_fab, axis=1),
+                name="Manufacturing",
+                marker_color='blue'
+            ))
+
+            fig.add_trace(go.Bar(
+                x=var,
+                y=np.sum(result_use, axis=1),
+                name="Use",
+                marker_color='pink'
+            ))
+
+            # Ajout de la ligne "Total"
+            total = np.sum(result_fab, axis=1) + np.sum(result_use, axis=1)
+            fig.add_trace(go.Scatter(
+                x=var,
+                y=total,
+                mode='lines',
+                line=dict(color='black', width=2),
+                name="Total"
+            ))
+
+        # Mise en page finale
+        fig.update_layout(
+            title="Economic Impact",
+            xaxis_title="Time (years)",
+            yaxis_title="Cost/Price (€)",
+            template="plotly_white"
+        )
+
+        return fig
+
     def fault_repartition_plotly(self, dic, fault_cause):
         if dic["Wearout_failure"] == "False" and dic["Random_failure"] == "False" and dic["Early_failure"] == "False":
             # Afficher un message "no fault selected" si toutes les défaillances sont False
@@ -315,209 +412,216 @@ class PLOT:
 
         return fig
     
-    def plot_selectEI_eco(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
-        t = np.arange(0, usage_time, 1)
-        result_MC = EI[:, :]
-        result = EI[:, :]
-        result_fab = EI_manu[:, :]
-        result_use = EI_use[:,  :]
+    # def plot_selectEI_eco(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
+    #     t = np.arange(0, usage_time, 1)
+    #     result_MC = EI[:, :]
+    #     result = EI[:, :]
+    #     result_fab = EI_manu[:, :]
+    #     result_use = EI_use[:,  :]
 
-        if nb_ite_MC != 1:
-            if result_MC.ndim == 1:
-                result_MC = result_MC.reshape(1, -1)  # Transforme en tableau 2D si nécessaire
-            result_MC = result_MC[:, result_MC[0, :].argsort()]
-            result_MC = pd.DataFrame(result_MC)
+    #     if nb_ite_MC != 1:
+    #         if result_MC.ndim == 1:
+    #             result_MC = result_MC.reshape(1, -1)  # Transforme en tableau 2D si nécessaire
+    #         result_MC = result_MC[:, result_MC[0, :].argsort()]
+    #         result_MC = pd.DataFrame(result_MC)
 
-        fig, ax = plt.subplots(1, 1)
-        var = np.arange(result_MC.shape[0]) / step
+    #     fig, ax = plt.subplots(1, 1)
+    #     var = np.arange(result_MC.shape[0]) / step
 
-        if nb_ite_MC > 1:
-            ax = _decile(
-                result_MC.T,
-                ax,
-                var,
-                display_decile=True,
-                display_median=True,
-                display_mean=True,
-                display_max=True,
-                display_legend=True,
-                xlabel=True,
-                ylabel=True,
-                title=False,
-            )
-        else:
-            fab_use = pd.concat(
-                [pd.DataFrame(result_fab.T, index=["Manufacturing"]).T, pd.DataFrame(result_use.T, index=["Use"]).T],
-                axis=1,
-            )
-            w = 0.1
-            ax.bar(var, fab_use["Manufacturing"], color=["blue"], width=w)
-            ax.bar(var, fab_use["Use"], bottom=fab_use["Manufacturing"], color=["pink"], width=w)
-            ax.plot(var, pd.DataFrame(result.T, index=["Total"]).T)
-            ax.legend(["Total", "Manufacturing", "Use"], loc="upper left")
+    #     if nb_ite_MC > 1:
+    #         ax = _decile(
+    #             result_MC.T,
+    #             ax,
+    #             var,
+    #             display_decile=True,
+    #             display_median=True,
+    #             display_mean=True,
+    #             display_max=True,
+    #             display_legend=True,
+    #             xlabel=True,
+    #             ylabel=True,
+    #             title=False,
+    #         )
+    #     else:
+    #         fab_use = pd.concat(
+    #             [pd.DataFrame(result_fab.T, index=["Manufacturing"]).T, pd.DataFrame(result_use.T, index=["Use"]).T],
+    #             axis=1,
+    #         )
+    #         w = 0.1
+    #         ax.bar(var, fab_use["Manufacturing"], color=["blue"], width=w)
+    #         ax.bar(var, fab_use["Use"], bottom=fab_use["Manufacturing"], color=["pink"], width=w)
+    #         ax.plot(var, pd.DataFrame(result.T, index=["Total"]).T)
+    #         ax.legend(["Total", "Manufacturing", "Use"], loc="upper left")
 
-        # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
-        adjust_fontsize(fig, ax)
+    #     # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
+    #     adjust_fontsize(fig, ax)
 
-        # Ajuster les tailles des polices
-        ax.set_ylabel("Cost/Price (€)", rotation=90)
-        ax.set_xlabel("Time (years)")
-        ax.grid(True)
-        adjust_figure_size(fig, ax)
-        # set title of the plot
-        ax.set_title("Economic Impact")
-        for ax in fig.get_axes():
-            ax.xaxis.set_major_formatter(ticker.NullFormatter())
-            ax.yaxis.set_major_formatter(ticker.NullFormatter())
-        return fig
-    
-
-    def plot_selectEI(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
-        t = np.arange(0, usage_time, 1)
-        result_MC = EI[:, :, dic["selected_EI"]]
-        result = EI[:, :, dic["selected_EI"]]
-        result_fab = EI_manu[:, :, dic["selected_EI"]]
-        result_use = EI_use[:, :, dic["selected_EI"]]
-
-        if nb_ite_MC != 1:
-            result_MC = result_MC[:, result_MC[0, :].argsort()]
-            result_MC = pd.DataFrame(result_MC)
-
-        fig, ax = plt.subplots(1, 1)
-        var = np.arange(result_MC.shape[0]) / step
-
-        if nb_ite_MC > 1:
-            ax = _decile(
-                result_MC.T,
-                ax,
-                var,
-                display_decile=True,
-                display_median=True,
-                display_mean=True,
-                display_max=True,
-                display_legend=True,
-                xlabel=True,
-                ylabel=True,
-                title=False,
-            )
-        else:
-            fab_use = pd.concat(
-                [pd.DataFrame(result_fab.T, index=["Manufacturing"]).T, pd.DataFrame(result_use.T, index=["Use"]).T],
-                axis=1,
-            )
-            w = 0.1
-            ax.bar(var, fab_use["Manufacturing"], color=["blue"], width=w)
-            ax.bar(var, fab_use["Use"], bottom=fab_use["Manufacturing"], color=["pink"], width=w)
-            ax.plot(var, pd.DataFrame(result.T, index=["Total"]).T)
-            ax.legend(["Total", "Manufacturing", "Use"], loc="upper left")
-
-        # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
-        adjust_fontsize(fig, ax)
-
-        # Ajuster les tailles des polices
-        ax.set_ylabel(dic["EI_name"][dic["selected_EI"]], rotation=90)
-        ax.set_xlabel("Time (years)")
-        ax.grid(True)
-        adjust_figure_size(fig, ax)
-        for ax in fig.get_axes():
-            ax.xaxis.set_major_formatter(ticker.NullFormatter())
-            ax.yaxis.set_major_formatter(ticker.NullFormatter())
-        return fig
+    #     # Ajuster les tailles des polices
+    #     ax.set_ylabel("Cost/Price (€)", rotation=90)
+    #     ax.set_xlabel("Time (years)")
+    #     ax.grid(True)
+    #     adjust_figure_size(fig, ax)
+    #     # set title of the plot
+    #     ax.set_title("Economic Impact")
+    #     return fig
     
     def plot_selectEI_plotly(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
         t = np.arange(0, usage_time, 1)
         result_MC = EI[:, :, dic["selected_EI"]]
-        result = EI[:, :, dic["selected_EI"]]
         result_fab = EI_manu[:, :, dic["selected_EI"]]
         result_use = EI_use[:, :, dic["selected_EI"]]
-
-        if nb_ite_MC != 1:
+        
+        # Trier les données si Monte Carlo > 1
+        if nb_ite_MC > 1:
             result_MC = result_MC[:, result_MC[0, :].argsort()]
             result_MC = pd.DataFrame(result_MC)
 
         var = np.arange(result_MC.shape[0]) / step
-
         fig = go.Figure()
 
         if nb_ite_MC > 1:
-            # Ajout des déciles et statistiques
-            df = result_MC.T
+            # Calcul des déciles
+            percentiles = np.percentile(result_MC, [10, 20, 30, 40, 50, 60, 70, 80, 90], axis=1)
+            
+            # Ajouter les bandes de déciles (tous les déciles)
+            for i in range(0, 4):  # Inclut tous les déciles
+                fig.add_trace(go.Scatter(
+                    x=var,
+                    y=percentiles[i],
+                    mode='lines',
+                    fill='tonexty',
+                    line=dict(width=0),
+                    fillcolor="rgba(0, 0, 255, 0.1)",
+                    name=f"Décile {i * 10}-{(i + 1) * 10}%",  # Légende pour chaque décile
+                    showlegend=True  # Inclure dans la légende
+                ))
+                fig.add_trace(go.Scatter(
+                    x=var,
+                    y=percentiles[-(i+1)],
+                    mode='lines',
+                    fill='tonexty',
+                    line=dict(width=0),
+                    fillcolor="rgba(0, 0, 255, 0.1)",
+                    name=f" Décile {100 - (i + 1) * 10}-{100 - i * 10}%",  # Légende pour chaque décile
+                    showlegend=True
+                ))
+
+            # Tracer la médiane (50%)
             fig.add_trace(go.Scatter(
                 x=var,
-                y=df.median(axis=1),
-                mode="lines",
-                name="Median",
-                line=dict(color="blue", width=2)
-            ))
-            fig.add_trace(go.Scatter(
-                x=var,
-                y=df.mean(axis=1),
-                mode="lines",
-                name="Mean",
-                line=dict(color="green", width=2, dash="dash")
-            ))
-            fig.add_trace(go.Scatter(
-                x=var,
-                y=df.min(axis=1),
-                mode="lines",
-                name="Min",
-                line=dict(color="red", width=1, dash="dot"),
-                opacity=0.6
-            ))
-            fig.add_trace(go.Scatter(
-                x=var,
-                y=df.max(axis=1),
-                mode="lines",
-                name="Max",
-                line=dict(color="purple", width=1, dash="dot"),
-                opacity=0.6
-            ))
-        else:
-            # Visualisation des données de fabrication et d'utilisation
-            fab_use = pd.concat(
-                [
-                    pd.DataFrame(result_fab.T, index=["Manufacturing"]).T,
-                    pd.DataFrame(result_use.T, index=["Use"]).T,
-                ],
-                axis=1,
-            )
-            fig.add_trace(go.Bar(
-                x=var,
-                y=fab_use["Manufacturing"],
-                name="Manufacturing",
-                marker_color="blue"
-            ))
-            fig.add_trace(go.Bar(
-                x=var,
-                y=fab_use["Use"],
-                name="Use",
-                marker_color="pink",
-                base=fab_use["Manufacturing"]
-            ))
-            fig.add_trace(go.Scatter(
-                x=var,
-                y=result.sum(axis=0),
-                mode="lines",
-                name="Total",
-                line=dict(color="black", width=2)
+                y=percentiles[4],
+                mode='lines',
+                line=dict(color='blue', width=2),
+                name="Median"
             ))
 
-        # Mise en forme du graphique
+            # Tracer la moyenne
+            mean_values = np.mean(result_MC, axis=1)
+            fig.add_trace(go.Scatter(
+                x=var,
+                y=mean_values,
+                mode='lines',
+                line=dict(color='red', width=2),
+                name="Mean"
+            ))
+
+            # Tracer les min et max
+            fig.add_trace(go.Scatter(
+                x=var,
+                y=np.min(result_MC, axis=1),
+                mode='lines',
+                line=dict(color='blue', dash='dash'),
+                name="Min"
+            ))
+
+            fig.add_trace(go.Scatter(
+                x=var,
+                y=np.max(result_MC, axis=1),
+                mode='lines',
+                line=dict(color='blue', dash='dash'),
+                name="Max"
+            ))
+        else:
+            # Affichage des barres empilées
+            fig.add_trace(go.Bar(
+                x=var,
+                y=result_fab,
+                name="Manufacturing",
+                marker_color='blue'
+            ))
+
+            fig.add_trace(go.Bar(
+                x=var,
+                y=result_use,
+                name="Use",
+                marker_color='pink'
+            ))
+
+
+
+        # Mise en page finale
         fig.update_layout(
-            title="Impact environnemental : {}".format(dic["EI_name"][dic["selected_EI"]]),
+            title=dic["EI_name"][dic["selected_EI"]],
             xaxis_title="Time (years)",
             yaxis_title=dic["EI_name"][dic["selected_EI"]],
-            barmode="stack",
-            template="plotly_white",
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1
-            )
+            template="plotly_white"
         )
+
         return fig
+
+
+    
+
+    # def plot_selectEI(self, dic, EI, EI_manu, EI_use, usage_time, nb_RU, nb_ite_MC, step):
+    #     t = np.arange(0, usage_time, 1)
+    #     result_MC = EI[:, :, dic["selected_EI"]]
+    #     result = EI[:, :, dic["selected_EI"]]
+    #     result_fab = EI_manu[:, :, dic["selected_EI"]]
+    #     result_use = EI_use[:, :, dic["selected_EI"]]
+
+    #     if nb_ite_MC != 1:
+    #         result_MC = result_MC[:, result_MC[0, :].argsort()]
+    #         result_MC = pd.DataFrame(result_MC)
+
+    #     fig, ax = plt.subplots(1, 1)
+    #     var = np.arange(result_MC.shape[0]) / step
+
+    #     if nb_ite_MC > 1:
+    #         ax = _decile(
+    #             result_MC.T,
+    #             ax,
+    #             var,
+    #             display_decile=True,
+    #             display_median=True,
+    #             display_mean=True,
+    #             display_max=True,
+    #             display_legend=True,
+    #             xlabel=True,
+    #             ylabel=True,
+    #             title=False,
+    #         )
+    #     else:
+    #         fab_use = pd.concat(
+    #             [pd.DataFrame(result_fab.T, index=["Manufacturing"]).T, pd.DataFrame(result_use.T, index=["Use"]).T],
+    #             axis=1,
+    #         )
+    #         w = 0.1
+    #         ax.bar(var, fab_use["Manufacturing"], color=["blue"], width=w)
+    #         ax.bar(var, fab_use["Use"], bottom=fab_use["Manufacturing"], color=["pink"], width=w)
+    #         ax.plot(var, pd.DataFrame(result.T, index=["Total"]).T)
+    #         ax.legend(["Total", "Manufacturing", "Use"], loc="upper left")
+
+    #     # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
+    #     adjust_fontsize(fig, ax)
+
+    #     # Ajuster les tailles des polices
+    #     ax.set_ylabel(dic["EI_name"][dic["selected_EI"]], rotation=90)
+    #     ax.set_xlabel("Time (years)")
+    #     ax.grid(True)
+    #     adjust_figure_size(fig, ax)
+    #     return fig
+    
+
 
     def plotCDF_plotly(self, wcdf, usage_time):
         import plotly.graph_objects as go
@@ -739,62 +843,6 @@ class PLOT:
                 fig.update_xaxes(title_text="Time (years)", row=i, col=j)
                 # fig.update_yaxes(title_text="Environmental Impact", row=i, col=j)
         return fig
-
-
-
-    def fault_repartition(self, dic, fault_cause):
-        if dic["Wearout_failure"] == "False" and dic["Random_failure"] == "False" and dic["Early_failure"] == "False":
-            # Afficher un message "no fault selected" si toutes les défaillances sont False
-            fig, ax = plt.subplots()
-            ax.pie([1], colors=["lightgrey"])
-            ax.text(0.5, 0.5, "No fault selected", fontsize=24, ha="center", va="center")
-            ax.axis("off")  # Masquer les axes pour un affichage plus propre
-
-        else:
-            # Données
-            tableau_1d = fault_cause.flatten()
-            count_early = np.sum(tableau_1d == "Early")
-            count_random = np.sum(tableau_1d == "Random")
-            count_wearout = np.sum(tableau_1d == "Wearout")
-            nombres = [count_early, count_random, count_wearout]
-            etiquettes = ["Early fault", "Random fault", "Wearout fault"]
-
-            # Couleurs correspondantes
-            couleurs = plt.cm.tab20c(range(3))
-
-            # Filter out zero values
-            filtered_nombres = [n for n in nombres if n > 0]
-            filtered_etiquettes = [label for n, label in zip(nombres, etiquettes) if n > 0]
-
-            # Corresponding colors
-            couleurs = plt.cm.tab20c(range(3))
-
-            # Filter colors based on filtered_nombres
-            filtered_couleurs = [color for n, color in zip(nombres, couleurs) if n > 0]
-
-            # Création du diagramme en camembert
-            fig, ax = plt.subplots()
-            ax.pie(
-                filtered_nombres,
-                labels=filtered_etiquettes,
-                autopct="%1.1f%%",
-                startangle=140,
-                colors=filtered_couleurs,
-                labeldistance=1.05,
-                pctdistance=0.85,
-            )
-
-            # Ajout d'un titre avec une taille de police plus grande
-            ax.set_title("Distribution of defects", weight="bold")
-
-            # Appel à adjust_fontsize pour ajuster dynamiquement la taille des polices
-            # adjust_fontsize(fig, ax)
-
-            adjust_figure_size(fig, ax)
-            adjust_fontsize(fig, ax)
-        return fig
-    
-    
 
     def plot_allEIatServicelife_plotly(self, dic, EI, EI_manu, EI_use, EI_maintenance, nb_RU, nb_ite_MC, step):
         # Charger les données à partir du fichier Excel
