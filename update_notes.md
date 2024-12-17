@@ -142,3 +142,47 @@ This pull request refactors the Monte Carlo plotting logic and updates the bar c
 ## Testing
 - Verified that the Monte Carlo plotting logic works after refactor.  
 - Tested bar chart updates for visual correctness.
+
+
+# **Pull Request: Fix Various Bug Fixes and Improvements for v1.2.0-rc1 (#23)**
+
+## **Date**  
+17/12/2024  
+
+## **Description**  
+This pull request includes multiple bug fixes, refactorings, and enhancements aimed at improving plot functionality, performance, and clarity in the interface.  
+
+## **Changes**  
+1. **Plot Saving Enhancements**  
+   - Added **HTML export** functionality for plots.  
+   - Improved folder structure for saved plots.  
+   - Added titles to plots for better context and clarity.  
+
+2. **Refactoring and Performance Improvements**  
+   - Refactored `PLOT_MC` class to enhance radar chart visualization.  
+   - Migrated staircase plots to **Plotly** for improved interactivity.  
+   - Removed unused **Matplotlib** methods and plots from the `PLOT` class.  
+   - Streamlined plotting functions and configurations for enhanced performance.  
+
+3. **User Interface Updates**  
+   - Updated x-axis and y-axis labels for clarity (e.g., adding currency to the y-axis).  
+   - Renamed "Save Data" button for improved clarity in `ControlsWidget`.  
+   - Improved trace naming and hover templates in plot layouts for better readability.  
+   - Hid unused stream redirection in `ScriptWidget`.
+
+4. **Plot Conversion and Layout Improvements**  
+   - Integrated **Plotly conversion** for Matplotlib figures.  
+   - Enhanced layout configurations for better visual results and interactivity.  
+   - Added a grid to plots where applicable for improved readability.
+
+## **Impact**  
+- Improved plot saving functionality with additional export options.  
+- Enhanced performance by removing unused methods and optimizing plotting logic.  
+- Improved visual clarity and user experience across the interface.  
+
+## **Testing**  
+- Verified HTML export and folder structure for saved plots.  
+- Tested radar chart and staircase plot visualizations in **Plotly**.  
+- Confirmed layout updates, including axis labels and hover templates.  
+- Tested the "Save Data" button and ensured consistent labeling.  
+- Checked performance improvements after removing deprecated methods.
