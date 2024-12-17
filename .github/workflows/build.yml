@@ -70,24 +70,24 @@ jobs:
           Compress-Archive -Path dist/PELCA -DestinationPath pelca.zip
         shell: powershell
 
-      # # Étape pour publier une release GitHub et y attacher le fichier zip
-      # - name: Create GitHub Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   with:
-      #     tag_name: ${{ github.ref }}  # Utiliser le tag réel
-      #     release_name: Release ${{ github.ref }}  # Nom de la release
-      #     draft: false
-      #     prerelease: false
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Étape pour publier une release GitHub et y attacher le fichier zip
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref }}  # Utiliser le tag réel
+          release_name: Release ${{ github.ref }}  # Nom de la release
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Upload Release Asset
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: pelca.zip
-      #     asset_name: pelca.zip
-      #     asset_content_type: application/zip
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: pelca.zip
+          asset_name: pelca.zip
+          asset_content_type: application/zip
