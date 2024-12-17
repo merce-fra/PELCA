@@ -70,6 +70,8 @@ class ProcessExcel(QThread):
                 "fault_cause": fault_cause,
                 "RU_age": RU_age,
                 "EI_maintenance": EI_maintenance,
+                "impact_eco": impact_eco,
+                "dic": dic,
             },
         }
         self.figs.emit(figs)
@@ -81,7 +83,7 @@ class ProcessExcel(QThread):
             print("Running Monte Carlo simulation...")
             plot_instance = plotting_MC.PLOT_MC(dic)
             figs = {"plot_data": {
-                
+                "dic": dic,
             }, "plots": plot_instance.figs}
             self.figs.emit(figs)
             self.finished.emit()

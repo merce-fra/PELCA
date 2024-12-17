@@ -34,7 +34,12 @@ class PlotWidget(QWidget):
 
     def get_web_engine(self, fig):
         """Retourne un QWebEngineView avec un graphique Plotly"""
-        html_content = pio.to_html(fig, full_html=False, include_plotlyjs="cdn")
+        config = {
+            'displaylogo': False,
+            'modeBarButtonsToRemove': ['toImage'],
+            'responsive': True
+        }
+        html_content = pio.to_html(fig, full_html=False, include_plotlyjs="cdn", config=config)
         html_browser = QWebEngineView()
         html_browser.setHtml(html_content, QUrl(""))
         return html_browser

@@ -54,15 +54,15 @@ def _init_dic(path_input, name_input, lca):
     df = read_excel_sheet(excel, "LCA", header=None, skiprows=1)
     df_LCIA = read_excel_sheet(excel, "LCIA", header=0, skiprows=1)
     df_stair = read_excel_sheet(excel, "Staircase", header=None, skiprows=1)
-    df_RM = read_excel_sheet(excel, "Replac. Matrix", header=None, skiprows=[0, 1, 2, 3], usecols=lambda x: x != 0)
+    df_RM = read_excel_sheet(excel, "Curr. Maint. (replac. matrix)", header=None, skiprows=[0, 1, 2, 3], usecols=lambda x: x != 0)
     df_cost = read_excel_sheet(excel, "Cost - Price", header=None, skiprows=[0, 1, 2, 3, 4], usecols=lambda x: x != 0)
     excel.close()
 
     dic = {}
 
     dic["path_result_EI"] = get_value_from_df(df, "LCA result path")
-    dic["filename_result_EI"] = get_value_from_df(df, "LCA result filename")
-    dic["filename_result_EI_MC"] = get_value_from_df(df, "LCA Monte Carlo result filename")
+    dic["filename_result_EI"] = "LCA output.xlsx"
+    dic["filename_result_EI_MC"] =  "Monte Carlo output.xlsx"
     dic["simulation"] = get_value_from_df(df, "Type of simulation (Analysis\\Monte Carlo)")
     dic["directory"] = "Results PELCA"
     dic["LCA_path"] = os.path.join(dic["path_result_EI"], dic["directory"])
@@ -103,7 +103,7 @@ def _init_dic(path_input, name_input, lca):
     dic["Early_failure"] = get_value_from_df(df_stair, "Early failure")
     dic["Random_failure"] = get_value_from_df(df_stair, "Random failure")
     dic["Wearout_failure"] = get_value_from_df(df_stair, "Wearout failure")
-    dic["Maintenance"] = get_value_from_df(df_stair, "Maintenance")
+    dic["Maintenance"] = get_value_from_df(df_stair, "Preventive Maintenance")
     dic["pre_set_fail"] = False
     dic["Remplacement_matrix"] = df_RM
     dic["Cost_matrix"] = df_cost
