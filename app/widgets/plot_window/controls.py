@@ -38,6 +38,11 @@ def fig_to_image(fig, dpi=300):
         return img
 
 
+def fig_to_html(fig):
+    if fig["type"] == "plotly":
+        return to_html(fig["plot"], full_html=False)
+
+
 class ControlsWidget(QWidget):
     def __init__(self, parent):
         super().__init__()
@@ -49,31 +54,89 @@ class ControlsWidget(QWidget):
         self.setLayout(self.layout)
 
     def save_plots(self):
-        folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Plots")
+        # Récupération du chemin depuis self.figs
+        folder_path = self.figs['plot_data']['dic']['LCA_path']
         if folder_path:
-            # Create a folder for the plots
-            folder_path = os.path.join(folder_path, "plots")
-            os.makedirs(folder_path, exist_ok=True)
             try:
-                for idx, fig in enumerate(self.figs["plots"]):
+                # Crée les dossiers "plots/png" et "plots/html" s'ils n'existent pas
+                plots_folder = os.path.join(folder_path, "plots")
+                png_folder = os.path.join(plots_folder, "png")
+                html_folder = os.path.join(plots_folder, "html")
+                os.makedirs(png_folder, exist_ok=True)
+                os.makedirs(html_folder, exist_ok=True)
+
+                for fig in self.figs["plots"]:
+                    # Nettoyer le titre pour le nom de fichier
+                    title = fig.get('title', "default_plot")
+                    safe_title = "".join(c if c.isalnum() or c in " _-" else "_" for c in title)
+
+                    # Gestion des doublons pour PNG
+                    png_filename = f"{safe_title}.png"
+                    png_filepath = os.path.join(png_folder, png_filename)
+                    png_counter = 1
+                    while os.path.exists(png_filepath):
+                        png_filename = f"{safe_title}_{png_counter}.png"
+                        png_filepath = os.path.join(png_folder, png_filename)
+                        png_counter += 1
+
+                    # Sauvegarde de l'image PNG
                     img = fig_to_image(fig)
-                    filepath = os.path.join(folder_path, f"{fig['title']}.png")
-                    img.save(filepath, format="PNG")
-                print(f"All plots saved successfully in {folder_path}")
+                    if img:
+                        img.save(png_filepath, format="PNG")
+
+                    # Gestion des doublons pour HTML
+                    html_filename = f"{safe_title}.html"
+                    html_filepath = os.path.join(html_folder, html_filename)
+                    html_counter = 1
+                    while os.path.exists(html_filepath):
+                        html_filename = f"{safe_title}_{html_counter}.html"
+                        html_filepath = os.path.join(html_folder, html_filename)
+                        html_counter += 1
+
+                    # Sauvegarde du HTML
+                    html = fig_to_html(fig)
+                    if html:
+                        with open(html_filepath, 'w', encoding='utf-8') as f:
+                            f.write(html)
+
+                print(f"All plots saved successfully in '{png_folder}' and '{html_folder}'")
             except Exception as e:
                 print(f"An error occurred while saving the plots: {e}")
 
     def save_selected_plot(self):
-        folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Plot")
+        # Récupération du chemin depuis self.figs
+        folder_path = self.figs['plot_data']['dic']['LCA_path']
         if folder_path:
             try:
+                # Crée un sous-dossier "png" dans le dossier sélectionné
+                png_folder = os.path.join(folder_path, "png")
+                os.makedirs(png_folder, exist_ok=True)
+
+                # Récupérer la figure sélectionnée
                 fig = self.figs["plots"][self.index.get_index()]
+
+                # Nettoyer le titre pour le nom de fichier
+                title = fig.get('title', "default_plot")
+                safe_title = "".join(c if c.isalnum() or c in " _-" else "_" for c in title)
+
+                # Gestion de l'incrémentation en cas de doublon
+                filename = f"{safe_title}.png"
+                filepath = os.path.join(png_folder, filename)
+                counter = 1
+                while os.path.exists(filepath):
+                    filename = f"{safe_title}_{counter}.png"
+                    filepath = os.path.join(png_folder, filename)
+                    counter += 1
+
+                # Sauvegarde de l'image PNG
                 img = fig_to_image(fig)
-                filepath = os.path.join(folder_path, f"{fig['title']}.png")
-                img.save(filepath, format="PNG")
-                print(f"Selected plot saved successfully in {folder_path}")
+                if img:
+                    img.save(filepath, format="PNG")
+                    print(f"Selected plot saved successfully as '{filename}' in {png_folder}")
+                else:
+                    print("Error: Could not convert the figure to an image.")
             except Exception as e:
-                print(f"An error occurred while saving the plot: {e}")
+                print(f"An error occurred while saving the selected plot: {e}")
 
     def save_data(self):
         folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Data")
