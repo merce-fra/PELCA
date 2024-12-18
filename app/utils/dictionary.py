@@ -98,7 +98,7 @@ def _init_dic(path_input, name_input, lca):
     dic["service_life"] = get_value_from_df(df_stair, "Service life (year)")
     dic["num_hourPerYear"] = get_value_from_df(df_stair, "Annual usage time (hours/year)")
     dic["step"] = get_value_from_df(df_stair, "Time step (step/year)")
-    dic["filename_result_staircase"] = get_value_from_df(df_stair, "Staircase result filename")
+    dic["filename_result_staircase"] = "Staircase output.xlsx"
     dic["nb_ite_MC"] = get_value_from_df(df_stair, "Monte Carlo (number of iteration)")
     dic["Early_failure"] = get_value_from_df(df_stair, "Early failure")
     dic["Random_failure"] = get_value_from_df(df_stair, "Random failure")

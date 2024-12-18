@@ -20,10 +20,49 @@ import numpy as np
 import pandas as pd
 from brightway2 import *
 from stats_arrays import *
+import shutil
+
+def delete_cache(target_string):
+    """
+    Deletes folders in the user's AppData directory and its subdirectories
+    that contain the specified `target_string` in their name.
+
+    :param target_string: The string to search for in folder names.
+    :raises ValueError: If the AppData directory does not exist.
+    """
+    # Construct the AppData path based on the user's profile
+    user_profile = os.path.expandvars("%USERPROFILE%")
+    base_dir = os.path.join(user_profile, "AppData")
+
+    print(f"Searching for folders containing '{target_string}' in '{base_dir}'")
+
+    if not os.path.isdir(base_dir):
+        raise ValueError(f"The directory {base_dir} does not exist.")
+
+    # Flag to check if any folder is deleted
+    deleted_any = False
+
+    # Recursively search the directory
+    for root, dirs, _ in os.walk(base_dir):
+        for dir_name in dirs:
+            if target_string in dir_name:  # Check if folder name contains the target string
+                folder_path = os.path.join(root, dir_name)
+                try:
+                    shutil.rmtree(folder_path)  # Delete the folder and its contents
+                    print(f"Deleted folder: {folder_path}")
+                    deleted_any = True
+                except Exception as e:
+                    print(f"Error deleting {folder_path}: {e}")
+
+    if not deleted_any:
+        print("No cache to delete.")
 
 
 def EI_calculation(dic, path_input, name_input):
     # open project
+    print("Project name : ", dic["proj_name"])
+    delete_cache(dic["proj_name"])  # Supprimer les caches ecoinvent
+
     projects.set_current(dic["proj_name"])  # Creating/accessing the project
 
     bw2setup()  # Importing elementary flows, LCIA methods and some other data

@@ -71,19 +71,15 @@ class ScriptWidget(QWidget):
 
         # Mise en page
         layout.addWidget(self.text_edit_stdout)
-        layout.addWidget(self.text_edit_stderr)
 
         self.stdout_stream = EmittingStream()
         self.stdout_stream.text_written.connect(self.append_output_stdout)
         sys.stdout = self.stdout_stream
 
-        sys.stderr = self.stderr_stream
 
     def append_output_stdout(self, text):
         self.text_edit_stdout.append(text)
-
-    def append_output_stderr(self, text):
-        self.text_edit_stderr.append(f"Error : {text}")
+  
 
     def browse_file(self):
         """Open a file dialog to select a file."""
