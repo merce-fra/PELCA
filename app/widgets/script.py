@@ -67,23 +67,17 @@ class ScriptWidget(QWidget):
         """Add a console text area to display output."""
         self.text_edit_stdout = QTextEdit(self)
         self.text_edit_stdout.setReadOnly(True)
-        self.text_edit_stdout.setPlaceholderText("stdout:")
 
-        self.text_edit_stderr = QTextEdit(self)
-        self.text_edit_stderr.setReadOnly(True)
-        self.text_edit_stderr.setPlaceholderText("stderr:")
+
         # Mise en page
         layout.addWidget(self.text_edit_stdout)
         layout.addWidget(self.text_edit_stderr)
 
-        # self.stdout_stream = EmittingStream()
-        # self.stdout_stream.text_written.connect(self.append_output_stdout)
-        # sys.stdout = self.stdout_stream
+        self.stdout_stream = EmittingStream()
+        self.stdout_stream.text_written.connect(self.append_output_stdout)
+        sys.stdout = self.stdout_stream
 
-        # # Redirection de stderr
-        # self.stderr_stream = EmittingStream()
-        # self.stderr_stream.text_written.connect(self.append_output_stderr)
-        # sys.stderr = self.stderr_stream
+        sys.stderr = self.stderr_stream
 
     def append_output_stdout(self, text):
         self.text_edit_stdout.append(text)
