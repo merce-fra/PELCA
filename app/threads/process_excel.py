@@ -101,7 +101,6 @@ class ProcessExcel(QThread):
             "EI_name": [],
             "LCIA_unit": [],
             "proj_name": "",
-            "database_ecoinvent": "",
         }
         try:
             full_path_input = self.file_path
@@ -118,8 +117,8 @@ class ProcessExcel(QThread):
                     self.run_analysis(dic, path_input, name_input)
                 elif dic["simulation"] == "Monte Carlo":
                     self.run_monte_carlo(dic)
-        except FileNotFoundError:
-            self.error.emit(f"An error occurred: the LCA result {dic['filename_result_EI'] if dic and dic['simulation'] == 'Analysis' else dic['filename_result_EI_MC']} was not found in the LCA result path {os.path.join(dic['path_result_EI'],dic['directory']) if dic else 'unknown path'}")
+        except FileNotFoundError as e :
+            self.error.emit(f"File not found: {str(e)}")
         except InvalidExchange:
             self.error.emit("An error occurred: Exchange is missing ‘amount’ or ‘input’.")
         except KeyError as ke:
