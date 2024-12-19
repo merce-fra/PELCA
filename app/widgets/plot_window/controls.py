@@ -246,11 +246,7 @@ class ControlsWidget(QWidget):
             self.checkbox_fault_cause = QCheckBox("Fault cause")
             self.checkbox_ru_age = QCheckBox("RU age")
 
-            self.layout.addWidget(self.checkbox_impact_total)
-            self.layout.addWidget(self.checkbox_manufacturing)
-            self.layout.addWidget(self.checkbox_use)
-            self.layout.addWidget(self.checkbox_fault_cause)
-            self.layout.addWidget(self.checkbox_ru_age)
+    
 
             # Save Data Button
             self.save_data_button = QPushButton("Save data to numpy array")
