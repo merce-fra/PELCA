@@ -41,6 +41,15 @@ def fig_to_image(fig, dpi=300):
 def fig_to_html(fig):
     if fig["type"] == "plotly":
         return to_html(fig["plot"], full_html=False)
+    
+
+def get_unique_filepath(folder, base_filename, extension):
+    counter = 1
+    filepath = os.path.join(folder, f"{base_filename}.{extension}")
+    while os.path.exists(filepath):
+        filepath = os.path.join(folder, f"{base_filename}_{counter}.{extension}")
+        counter += 1
+    return filepath
 
 
 class ControlsWidget(QWidget):
@@ -53,91 +62,55 @@ class ControlsWidget(QWidget):
         self.setup_ui()
         self.setLayout(self.layout)
 
+    def save_plot(self, fig, png_folder, html_folder, prefix="default_plot"):
+        try:
+            # Créer les dossiers s'ils n'existent pas
+            os.makedirs(png_folder, exist_ok=True)
+            os.makedirs(html_folder, exist_ok=True)
+
+            # Nettoyer le titre pour le nom de fichier
+            safe_title = "".join(c if c.isalnum() or c in " _-" else "_" for c in prefix)
+
+            # Sauvegarde en PNG
+            png_filepath = get_unique_filepath(png_folder, safe_title, "png")
+            img = fig_to_image(fig)
+            if img:
+                img.save(png_filepath, format="PNG")
+
+            # Sauvegarde en HTML
+            html_filepath = get_unique_filepath(html_folder, safe_title, "html")
+            html = fig_to_html(fig)
+            if html:
+                with open(html_filepath, 'w', encoding='utf-8') as f:
+                    f.write(html)
+
+            print(f"Plot saved successfully as PNG: '{png_filepath}' and HTML: '{html_filepath}'")
+        except Exception as e:
+            print(f"An error occurred while saving the plot: {e}")
+
+
     def save_plots(self):
-        # Récupération du chemin depuis self.figs
-        folder_path = self.figs['plot_data']['dic']['LCA_path']
+        folder_path = self.figs['plot_data']['dic'].get('LCA_path', "")
         if folder_path:
-            try:
-                # Crée les dossiers "plots/png" et "plots/html" s'ils n'existent pas
-                plots_folder = os.path.join(folder_path, "plots")
-                png_folder = os.path.join(plots_folder, "png")
-                html_folder = os.path.join(plots_folder, "html")
-                os.makedirs(png_folder, exist_ok=True)
-                os.makedirs(html_folder, exist_ok=True)
+            # Sous-dossiers pour PNG et HTML
+            png_folder = os.path.join(folder_path, "plots", "png")
+            html_folder = os.path.join(folder_path, "plots", "html")
 
-                for fig in self.figs["plots"]:
-                    # Nettoyer le titre pour le nom de fichier
-                    title = fig.get('title', "default_plot")
-                    safe_title = "".join(c if c.isalnum() or c in " _-" else "_" for c in title)
-
-                    # Gestion des doublons pour PNG
-                    png_filename = f"{safe_title}.png"
-                    png_filepath = os.path.join(png_folder, png_filename)
-                    png_counter = 1
-                    while os.path.exists(png_filepath):
-                        png_filename = f"{safe_title}_{png_counter}.png"
-                        png_filepath = os.path.join(png_folder, png_filename)
-                        png_counter += 1
-
-                    # Sauvegarde de l'image PNG
-                    img = fig_to_image(fig)
-                    if img:
-                        img.save(png_filepath, format="PNG")
-
-                    # Gestion des doublons pour HTML
-                    html_filename = f"{safe_title}.html"
-                    html_filepath = os.path.join(html_folder, html_filename)
-                    html_counter = 1
-                    while os.path.exists(html_filepath):
-                        html_filename = f"{safe_title}_{html_counter}.html"
-                        html_filepath = os.path.join(html_folder, html_filename)
-                        html_counter += 1
-
-                    # Sauvegarde du HTML
-                    html = fig_to_html(fig)
-                    if html:
-                        with open(html_filepath, 'w', encoding='utf-8') as f:
-                            f.write(html)
-
-                print(f"All plots saved successfully in '{png_folder}' and '{html_folder}'")
-            except Exception as e:
-                print(f"An error occurred while saving the plots: {e}")
+            for fig in self.figs.get("plots", []):
+                title = fig.get('title', "default_plot")
+                self.save_plot(fig, png_folder, html_folder, prefix=title)
 
     def save_selected_plot(self):
-        # Récupération du chemin depuis self.figs
-        folder_path = self.figs['plot_data']['dic']['LCA_path']
+        folder_path = self.figs['plot_data']['dic'].get('LCA_path', "")
         if folder_path:
-            try:
-                # Crée un sous-dossier "png" dans le dossier sélectionné
-                png_folder = os.path.join(folder_path, "png")
-                os.makedirs(png_folder, exist_ok=True)
+            # Sous-dossiers pour PNG et HTML
+            png_folder = os.path.join(folder_path, "plots", "png")
+            html_folder = os.path.join(folder_path, "plots", "html")
 
-                # Récupérer la figure sélectionnée
-                fig = self.figs["plots"][self.index.get_index()]
-
-                # Nettoyer le titre pour le nom de fichier
-                title = fig.get('title', "default_plot")
-                safe_title = "".join(c if c.isalnum() or c in " _-" else "_" for c in title)
-
-                # Gestion de l'incrémentation en cas de doublon
-                filename = f"{safe_title}.png"
-                filepath = os.path.join(png_folder, filename)
-                counter = 1
-                while os.path.exists(filepath):
-                    filename = f"{safe_title}_{counter}.png"
-                    filepath = os.path.join(png_folder, filename)
-                    counter += 1
-
-                # Sauvegarde de l'image PNG
-                img = fig_to_image(fig)
-                if img:
-                    img.save(filepath, format="PNG")
-                    print(f"Selected plot saved successfully as '{filename}' in {png_folder}")
-                else:
-                    print("Error: Could not convert the figure to an image.")
-            except Exception as e:
-                print(f"An error occurred while saving the selected plot: {e}")
-
+            fig = self.figs["plots"][self.index.get_index()]
+            title = fig.get('title', "default_plot")
+            self.save_plot(fig, png_folder, html_folder, prefix=title)
+ 
     def save_data(self):
         # Dossier cible obtenu depuis le dictionnaire
         folder_path = self.figs['plot_data']['dic']['LCA_path']
@@ -148,13 +121,17 @@ class ControlsWidget(QWidget):
                 os.makedirs(numpy_folder, exist_ok=True)
 
                 # Mapping des données et noms de fichiers
-                export_mapping = {
-                    "Impact_total": self.figs["plot_data"]["EI"],
-                    "Impact_manu": self.figs["plot_data"]["EI_manu"],
-                    "Impact_use": self.figs["plot_data"]["EI_use"],
-                    "fault_cause": self.figs["plot_data"]["fault_cause"],
-                    "RU_age": self.figs["plot_data"]["RU_age"],
-                }
+                export_mapping = {}
+                if "EI" in self.figs["plot_data"]:
+                    export_mapping["Impact_total"] = self.figs["plot_data"]["EI"]
+                if "EI_manu" in self.figs["plot_data"]:
+                    export_mapping["Impact_manu"] = self.figs["plot_data"]["EI_manu"]
+                if "EI_use" in self.figs["plot_data"]:
+                    export_mapping["Impact_use"] = self.figs["plot_data"]["EI_use"]
+                if "fault_cause" in self.figs["plot_data"]:
+                    export_mapping["fault_cause"] = self.figs["plot_data"]["fault_cause"]
+                if "RU_age" in self.figs["plot_data"]:
+                    export_mapping["RU_age"] = self.figs["plot_data"]["RU_age"]
 
                 # Exportation des données avec gestion des doublons
                 for base_filename, data in export_mapping.items():
@@ -185,13 +162,17 @@ class ControlsWidget(QWidget):
                 os.makedirs(excel_folder, exist_ok=True)
 
                 # Mapping des données et noms de fichiers
-                export_mapping = {
-                    "Impact_total": self.figs["plot_data"]["EI"],
-                    "Impact_manu": self.figs["plot_data"]["EI_manu"],
-                    "Impact_use": self.figs["plot_data"]["EI_use"],
-                    "fault_cause": self.figs["plot_data"]["fault_cause"],
-                    "RU_age": self.figs["plot_data"]["RU_age"],
-                }
+                export_mapping = {}
+                if "EI" in self.figs["plot_data"]:
+                    export_mapping["Impact_total"] = self.figs["plot_data"]["EI"]
+                if "EI_manu" in self.figs["plot_data"]:
+                    export_mapping["Impact_manu"] = self.figs["plot_data"]["EI_manu"]
+                if "EI_use" in self.figs["plot_data"]:
+                    export_mapping["Impact_use"] = self.figs["plot_data"]["EI_use"]
+                if "fault_cause" in self.figs["plot_data"]:
+                    export_mapping["fault_cause"] = self.figs["plot_data"]["fault_cause"]
+                if "RU_age" in self.figs["plot_data"]:
+                    export_mapping["RU_age"] = self.figs["plot_data"]["RU_age"]
 
                 # Exportation des données avec gestion des doublons
                 for base_filename, data in export_mapping.items():
