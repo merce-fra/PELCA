@@ -8,6 +8,7 @@ from app.models.console import EmittingStream
 from app.threads.process_excel import ProcessExcel
 from app.widgets.params import FormWidget
 from app.widgets.plot_window.plot import PlotWindow
+from PySide6.QtGui import QTextCursor, QColor
 
 
 class ScriptWidget(QWidget):
@@ -44,7 +45,6 @@ class ScriptWidget(QWidget):
         button_layout = QHBoxLayout()
 
         self.run_button = QPushButton("Run Staircase only")
-
         self.run_button.clicked.connect(self.run_staircase)
 
         self.run_button2 = QPushButton("Run LCA + Staircase")
@@ -68,18 +68,31 @@ class ScriptWidget(QWidget):
         self.text_edit_stdout = QTextEdit(self)
         self.text_edit_stdout.setReadOnly(True)
 
-
-        # Mise en page
         layout.addWidget(self.text_edit_stdout)
 
+        # Redirection de stdout
         self.stdout_stream = EmittingStream()
-        self.stdout_stream.text_written.connect(self.append_output_stdout)
+        self.stdout_stream.text_written.connect(lambda text: self.append_output_stdout(text, is_error=False))
         sys.stdout = self.stdout_stream
 
+        # Redirection de stderr
+        self.stderr_stream = EmittingStream()
+        self.stderr_stream.text_written.connect(lambda text: self.append_output_stdout(text, is_error=True))
+        sys.stderr = self.stderr_stream
 
-    def append_output_stdout(self, text):
-        self.text_edit_stdout.append(text)
-  
+    def append_output_stdout(self, text, is_error=False):
+        cursor = self.text_edit_stdout.textCursor()
+        format = cursor.charFormat()
+
+        if is_error:
+            format.setForeground(QColor("grey"))  # Text in red for stderr
+        else:
+            format.setForeground(QColor("white"))  # Text in white for stdout
+
+        cursor.setCharFormat(format)
+        cursor.insertText(text)
+        self.text_edit_stdout.setTextCursor(cursor)
+        self.text_edit_stdout.ensureCursorVisible()
 
     def browse_file(self):
         """Open a file dialog to select a file."""
@@ -90,7 +103,6 @@ class ScriptWidget(QWidget):
                 self.run_button.show()
                 self.run_button2.show()
                 self.buttons = True
-            
 
     def run_script(self, lca):
         """Run the script in a separate thread to keep the UI responsive."""
@@ -123,7 +135,7 @@ class ScriptWidget(QWidget):
 
     def on_error(self, error_message):
         """Handle errors emitted from the worker."""
-        print(f"Error: {error_message}")
+        print(f"Error: {error_message}", file=sys.stderr)
         QMessageBox.critical(self, "Error", error_message)
         self.run_button.setEnabled(True)
         self.is_running = False

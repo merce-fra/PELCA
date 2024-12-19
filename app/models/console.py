@@ -5,7 +5,13 @@ class EmittingStream(QObject):
     text_written = Signal(str)
 
     def write(self, text):
-        if text.strip():
+        """
+        Émet le texte vers le signal. Ajoute un retour à la ligne si nécessaire.
+        """
+        if text:
+            # Ajoute un retour à la ligne si le texte n'en contient pas à la fin
+            if not text.endswith('\n'):
+                text += '\n'
             self.text_written.emit(text)
 
     def flush(self):
