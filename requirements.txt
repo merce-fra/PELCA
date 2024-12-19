@@ -134,3 +134,4 @@ wrapt==1.16.0
 xlrd==2.0.1
 XlsxWriter==3.2.0
 zipp==3.20.2
+kaleido==0.1.0.post1

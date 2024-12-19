@@ -139,39 +139,78 @@ class ControlsWidget(QWidget):
                 print(f"An error occurred while saving the selected plot: {e}")
 
     def save_data(self):
-        folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Data")
+        # Dossier cible obtenu depuis le dictionnaire
+        folder_path = self.figs['plot_data']['dic']['LCA_path']
         if folder_path:
             try:
-                if self.checkbox_impact_total.isChecked():
-                    export_data(folder_path, "Impact_total", self.figs["plot_data"]["EI"])
-                if self.checkbox_impact_manufacturing.isChecked():
-                    export_data(folder_path, "Impact_manu", self.figs["plot_data"]["EI_manu"])
-                if self.checkbox_impact_use.isChecked():
-                    export_data(folder_path, "Impact_use", self.figs["plot_data"]["EI_use"])
-                if self.checkbox_fault_cause.isChecked():
-                    export_data(folder_path, "fault_cause", self.figs["plot_data"]["fault_cause"])
-                if self.checkbox_ru_age.isChecked():
-                    export_data(folder_path, "RU_age", self.figs["plot_data"]["RU_age"])
-                print(f"Selected data saved successfully in {folder_path}")
+                # Création du sous-dossier "numpy"
+                numpy_folder = os.path.join(folder_path, "numpy")
+                os.makedirs(numpy_folder, exist_ok=True)
+
+                # Mapping des données et noms de fichiers
+                export_mapping = {
+                    "Impact_total": self.figs["plot_data"]["EI"],
+                    "Impact_manu": self.figs["plot_data"]["EI_manu"],
+                    "Impact_use": self.figs["plot_data"]["EI_use"],
+                    "fault_cause": self.figs["plot_data"]["fault_cause"],
+                    "RU_age": self.figs["plot_data"]["RU_age"],
+                }
+
+                # Exportation des données avec gestion des doublons
+                for base_filename, data in export_mapping.items():
+                    filename = f"{base_filename}"
+                    path_file = os.path.join(numpy_folder, f"{filename}.npy")
+
+                    # Gestion des doublons avec incrémentation
+                    counter = 1
+                    while os.path.exists(path_file):
+                        filename = f"{base_filename}_{counter}"
+                        path_file = os.path.join(numpy_folder, f"{filename}.npy")
+                        counter += 1
+
+                    # Appel à la fonction export_data
+                    export_data(numpy_folder, filename, data)
+
+                print(f"All NumPy data saved successfully in {numpy_folder}")
             except Exception as e:
-                print(f"An error occurred while saving the data: {e}")
+                print(f"An error occurred while saving NumPy data: {e}")
+
 
     def save_data_excel(self):
-        folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Save Data")
+        folder_path = self.figs['plot_data']['dic']['LCA_path']
         if folder_path:
             try:
-                if self.checkbox_impact_total.isChecked():
-                    export_data_excel(folder_path, "Impact_total", self.figs["plot_data"]["EI"])
-                if self.checkbox_impact_manufacturing.isChecked():
-                    export_data_excel(folder_path, "Impact_manu", self.figs["plot_data"]["EI_manu"])
-                if self.checkbox_impact_use.isChecked():
-                    export_data_excel(folder_path, "Impact_use", self.figs["plot_data"]["EI_use"])
-                if self.checkbox_fault_cause.isChecked():
-                    export_data_excel(folder_path, "fault_cause", self.figs["plot_data"]["fault_cause"])
-                if self.checkbox_ru_age.isChecked():
-                    export_data_excel(folder_path, "RU_age", self.figs["plot_data"]["RU_age"])
+                # Création du sous-dossier "excel"
+                excel_folder = os.path.join(folder_path, "excel")
+                os.makedirs(excel_folder, exist_ok=True)
+
+                # Mapping des données et noms de fichiers
+                export_mapping = {
+                    "Impact_total": self.figs["plot_data"]["EI"],
+                    "Impact_manu": self.figs["plot_data"]["EI_manu"],
+                    "Impact_use": self.figs["plot_data"]["EI_use"],
+                    "fault_cause": self.figs["plot_data"]["fault_cause"],
+                    "RU_age": self.figs["plot_data"]["RU_age"],
+                }
+
+                # Exportation des données avec gestion des doublons
+                for base_filename, data in export_mapping.items():
+                    filename = f"{base_filename}"
+                    path_file = os.path.join(excel_folder, f"{filename}.xlsx")
+
+                    # Gestion des doublons avec incrémentation
+                    counter = 1
+                    while os.path.exists(path_file):
+                        filename = f"{base_filename}_{counter}"
+                        path_file = os.path.join(excel_folder, f"{filename}.xlsx")
+                        counter += 1
+
+                    # Appel à la fonction export_data_excel
+                    export_data_excel(excel_folder, filename, data)
+
+                print(f"All Excel data saved successfully in {excel_folder}")
             except Exception as e:
-                print(f"An error occurred while saving the data: {e}")
+                print(f"An error occurred while saving Excel data: {e}")
 
     def setup_ui(self):
             # Title Label
@@ -219,7 +258,6 @@ class ControlsWidget(QWidget):
 
             self.save_excel_button = QPushButton("Save data to excel")
             self.save_excel_button.setFixedHeight(30)
-            self.save_excel_button.setDisabled(True)
 
             self.save_excel_button.clicked.connect(self.save_data_excel)
             self.save_data_button.clicked.connect(self.save_data)
