@@ -91,17 +91,6 @@ class ProcessExcel(QThread):
             self.error.emit(f"An error occurred in Monte Carlo simulation: {str(e)}")
 
     def run(self):
-        dic = {
-            "path_result_EI": "",
-            "filename_result_EI": "",   
-            "filename_result_EI_MC": "",
-            "simulation": "",
-            "directory": "",
-            "LCA_path": "",
-            "EI_name": [],
-            "LCIA_unit": [],
-            "proj_name": "",
-        }
         try:
             full_path_input = self.file_path
             print(f"Processing file: {full_path_input}")
