@@ -65,7 +65,7 @@ jobs:
       - name: Build Windows Executable
         run: |
           source .venv/Scripts/activate
-          pip install pyinstaller bw2io kaleido==0.1.0.post1 jaraco.text setuptools
+          pip install pyinstaller bw2io kaleido==0.1.0.post1
           ls
             pyinstaller main.py --hidden-import=bw2io --distpath dist/PELCA --noconsole --name PELCA --icon=app/ressources/icons/icon.ico
             cp -r .venv/Lib/site-packages/bw2io dist/PELCA/PELCA/_internal/bw2io

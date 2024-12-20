@@ -106,34 +106,128 @@ There are two options for installation:
 
 3. **Open and Run Code**: Open your project code in Spyder and run it.
 
-### Installation with Poetry
 
-If you prefer to manage project dependencies using **Poetry**, follow the steps below:
 
-1. **Install Poetry**: If you don't have Poetry installed, you can follow the official instructions [here](https://python-poetry.org/docs/#installation).
+## Requirements
 
-2. **Clone the Repository**: Clone the PELCA repository to your desired location:
-    ```bash
-    git clone <repository_url>
-    cd PELCA
-    ```
+Ensure the following tools are installed on your system before proceeding:
 
-3. **Install Dependencies**: Once inside the project directory, run the following command to install all required dependencies:
-    ```bash
-    poetry install
-    ```
+- **Python 3.10+**: [Download Python](https://www.python.org/downloads/)
+- **Poetry**: [Install Poetry](https://python-poetry.org/docs/#installation)
+- **Git** (optional, but recommended): [Install Git](https://git-scm.com/)
 
-4. **Activate the Virtual Environment**: Poetry automatically creates a virtual environment. To activate it, use:
-    ```bash
-    poetry shell
-    ```
+To confirm installation, run the following commands:
 
-5. **Run the Project**: You can now run the project using Poetry. For example, to launch the graphical interface:
-    ```bash
-    poetry run python src/main_PELCA_GUI.py
-    ```
+```bash
+python --version
+poetry --version
+git --version
+```
 
-Using Poetry simplifies dependency management and ensures consistency with modern Python development practices.
+---
+
+## Installation
+
+Follow these steps to set up the project on your local machine:
+
+### 1. Clone the Repository
+
+Clone the repository using Git. Replace `REPO_URL` with the actual URL of your project:
+
+```bash
+git clone REPO_URL
+cd PROJECT_NAME
+```
+
+If you do not have Git, you can download the repository as a ZIP file from your project's repository and extract it.
+
+---
+
+### 2. Set Up a Virtual Environment
+
+A virtual environment isolates the project dependencies from your global Python installation. Use one of the following methods:
+
+#### **Using Python's Built-in Virtual Environment**
+
+```bash
+python -m venv env
+source env/bin/activate  # On Linux/macOS
+env\Scripts\activate     # On Windows
+```
+
+#### **Using Poetry's Built-in Environment Management**
+
+Poetry automatically creates and manages a virtual environment when installing dependencies. You can also activate it manually with:
+
+```bash
+poetry shell
+```
+
+---
+
+### 3. Install Dependencies
+
+#### **Using Poetry**
+
+Install the dependencies listed in the `pyproject.toml` file:
+
+```bash
+poetry install
+```
+
+
+Install additional package to export images
+
+
+```bash
+
+pip install kaleido==0.1.0.post1
+````
+
+---
+
+## Usage
+
+### Running the Project
+
+To run the main script, use one of the following methods:
+
+
+```bash
+python main.py # 1.2.0 and higher 
+python src/main_PELCA_GUI.py # 1.1.2 and lower
+```
+
+## Testing
+
+Run the test suite to ensure everything is working as expected. Use the following command (requires tests to be written and configured):
+
+```bash
+poetry run pytest
+```
+
+Ensure all tests pass before pushing changes to the repository.
+
+---
+
+## Contributing
+
+To contribute to this project, follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or fix:
+   ```bash
+   git checkout -b feature/new-feature
+   ```
+3. Make your changes and commit them:
+   ```bash
+   git commit -m "Add a new feature"
+   ```
+4. Push to your branch:
+   ```bash
+   git push origin feature/new-feature
+   ```
+5. Submit a pull request.
 
 
 ## Usage

@@ -46,16 +46,3 @@ jobs:
         run: |
           source .venv/Scripts/activate  # Activation spécifique à Windows
           pytest app/tests/
-
-      # # Étape pour construire l'exécutable
-      # - name: Build Windows Executable
-      #   run: |
-      #     source .venv/Scripts/activate  # Activer l'environnement virtuel
-      #     pip install pyinstaller  # Installer PyInstaller
-      #     pyinstaller  --onefile src/main_PELCA_GUI.py 
-
-      # # Étape pour archiver l'exécutable
-      # - name: Archive Executable
-      #   if: matrix.os == 'windows-latest'
-      #   run: |
-      #     zip pelca.zip dist/main_PELCA_GUI.exe  # Archiver l'exécutable
