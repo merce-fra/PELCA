@@ -10,7 +10,8 @@ You should have received a copy of the GNU Lesser General Public License along w
 """
 Created on 2024
 
-@author: baudais
+@author: baudais, bdubus
+
 """
 
 import os
