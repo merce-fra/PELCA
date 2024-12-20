@@ -1,6 +1,18 @@
 <p align="center">
     <img src="Images/first_image.png?raw=true" alt="Staircase Curve" width="600"/>
 </p>
+
+## Latest Versions
+
+We are pleased to announce the availability of the latest versions of PELCA:
+
+- **Stable Version (branch main)**: [v1.1.2](https://github.com/merce-fra/PELCA/releases/tag/v1.1.2)
+- **New Version (branch new-v1.2.0)**: [v1.2.0](https://github.com/merce-fra/PELCA/releases/tag/new-v1.2.0)
+
+You can download these versions from the [releases](https://github.com/merce-fra/PELCA/releases) page.
+
+## Introduction
+
 PELCA (Power Electronics Life Cycle Assessment) is an open-source project aimed at assessing the environmental impact over the life cycle of modular and diagnosable power electronics systems. The integration of modularity and diagnosability aligns with circular economy principles, promoting practices such as maintenance, repair and reuse. This project provides a tool to calculate the environmental impacts associated with the manufacturing, usage, and replacement of power electronics products.
 
 This work began as part of the PhD thesis (collaboration between Mitsubishi Electric R&D Centre Europe and SATIE):
