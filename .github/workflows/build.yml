@@ -6,8 +6,6 @@ on:
     branches:
       - main
       - new-v1.2.0
-    tags :
-      - 'v*'
 
 permissions:
   contents: write
