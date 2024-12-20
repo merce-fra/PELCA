@@ -7,7 +7,7 @@
 We are pleased to announce the availability of the latest versions of PELCA:
 
 - **Stable Version**: [v1.1.2](https://github.com/merce-fra/PELCA/releases/tag/v1.1.2)
-- **Development Version**: [v2.0.7](https://github.com/merce-fra/PELCA/releases/tag/v2.0.7)
+- **New Version**: [v1.2.0](https://github.com/merce-fra/PELCA/releases/tag/v1.2.0)
 
 You can download these versions from the [releases](https://github.com/merce-fra/PELCA/releases) page.
 
