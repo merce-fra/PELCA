@@ -81,8 +81,8 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ github.ref }}  # Utiliser le tag réel
-          release_name: Release ${{ github.ref }}  # Nom de la release
+          tag_name: ${{ github.ref_name }}  # Utiliser le tag réel
+          release_name: Release ${{ github.ref_name }}  # Nom de la release
           draft: false
           prerelease: false
         env:
