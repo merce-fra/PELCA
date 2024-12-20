@@ -1,9 +1,13 @@
 name: Build and release windows executable
 
+
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - main
+      - new-v1.2.0
+    # tags:
+    #   - 'v*'
 
 permissions:
   contents: write
@@ -71,34 +75,34 @@ jobs:
       - name: Archive Executable
         if: matrix.os == 'windows-latest'
         run: |
-          Compress-Archive -Path dist/PELCA -DestinationPath pelca-${{ github.ref_name }}.zip
+          Compress-Archive -Path dist/PELCA -DestinationPath pelca_${{ github.ref_name }}_app.zip
         shell: powershell
 
-      # # Étape pour publier une release GitHub et y attacher le fichier zip
-      # - name: Create GitHub Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   with:
-      #     tag_name: ${{ github.ref }}  # Utiliser le tag réel
-      #     release_name: Release ${{ github.ref }}  # Nom de la release
-      #     draft: false
-      #     prerelease: false
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Upload Release Asset
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: pelca.zip
-      #     asset_name: pelca.zip
-      #     asset_content_type: application/zip
-
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3
+      # Étape pour publier une release GitHub et y attacher le fichier zip
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
         with:
-            name: pelca-${{ github.ref_name }}
-            path: pelca-${{ github.ref_name }}.zip
+          tag_name: ${{ github.ref }}  # Utiliser le tag réel
+          release_name: Release ${{ github.ref }}  # Nom de la release
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: pelca_${{ github.ref_name }}_app.zip
+          asset_name: pelca_${{ github.ref_name }}_app.zip
+          asset_content_type: application/zip
+
+      # - name: Upload Build Artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #       name: pelca_${{ github.ref_name }}_app.zip
+      #       path: pelca_${{ github.ref_name }}_app.zip
 
