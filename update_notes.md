@@ -25,4 +25,4 @@ More details on how to install PELCA on the different OS are available in [Readm
 ### Economic impact assessment
 The version 1.3.0 of the PELCA software provides a new feature in the possibility for the user to assess the economic impact (cost / price) of a system along its life cycle. 
 
-More details about the assessment of the economic impact can be found at [Example Overview](ExampleOverview.md).
+More details about the assessment of the economic impact can be found at [Example Overview](Input%20example/ExampleOverview.md).

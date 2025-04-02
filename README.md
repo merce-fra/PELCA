@@ -10,7 +10,7 @@ ___
 We are pleased to announce the availability of the following versions of PELCA:
 
 - **New Version (branch main)**: [v1.3.0](https://github.com/merce-fra/PELCA)
-- **Previous Version (branch V1.1.2)**: [v1.1.2](https://github.com/merce-fra/PELCA/tree/v1.1.2)
+- **Previous Version (branch V1.1.2)**: [v1.1.2](https://github.com/merce-fra/PELCA/tree/PELCA_v1.1.2)
 
 
 You can download these versions from the [releases](https://github.com/merce-fra/PELCA/releases) page.
