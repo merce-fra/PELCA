@@ -1,0 +1,8 @@
+.venv
+.vscode
+.DS_Store
+__pycache__/
+Results PELCA
+build/
+dist/
+.idea

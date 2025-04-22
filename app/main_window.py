@@ -16,7 +16,7 @@ from app.widgets.params import FormWidget
 from app.widgets.plot_window.plot import PlotWindow
 from app.widgets.script import ScriptWidget
 
-VERSION = "Development version"
+VERSION = "PELCA V1.3.0"
 
 
 class Communicator(QObject):
