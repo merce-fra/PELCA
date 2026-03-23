@@ -33,11 +33,11 @@ type_method = "PEF"
 # type_method='CED'
 
 # Indicate path and name of the inventory Excel file #
-path_ex = r"/Users/username/Documents/PELCADeviceDesigner/"
+path_ex = r"/Users/username/filepath/"
 name_ex = "IGBTDesigner_v1.0.0_ManufacturingInventory.xlsx"
 
 # Indicate path and version of the ecoinvent database #
-path_datasetEcoinvent = r"/Users/username/Downloads/"
+path_datasetEcoinvent = r"/Users/username/filepath/"
 VersionEcoinvent = "ecoinvent 3.9.1_cutoff_ecoSpold02"
 
 # Indicate a name of the associated Brightway project #
