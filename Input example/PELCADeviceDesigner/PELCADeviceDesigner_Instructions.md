@@ -205,7 +205,7 @@ path_ex = r"/Users/username/Documents/PELCADeviceDesigner/"
 name_ex = "IGBTDesigner_v1.0.0_ManufacturingInventory.xlsx"
 
 # Indicate path and version of the Ecoinvent database #
-path_datasetEcoinvent = r"/Users/username/Downloads/ecoinvent 3.9.1_cutoff_ecoSpold02/"
+path_datasetEcoinvent = r"/Users/username/Downloads/"
 VersionEcoinvent = "ecoinvent 3.9.1_cutoff_ecoSpold02"
 
 # Indicate a name of the associated Brightway project #
