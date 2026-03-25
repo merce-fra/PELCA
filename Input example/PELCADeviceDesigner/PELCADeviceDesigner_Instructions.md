@@ -32,7 +32,7 @@ The PELCA Device Designer tools are based on a cradle-to-gate life cycle invento
 - The cleanroom facilities & infrastructures operating to run the different utilities and maintain the production environment (light green).
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure1.png" width="600"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure1.png" width="700"/>
     <br> Fig. 1: System boundaries of the PELCA Device Designer tools, including the production of raw wafer substrates (dark blue), wafer process steps (orange), and cleanroom facilities and infrastructures (light green)
 </p>
 
@@ -65,7 +65,7 @@ Those manufacturing parameters are accessible and fine-tunable in the 'USER INPU
 Figure 4 shows a schematic of the computation architecture of the manufacturing inventory model, showing the relationships between the user inputs and the model outputs:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure4.png" width="600"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure4.png" width="700"/>
     <br> Fig. 4: Computation architecture of the manufacturing inventory model
 </p>
 
@@ -105,7 +105,7 @@ Based on the number of each sub-process step fixed by the user, the manufacturin
 Overall, the fine-tuning by the user of the manufacturing parameters included in the 'USER INPUTS' and 'PROCESS RECAP' sheets of the inventory Excel file automatically adjust the manufacturing inventory summarized in the 'SUMMARY LCI' sheet of the manufacturing Excel file:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure7.png" width="600"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure7.png" width="1000"/>
     <br> Fig. 7: View of the 'SUMMARY_LCI' sheet of the manufacturing inventory Excel file
 </p>
 
@@ -126,12 +126,12 @@ Similarly, the manufacturing inventory Excel file provides the Bill of Energy (B
 The electrical breakdown structure of the wafer process steps and of the cleanroom facilities & infrastuctures are also provided in the 'BoE' sheet of the manufacturing Excel file:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure10.png" width="500"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure10.png" width="600"/>
     <br> Fig. 10: Electrical breakdown structure of the wafer process steps
 </p>
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure11.png" width="500"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure11.png" width="600"/>
     <br> Fig. 11: Electrical breakdown structure of the cleanroom facilities & infrastructures
 </p>
 
