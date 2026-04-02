@@ -242,21 +242,21 @@ Once the [PELCADeviceDesigner](PELCADeviceDesigner.py) script has been ran, a re
 
 <p align="center">
     <img src="../../Images/PELCADeviceDesigner/Figure21.svg" width="600"/>
-    <br> Fig. 21: View of the different sheets of the impact assessment results Excel file
+    <br> Fig. 13: View of the different sheets of the impact assessment results Excel file
 </p>
 
 The normalisation factors, weighting factors, and planetary bounds can be found in the following references: [Andreasi et al., 2023](https://doi.org/10.2760/798894), [Sala et al., 2020](https://doi.org/10.1016/j.jenvman.2020.110686), and [Sala et al., 2018](doi:10.2760/945290).
 
-Figure 13 shows a view of the first sheet of the impact assessment results Excel file, compiling the respective contribution of each activity included in the semiconductor manufacturing model with respect to the 16 environmental indicators of the PEF method: 
+Figure 14 shows a view of the first sheet of the impact assessment results Excel file, compiling the respective contribution of each activity included in the semiconductor manufacturing model with respect to the 16 environmental indicators of the PEF method: 
 
 <p align="center">
     <img src="../../Images/PELCADeviceDesigner/Figure13.svg" width="1000"/>
-    <br> Fig. 13: View of the raw impact assessment results generated in the results Excel file (Sheet 1)
+    <br> Fig. 14: View of the raw impact assessment results generated in the results Excel file (Sheet 1)
 </p>
 
 Based on the raw impact assessment results Excel file, the user is able to generate different associated plots, such as contribution analyses, sensitivity analyses, or impacts assessment with respect to planetary limits.
 
-The results of Figure 13 and the plots and charts illustrated in the following sections have been obtained based on the following manufacturing hypotheses in the inventory Excel file : IGBT die size: 100 mm², wafer diameter: 200 mm, wafer defect density: 0.1 cm−2, manufacturing yield: 83.8%, abatement efficiency: 95%, wastewater recycling yield: 50%, throughput: 100,000 wafers/month, ISO 4 wafer fab, located in Japan.
+The results of Figure 14 and the plots and charts illustrated in the following sections have been obtained based on the following manufacturing hypotheses in the inventory Excel file : IGBT die size: 100 mm², wafer diameter: 200 mm, wafer defect density: 0.1 cm−2, manufacturing yield: 83.8%, abatement efficiency: 95%, wastewater recycling yield: 50%, throughput: 100,000 wafers/month, ISO 4 wafer fab, located in Japan.
 
 ### 2. Contribution analyses
 
@@ -264,32 +264,32 @@ Based on the results Excel file, a first bar chart can be obtained by plotting t
 
 <p align="center">
     <img src="../../Images/PELCADeviceDesigner/Figure14.svg" width="800"/>
-    <br> Fig. 14: Normalized bar graph showing the respective contributions of raw wafer production (dark blue), wafer process steps (orange), and cleanroom facilities and infrastructures (light green) to the 16 environmental impacts of the PEF method 
+    <br> Fig. 15: Normalized bar graph showing the respective contributions of raw wafer production (dark blue), wafer process steps (orange), and cleanroom facilities and infrastructures (light green) to the 16 environmental impacts of the PEF method 
 </p>
 
 A second bar graph can be plotted, showing the respective contributions of the different wafer process steps to the 16 environmental impacts assessed in the frame of the PEF method:
 
 <p align="center">
     <img src="../../Images/PELCADeviceDesigner/Figure15.svg" width="800"/>
-    <br> Fig. 15: Normalized bar graph showing the respective contributions of the different wafer process steps to the 16 environmental impacts of the PEF method 
+    <br> Fig. 16: Normalized bar graph showing the respective contributions of the different wafer process steps to the 16 environmental impacts of the PEF method 
 </p>
 
 ### 3. Sensitivity analyses
 
 By fine-tuning the parameters of the 'USER INPUTS' sheet of the manufacturing inventory Excel file, additional analyses can be carried out to investigate the sensitivity of the inventory model to different input parameters such as die size, wafer diameter, wafer defect density, and wafer fab location.
 
-Figure 16 shows a sensitivity analysis focusing on the influence of die size and wafer diameter on manufacturing yield and climate change impact (GWP, kg CO2 eq./cm²) of the IGBT production process: 
+Figure 17 shows a sensitivity analysis focusing on the influence of die size and wafer diameter on manufacturing yield and climate change impact (GWP, kg CO2 eq./cm²) of the IGBT production process: 
 
 <p align="center">
     <img src="../../Images/PELCADeviceDesigner/Figure16.svg" width="800"/>
-    <br> Fig. 16:  Line plot showing the influence of die size on the climate change (GWP) impact per cm² of good die and on the manufacturing yield of the IGBT production process for 150 mm (red line), 200 mm (orange line), and 300 mm diameter (blue line)wafers at a fixed defect density
+    <br> Fig. 17:  Line plot showing the influence of die size on the climate change (GWP) impact per cm² of good die and on the manufacturing yield of the IGBT production process for 150 mm (red line), 200 mm (orange line), and 300 mm diameter (blue line)wafers at a fixed defect density
 </p>
 
-In a similar manner, Figure 17 shows a sensitivity analysis focusing on the influence of wafer 'killer defect' density and wafer diameter on manufacturing yield and climate change impact (GWP, kg CO2 eq./cm²) of the IGBT production process:
+In a similar manner, Figure 18 shows a sensitivity analysis focusing on the influence of wafer 'killer defect' density and wafer diameter on manufacturing yield and climate change impact (GWP, kg CO2 eq./cm²) of the IGBT production process:
 
 <p align="center">
     <img src="../../Images/PELCADeviceDesigner/Figure17.svg" width="800"/>
-    <br> Fig. 17:  Line plot showing the influence of wafer defect density (cm−2) on the climate change (GWP) impact per cm² of good die and on the manufacturing yield of the IGBT production process for wafers with diameter of 150 mm (red line), 200 mm (orange line), and 300 mm (blue line) at a fixed die size
+    <br> Fig. 18:  Line plot showing the influence of wafer defect density (cm−2) on the climate change (GWP) impact per cm² of good die and on the manufacturing yield of the IGBT production process for wafers with diameter of 150 mm (red line), 200 mm (orange line), and 300 mm (blue line) at a fixed die size
 </p>
 
 Finally, it can also be interesting to evaluate the influence of the wafer fab location and of the associated electricity mix on the environmental impacts of the IGBT production process. 
@@ -297,12 +297,12 @@ Finally, it can also be interesting to evaluate the influence of the wafer fab l
 Due to the significant share of electrical energy consumption on the environmental impacts of semiconductor fabrication, it is worth investigating the impact of the wafer fab location and of the associated local electricity mix on the impact assessment results. In the ‘USER INPUTS’ sheet of the inventory Excel file, the user can choose from different wafer fab locations, including global {GLO}, Europe without Switzerland {RER}, Japan {JP}, China {CN}, United States {US}, and Switzerland {CH}. The selection of one location by the user automatically parametrizes the inventory with the associated electricity mix from the ecoinvent database for all activities listed in the inventory (i.e., the electrical energy source is assumed to be the same to produce the raw silicon wafers, to carry out the wafer
 processing steps, and to feed the cleanroom facilities and infrastructures).
 
-Figure 18 shows a radar chart displaying the assessed environmental impacts of
+Figure 19 shows a radar chart displaying the assessed environmental impacts of
 IGBT wafer production with a facility located in different geographical areas and impacts normalized with respect to the global {GLO} dataset, viewed here as a worldwide average electricity mix:
 
 <p align="center">
     <img src="../../Images/PELCADeviceDesigner/Figure18.svg" width="800"/>
-    <br> Fig. 18:  Normalized radar chart showing the influence of the wafer fab location and associated electricity mix on the 16 environmental impact categories of the PEF method
+    <br> Fig. 19:  Normalized radar chart showing the influence of the wafer fab location and associated electricity mix on the 16 environmental impact categories of the PEF method
 </p>
 
 ### 4. Impacts with respect to planetary bounds
@@ -312,7 +312,7 @@ each of the 16 environmental impact categories of the PEF method, normalization 
 
 <p align="center">
     <img src="../../Images/PELCADeviceDesigner/Figure19.svg" width="800"/>
-    <br> Fig. 19:  Chart showing the normalized relative contributions of the 16 environmental impact categories of the PEF method with respect to planetary limits
+    <br> Fig. 20:  Chart showing the normalized relative contributions of the 16 environmental impact categories of the PEF method with respect to planetary limits
 </p>
 
 ## Contribution
