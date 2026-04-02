@@ -136,7 +136,7 @@ The electrical breakdown structure of the wafer process steps and of the cleanro
 
 ## Impact assessment methodology
 
-In line with the PELCA software, the PELCA Device Designer tools are based on the Product Environmental Footprint (PEF) impact assessment method, allowing to assess the manufacturing impacts following 16 midpoint indicators. Figure X provides a schematic view of the software architecture of the PELCA Device Designer tools:
+In line with the PELCA software, the PELCA Device Designer tools are based on the Product Environmental Footprint (PEF) impact assessment method, allowing to assess the manufacturing impacts following 16 midpoint indicators. Figure 12 provides a schematic view of the software architecture of the PELCA Device Designer tools:
 
 <p align="center">
     <img src="../../Images/PELCADeviceDesigner/Figure12.svg" width="1000"/>
