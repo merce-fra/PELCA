@@ -10,7 +10,6 @@ The PELCA Device Designer tools address the following types of power semiconduct
 - Silicon-based insulated gate bipolar transistor (IGBT).
 
 An open-source publication detailing the PELCA IGBT Designer tool is available online to get more acquainted with its structure and underlying impact assessment methodology: 
-
 Guillemet, T.; Pichon, P.-Y.; Degrenne, N. An Open-Source Life Cycle Inventory (LCI) Model to Assess the Environmental Impacts of IGBT Power Semiconductor Manufacturing. Sustainability 2026, 18, 2663. https://doi.org/10.3390/su18052663
 
 # Table of Contents
@@ -32,14 +31,14 @@ The PELCA Device Designer tools are based on a cradle-to-gate life cycle invento
 - The cleanroom facilities & infrastructures operating to run the different utilities and maintain the production environment (light green).
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure1.png" width="700"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure1.svg" width="700"/>
     <br> Fig. 1: System boundaries of the PELCA Device Designer tools, including the production of raw wafer substrates (dark blue), wafer process steps (orange), and cleanroom facilities and infrastructures (light green)
 </p>
 
 For illustration purposes, Figure 2 provides a schematic view of the device on which is based the PELCA Device Designer tool dedicated to IGBT power transistors. The device is a silicon-based vertical trench field-stop ultrathin IGBT power device, with voltage and current ratings of 750 V and 270 A, respectively:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure2.png" width="800"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure2.svg" width="800"/>
     <br> Fig. 2: Cross-section schematic of the IGBT power transistor used as reference device to build the PELCA IGBT Designer tool
 </p>
 
@@ -58,14 +57,14 @@ The PELCA Device Designer tools allows the user to fine-tune the inventory to it
 Those manufacturing parameters are accessible and fine-tunable in the 'USER INPUTS' sheet of the inventory Excel file:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure3.png" width="700"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure3.svg" width="800"/>
     <br> Fig. 3: 'USER INPUTS' sheet of the manufacturing inventory Excel file allowing the user to fine-tune the manufacturing inventory
 </p>
 
 Figure 4 shows a schematic of the computation architecture of the manufacturing inventory model, showing the relationships between the user inputs and the model outputs:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure4.png" width="700"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure4.svg" width="800"/>
     <br> Fig. 4: Computation architecture of the manufacturing inventory model
 </p>
 
@@ -91,47 +90,47 @@ Although the inventory model has been built based on a fixed device technology, 
 - Number of iterations of each wafer sub-process step along the process flow.
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure5.png" width="800"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure5.svg" width="1000"/>
     <br> Fig. 5: 'PROCESS RECAP' sheet of the manufacturing inventory Excel file allowing the user to fine-tune the manufacturing inventory
 </p>
 
 Based on the number of each sub-process step fixed by the user, the manufacturing inventory model also provides an overview of the number of steps per process category in the 'PROCESS RECAP' sheet:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure6.png" width="500"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure6.svg" width="500"/>
     <br> Fig. 6: Number of process steps per wafer process category
 </p>
 
 Overall, the fine-tuning by the user of the manufacturing parameters included in the 'USER INPUTS' and 'PROCESS RECAP' sheets of the inventory Excel file automatically adjust the manufacturing inventory summarized in the 'SUMMARY LCI' sheet of the manufacturing Excel file:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure7.png" width="1000"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure7.svg" width="1000"/>
     <br> Fig. 7: View of the 'SUMMARY_LCI' sheet of the manufacturing inventory Excel file
 </p>
 
 The manufacturing inventory model also provides the bill of materials (BoM) of the different wafer process steps involved in the manufacturing of the semiconductor power device (see 'BoM' sheet of the inventory Excel file):
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure8.png" width="600"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure8.svg" width="600"/>
     <br> Fig. 8: Bill of Materials (BoM) of the wafer process steps (ultrapure water (UPW) excluded)
 </p>
 
 Similarly, the manufacturing inventory Excel file provides the Bill of Energy (BoE) showing the respective contributions of the production of the raw wafer substrates (in dark blue), the wafer process steps (in orange), and the cleanroom facilities & infrastructures (in light green) to the overall electrical consumption of the semiconductor manufacturing process, per wafer and per cm² of good die:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure9.png" width="700"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure9.svg" width="700"/>
     <br> Fig. 9: Electrical breakdown structure of the semiconductor manufacturing process, including the produciton of the raw wafer substrate (dark blue), the wafer process steps (orange), and the cleanroom facilities & infrastructures (light green) 
 </p>
 
 The electrical breakdown structure of the wafer process steps and of the cleanroom facilities & infrastuctures are also provided in the 'BoE' sheet of the manufacturing Excel file:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure10.png" width="600"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure10.svg" width="500"/>
     <br> Fig. 10: Electrical breakdown structure of the wafer process steps
 </p>
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure11.png" width="600"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure11.svg" width="500"/>
     <br> Fig. 11: Electrical breakdown structure of the cleanroom facilities & infrastructures
 </p>
 
@@ -140,7 +139,7 @@ The electrical breakdown structure of the wafer process steps and of the cleanro
 In line with the PELCA software, the PELCA Device Designer tools are based on the Product Environmental Footprint (PEF) impact assessment method, allowing to assess the manufacturing impacts following 16 midpoint indicators. Figure X provides a schematic view of the software architecture of the PELCA Device Designer tools:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure12.png" width="700"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure12.svg" width="1000"/>
     <br> Fig. 12: Software architecture of the PELCA Device Designer tools and list of the impact categories of the PEF impact assessment method
 </p>
 
@@ -235,18 +234,23 @@ python PELCADeviceDesigner.py
 
 Once the [PELCADeviceDesigner](PELCADeviceDesigner.py) script has been ran, a results Excel file is generated, named and located based on the indications provided by the user in the Python script. The results Excel file includes different sheets:
 
-   - *Sheet 1* : environmental impacts assessed based on the PEF method;
-   - *Sheet 'norm_global'*: assessed environmental impacts normalized with respect to global normalisation factors;
-   - *Sheet 'norm_planet_bound'*: assessed environmental impacts normalized with respect to planetary boundaries factors;
-   - *Sheet 'weight_global'*: assessed environmental impacts normalized & weighted with respect to global normalisation factors;
-   - *Sheet 'weight-planet_bound'*: assessed environmental impacts normalized & weighted with respect to planetary boundaries factors.
+   - **Sheet 1** : environmental impacts assessed based on the PEF method;
+   - **Sheet 'norm_global'**: assessed environmental impacts normalized with respect to global normalisation factors;
+   - **Sheet 'norm_planet_bound'**: assessed environmental impacts normalized with respect to planetary boundaries factors;
+   - **Sheet 'weight_global'**: assessed environmental impacts normalized & weighted with respect to global normalisation factors;
+   - **Sheet 'weight-planet_bound'**: assessed environmental impacts normalized & weighted with respect to planetary boundaries factors.
+
+<p align="center">
+    <img src="../../Images/PELCADeviceDesigner/Figure21.svg" width="600"/>
+    <br> Fig. 21: View of the different sheets of the impact assessment results Excel file
+</p>
 
 The normalisation factors, weighting factors, and planetary bounds can be found in the following references: [Andreasi et al., 2023](https://doi.org/10.2760/798894), [Sala et al., 2020](https://doi.org/10.1016/j.jenvman.2020.110686), and [Sala et al., 2018](doi:10.2760/945290).
 
 Figure 13 shows a view of the first sheet of the impact assessment results Excel file, compiling the respective contribution of each activity included in the semiconductor manufacturing model with respect to the 16 environmental indicators of the PEF method: 
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure13.png" width="700"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure13.svg" width="1000"/>
     <br> Fig. 13: View of the raw impact assessment results generated in the results Excel file (Sheet 1)
 </p>
 
@@ -259,14 +263,14 @@ The results of Figure 13 and the plots and charts illustrated in the following s
 Based on the results Excel file, a first bar chart can be obtained by plotting the respective contribution of the production of the raw wafer substrate (dark blue), the wafer process steps (orange) and the cleanroom facilities & infrastructures (light green) to the 16 environmental impacts assessed in the frame of the PEF method: 
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure14.png" width="700"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure14.svg" width="800"/>
     <br> Fig. 14: Normalized bar graph showing the respective contributions of raw wafer production (dark blue), wafer process steps (orange), and cleanroom facilities and infrastructures (light green) to the 16 environmental impacts of the PEF method 
 </p>
 
 A second bar graph can be plotted, showing the respective contributions of the different wafer process steps to the 16 environmental impacts assessed in the frame of the PEF method:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure15.png" width="700"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure15.svg" width="800"/>
     <br> Fig. 15: Normalized bar graph showing the respective contributions of the different wafer process steps to the 16 environmental impacts of the PEF method 
 </p>
 
@@ -277,14 +281,14 @@ By fine-tuning the parameters of the 'USER INPUTS' sheet of the manufacturing in
 Figure 16 shows a sensitivity analysis focusing on the influence of die size and wafer diameter on manufacturing yield and climate change impact (GWP, kg CO2 eq./cm²) of the IGBT production process: 
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure16.png" width="700"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure16.svg" width="800"/>
     <br> Fig. 16:  Line plot showing the influence of die size on the climate change (GWP) impact per cm² of good die and on the manufacturing yield of the IGBT production process for 150 mm (red line), 200 mm (orange line), and 300 mm diameter (blue line)wafers at a fixed defect density
 </p>
 
 In a similar manner, Figure 17 shows a sensitivity analysis focusing on the influence of wafer 'killer defect' density and wafer diameter on manufacturing yield and climate change impact (GWP, kg CO2 eq./cm²) of the IGBT production process:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure17.png" width="700"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure17.svg" width="800"/>
     <br> Fig. 17:  Line plot showing the influence of wafer defect density (cm−2) on the climate change (GWP) impact per cm² of good die and on the manufacturing yield of the IGBT production process for wafers with diameter of 150 mm (red line), 200 mm (orange line), and 300 mm (blue line) at a fixed die size
 </p>
 
@@ -297,7 +301,7 @@ Figure 18 shows a radar chart displaying the assessed environmental impacts of
 IGBT wafer production with a facility located in different geographical areas and impacts normalized with respect to the global {GLO} dataset, viewed here as a worldwide average electricity mix:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure18.png" width="700"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure18.svg" width="800"/>
     <br> Fig. 18:  Normalized radar chart showing the influence of the wafer fab location and associated electricity mix on the 16 environmental impact categories of the PEF method
 </p>
 
@@ -307,7 +311,7 @@ Based on the results provided by the IGBT manufacturing inventory model, it is a
 each of the 16 environmental impact categories of the PEF method, normalization factors and weighting factors, allowing the environmental impacts of the IGBT manufacturing process to be scaled with respect to peer-reviewed planetary bounds. Such analysis can be a complement of interest to identify the most prominent environmental impact categories of a product or a process. This analysis, applied to the IGBT production process, is shown in Figure 19:
 
 <p align="center">
-    <img src="../../Images/PELCADeviceDesigner/Figure19.png" width="700"/>
+    <img src="../../Images/PELCADeviceDesigner/Figure19.svg" width="800"/>
     <br> Fig. 19:  Chart showing the normalized relative contributions of the 16 environmental impact categories of the PEF method with respect to planetary limits
 </p>
 
