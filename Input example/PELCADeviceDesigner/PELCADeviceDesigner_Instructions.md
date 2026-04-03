@@ -4,6 +4,11 @@
 
 Complementary to the PELCA software, which allows to simulate the environmental and economic impacts of power electronic (PE) systems throughout their life cycle, the PELCA Device Designer tools allow to compute the environmental impacts of the manufacturing phase of different semiconductor power devices, which are know to represent a significant share of the manufacturing impacts of PE systems ([Baudais et al., 2024](https://doi.org/10.3390/en16052192)). 
 
+<p align="center">
+    <img src="../../Images/PELCADeviceDesigner/Figure0.svg" width="800"/>
+    <br> Fig. 0: Overview of the PELCA Device Designer manufacturing impact assessment tools
+</p>
+
 Once computed, the manufacturing impacts of the semiconductor power devices can then be reinjected into the PELCA tool to account for more accurate manufacturing impact assessment of PE systems.
 
 The PELCA Device Designer tools address the following types of power semiconductors:
