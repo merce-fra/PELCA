@@ -14,8 +14,7 @@ Once computed, the manufacturing impacts of the semiconductor power devices can 
 The PELCA Device Designer tools address the following types of power semiconductors:
 - Silicon-based insulated gate bipolar transistor (IGBT).
 
-An open-source publication detailing the PELCA IGBT Designer tool is available online to get more acquainted with its structure and underlying impact assessment methodology: 
-Guillemet, T.; Pichon, P.-Y.; Degrenne, N. An Open-Source Life Cycle Inventory (LCI) Model to Assess the Environmental Impacts of IGBT Power Semiconductor Manufacturing. Sustainability 2026, 18, 2663. https://doi.org/10.3390/su18052663
+An open-source publication detailing the PELCA IGBT Designer tool is available online to get more acquainted with its structure and underlying impact assessment methodology ([Guillemet et al., 2026](https://doi.org/10.3390/su18052663)) 
 
 # Table of Contents
 
