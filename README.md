@@ -12,8 +12,9 @@ We are pleased to announce the availability of the following versions of PELCA:
 - **New Version (branch main)**: [v1.4.0](https://github.com/merce-fra/PELCA)
 - **Previous Version (branch V1.3.1)**: [v1.3.1](https://github.com/merce-fra/PELCA/tree/Release_PELCA_v1.3)
 
-📨 INFORMATION : To stay informed about the release of new features and versions, you can subscribe to the PELCA newsletter using this link: [Newsletter PELCA](https://forms.office.com/e/TFM0s2G8ew)
+🚀 We are also pleased to announce the release of a first [PELCA Device Designer](Input example/PELCADeviceDesigner) tool, allowing to compute the manufacturing impacts of IGBT power transistors.
 
+📨 INFORMATION : To stay informed about the release of new features and versions, you can subscribe to the PELCA newsletter using this link: [Newsletter PELCA](https://forms.office.com/e/TFM0s2G8ew)
 
 You can download these versions from the [releases](https://github.com/merce-fra/PELCA/releases) page.
 
