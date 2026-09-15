@@ -1,0 +1,85 @@
+@startwbs PELCA - Folder Structure
+
+!theme plain
+skinparam defaultTextAlignment left
+
+<style>
+wbsDiagram {
+  node {
+    Padding 3
+    Margin 4
+  }
+}
+</style>
+
+title PELCA – Folder Structure
+
+*[#FFFFFF] PELCA
+**[#BBDEFB] <b>app/core</b>\n<i>May import io/ — never gui/</i>
+***[#BBDEFB] config.py
+****[#FFFFFF] LcaConfig
+****[#FFFFFF] ActivityNames
+****[#FFFFFF] LciaConfig
+****[#FFFFFF] FailureConfig
+****[#FFFFFF] MaintenanceConfig
+****[#FFFFFF] CostConfig
+****[#FFFFFF] SimulationConfig
+****[#FFFFFF] OutputConfig
+****[#FFFFFF] PelcaConfig
+***[#BBDEFB] lca.py
+****[#FFFFFF] LcaResult
+****[#FFFFFF] lca_generator()
+***[#BBDEFB] simulation.py
+****[#FFFFFF] EnvironmentalResult
+****[#FFFFFF] EconomicResult
+****[#FFFFFF] run_simulation()
+***[#BBDEFB] runner.py
+****[#FFFFFF] PelcaRunner
+**[#E1BEE7] <b>app/io</b>\n<i>May import core/ — never gui/</i>
+***[#E1BEE7] reader.py
+****[#FFFFFF] ExcelInputReader
+***[#E1BEE7] lca_io.py
+****[#FFFFFF] read_lca_output()
+****[#FFFFFF] export_lca_result()
+***[#E1BEE7] plots.py
+****[#FFFFFF] PlotBuilder
+***[#E1BEE7] export.py
+****[#FFFFFF] export_html()
+****[#FFFFFF] export_png()
+****[#FFFFFF] export_svg()
+****[#FFFFFF] export_lcic_summary()
+****[#FFFFFF] export_excel()
+****[#FFFFFF] export_numpy()
+****[#FFFFFF] export_config()
+**[#FFECB3] <b>app/gui</b>\n<i>May import core/ and io/</i>
+***[#FFECB3] main.py
+****[#FFFFFF] MainWindow
+***[#FFECB3] header.py
+****[#FFFFFF] HeaderWidget
+***[#FFE082] <b>launch/</b>
+****[#FFF3CD] worker.py
+*****[#FFFFFF] RunnerThread
+****[#FFF3CD] run_panel.py
+*****[#FFFFFF] EmittingStream
+*****[#FFFFFF] RunPanel
+***[#FFE082] <b>results/</b>
+****[#FFF3CD] window.py
+*****[#FFFFFF] IndexSwitcher
+*****[#FFFFFF] PlotWidget
+*****[#FFFFFF] PlotWindow
+****[#FFF3CD] controls.py
+*****[#FFFFFF] ControlsWidget
+*****[#FFFFFF] ImageButtonsWidget
+***[#FFE082] <b>resources/</b>
+****[#FFF3CD] ressources_rc.py\n<i>(auto-generated)</i>
+**[#EDE7F6] <b>app/tests</b>
+***[#EDE7F6] fixtures.py
+****[#FFFFFF] make_failure_config()
+****[#FFFFFF] make_maintenance_config()
+****[#FFFFFF] make_cost_config()
+****[#FFFFFF] make_simulation_config()
+****[#FFFFFF] make_config()
+***[#EDE7F6] test_reader · test_lca · test_lca_io
+***[#EDE7F6] test_simulation · test_export · test_plots · test_main
+
+@endwbs

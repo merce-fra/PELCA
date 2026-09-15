@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/ressources">
+        <file>icons/icon.ico</file>
+        <file>icons/next.svg</file>
+        <file>icons/previous.svg</file>
+        <file>images/first_image.png</file>
+    </qresource>
+</RCC>

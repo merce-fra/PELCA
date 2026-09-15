@@ -1,0 +1,345 @@
+# How to use the **PELCA Manufacturing Evaluator** tools ?
+
+## Introduction
+
+Complementary to the PELCA software, which allows to simulate the environmental and economic impacts of power electronic (PE) systems throughout their life cycle, the PELCA Manufacturing Evaluator tools allow to compute the environmental impacts of the manufacturing phase of different semiconductor power devices, which are know to represent a significant share of the manufacturing impacts of PE systems ([Baudais et al., 2024](https://doi.org/10.3390/en16052192)).
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure1.svg" width="900"/>
+    <br> Fig. 1: Overview of the PELCA Manufacturing Evaluator impact assessment tools
+</p>
+
+Once computed, the manufacturing impacts of the semiconductor power devices can then be reinjected into the PELCA tool (through the '_LCA Output_' Excel file) to account for more accurate manufacturing impact assessment of PE systems.
+
+The PELCA Manufacturing Evaluator tools address the following types of power semiconductors:
+- Silicon-based insulated gate bipolar transistor (IGBT).
+
+An open-source publication detailing the PELCA Manufacturing Evaluator tool is available online to get more acquainted with its structure and underlying impact assessment methodology ([Guillemet et al., 2026](https://doi.org/10.3390/su18052663))
+
+# Table of Contents
+
+- [Manufacturing model](#manufacturing-model)
+- [Impact assessment methodology](#impact-assessment-methodology)
+- [How to run the code ?](#how-to-run-the-code-)
+- [Results file & associated graphical outputs](#results-file--associated-graphical-outputs)
+- [Contribution](#contribution)
+- [Disclaimer](#disclaimer)
+- [Licence](#license)
+- [Contact](#contact)
+
+## Manufacturing model
+
+The PELCA Manufacturing Evaluator tools are based on a cradle-to-gate life cycle inventory (LCI) approach which includes:
+- The production of the raw wafers used as substrates (dark blue box in Fig. 2), considered as an activity external to the wafer fab;
+- The wafer process steps carried out to produce the power devices onto the wafers (orange box in Fig. 2);
+- The cleanroom facilities & infrastructures operating to run the different utilities and maintain the production environment (light green box in Fig. 2).
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure2.svg" width="700"/>
+    <br> Fig. 2: System boundaries of the PELCA Manufacturing Evaluator tools, including the production of raw wafer substrates (dark blue), wafer process steps (orange), and cleanroom facilities and infrastructures (light green)
+</p>
+
+For illustration purposes, Fig. 3 provides a schematic view of the device on which is based the PELCA Manufacturing Evaluator tool dedicated to silicon IGBT power transistors. 
+The device is a silicon-based vertical trench field-stop ultrathin IGBT power device, with voltage and current ratings of 750 V and 270 A, respectively:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure3.svg" width="800"/>
+    <br> Fig. 3: Cross-section schematic of the silicon power transistor used as reference device to build the PELCA IGBT Manufacturing Evaluator tool
+</p>
+
+The Excel file representing the manufacturing inventory of this IGBT power device is provided in the PELCA Manufacturing Evaluator subfolder: ```Inventory_IGBTManufacturingEvaluator_v.1.0.0.xlsx```
+
+The PELCA Manufacturing Evaluator tools allows the user to fine-tune the inventory to its own manufacturing use case through the following parameters:
+- Die dimensions (length, width, thickness) (mm) ;
+- Wafer diameter (150 mm, 200 mm, or 300 mm) ;
+- Wafer 'killer defect' density (cm-2) and associated front-end yield model ;
+- Probing yield (%) ;
+- Dicing yield (%) ;
+- Wafer fab location and associated local electricity mix ;
+- Wafer fab cleanliness level (ISO class) ;
+- Wafer fab throughput (wafers/month) ;
+- Abatement efficiency of fluorinated gases (%) ;
+- Wastewater recycling yield (%).
+
+Those manufacturing parameters are accessible and fine-tunable in the 'USER INPUTS' sheet of the inventory Excel file:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure4.svg" width="800"/>
+    <br> Fig. 4: 'USER INPUTS' sheet of the inventory Excel file allowing the user to fine-tune the manufacturing inventory
+</p>
+
+Figure 5 shows a schematic of the computation architecture of the manufacturing inventory model, showing the relationships between the user inputs and the model outputs:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure5.svg" width="800"/>
+    <br> Fig. 5: Computation architecture of the manufacturing inventory model
+</p>
+
+The wafer process steps of the power device manufacturing model are splitted in the following 12 activities:
+- Photolithography ;
+- Wet clean ;
+- Wet etch ;
+- Dry etch ;
+- Ion implant ;
+- Thermal processes ;
+- PVD ;
+- CVD ;
+- CMP ;
+- Thinning ;
+- Dicing ;
+- Probing.
+
+More details on how are modeled the production of the raw silicon wafer substrates, the different wafer process steps, and the cleanroom facilities and infrastructures are available in the manufacturing inventory Excel file and in the [associated publication](https://doi.org/10.3390/su18052663).
+
+Although the inventory model has been built based on a fixed device technology, the user is also able to fine-tune the manufacturing inventory by adjusting, in the 'PROCESS RECAP' sheet of the inventory Excel file, and for each sub-process step included in the model, the following parameters:
+- Equipment nominal electrical power (kW);
+- Power Correction Factor (PCF), allowing to account for more realistic electrical power consumption of the process tools;
+- Number of iterations of each wafer sub-process step along the wafer process flow.
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure6.svg" width="1000"/>
+    <br> Fig. 6: 'PROCESS RECAP' sheet of the manufacturing inventory Excel file allowing the user to fine-tune the manufacturing inventory
+</p>
+
+Based on the number of each sub-process step fixed by the user, the manufacturing inventory model also provides an overview of the number of steps per process category in the 'PROCESS RECAP' sheet:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure7.svg" width="500"/>
+    <br> Fig. 7: Number of process steps per wafer process category
+</p>
+
+Overall, the fine-tuning by the user of the manufacturing parameters included in the 'USER INPUTS' and 'PROCESS RECAP' sheets of the inventory Excel file automatically adjust the manufacturing inventory summarized in the 'SUMMARY LCI' sheet of the manufacturing Excel file:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure8.svg" width="1000"/>
+    <br> Fig. 8: View of the 'SUMMARY_LCI' sheet of the manufacturing inventory Excel file
+</p>
+
+The manufacturing inventory model also provides the bill of materials (BoM) of the different wafer process steps involved in the manufacturing of the semiconductor power device (see 'BoM' sheet of the inventory Excel file):
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure9.svg" width="600"/>
+    <br> Fig. 9: Bill of Materials (BoM) of the wafer process steps (ultrapure water (UPW) excluded)
+</p>
+
+Similarly, the manufacturing inventory Excel file provides the Bill of Energy (BoE), showing the respective contributions of the production of the raw wafer substrates (in dark blue), the wafer process steps (in orange), and the cleanroom facilities & infrastructures (in light green) to the overall electrical consumption of the semiconductor manufacturing process, per wafer and per cm² of good die:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure10.svg" width="700"/>
+    <br> Fig. 10: Electrical energy breakdown structure of the semiconductor manufacturing process, including the production of the raw wafer substrate (dark blue), the wafer process steps (orange), and the cleanroom facilities & infrastructures (light green)
+</p>
+
+The electrical energy breakdown structure of the wafer process steps and of the cleanroom facilities & infrastructures are also provided in the 'BoE' sheet of the manufacturing Excel file:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure11.svg" width="500"/>
+    <br> Fig. 11: Electrical energy breakdown structure of the wafer process steps
+</p>
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure12.svg" width="500"/>
+    <br> Fig. 12: Electrical energy breakdown structure of the cleanroom facilities & infrastructures
+</p>
+
+## Impact assessment methodology
+
+In line with the PELCA software, the PELCA Manufacturing Evaluator tools are based on the Product Environmental Footprint (PEF) impact assessment method, allowing to assess the manufacturing impacts based on 16 midpoint indicators. 
+Figure 13 provides a schematic view of the software architecture of the PELCA Manufacturing Evaluator tools:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure13.svg" width="1000"/>
+    <br> Fig. 13: Software architecture of the PELCA Manufacturing Evaluator tools and list of the impact categories of the PEF impact assessment method
+</p>
+
+## How to run the code ?
+
+The PELCA Manufacturing Evaluator tools are stand-alone tools which can be used outside of the PELCA environment. 
+They simply lie on an Excel file as the parametrizable manufacturing inventory and a Python script to connect the inventory to the ecoinvent database and assess the environmental impacts using the Brightway Python library.
+
+1. **Install Python 3.12**
+
+    First, download and install Python 3.12 from the official website: [👉 Download Python 3.12](https://www.python.org/downloads/release/python-31213/)
+
+2. **Install the required packages to run the code**
+
+Once Python 3.12 has been installed, follow these steps:
+
+   - Download the **PELCA Manufacturing Evaluator** files (inventory (.xlsx), python script (.py), requirements (.txt));
+   - Navigate to the folder where you have placed the **PELCA Manufacturing Evaluator files**;
+   - Right-click in the file explorer and select `Open in Terminal`;
+   - Copy/paste and execute one by one the following commands in the terminal window:
+
+```bash
+# Create a virtual environment (named here '.venv') using Python 3.12
+& "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe" -m venv .venv
+
+# Change the execution policy to activate the virtual environment
+Set-ExecutionPolicy Unrestricted -Scope Process
+
+# Activate the virtual environment
+.\.venv\Scripts\activate
+
+# Upgrade pip to avoid compatibility issues
+python.exe -m pip install --upgrade pip
+
+# Install the project dependencies (this takes about 5 minutes)
+pip install -r requirements.txt
+```
+3. **Download the ecoinvent database**
+
+To assess the environmental impacts, the **ecoinvent** database is used. You need to download the following file:
+
+📥 **Required file**: `ecoinvent 3.9.1_cutoff_ecoSpold02.7z`
+🔗 **Download link**: [Download ecoinvent 3.9.1](https://ecoquery.ecoinvent.org/3.9.1/cutoff/files)
+
+ℹ️ **Note**: The ecoinvent version used is **3.9.1**. Any version higher than this is not compatible. Indeed, as PELCA, the PELCA Manufacturing Evaluator tools lie on the Brightway librairy, which faces compatibility issues with ecoinvent starting from version 3.10. More information here: [StackOverflow Discussion](https://stackoverflow.com/questions/77697351/brightway2-and-ecoinvent-3-10-unlinked-exchanges)
+
+4. **Open and configure the Python script**
+
+Using an IDE (sush as [VSC](https://code.visualstudio.com/download)), open the [impact assessment Python script](PELCAManufacturingEvaluator.py), and configure it by following the instructions below:
+
+```bash
+#_______________________Variable definition____________________________#
+
+# Indicate name of device under test (DUT) #
+DUT = "IGBT die"
+
+# Select impact assessment method / PEF: Product Environmental Footprint / CED : Cumulative Energy Demand #
+type_method = "PEF"
+# type_method='CED'
+
+# Indicate path and name of the manufacturing inventory Excel file #
+path_ex = r"C:\Users\Username\Filepath"
+name_ex = "IGBTManufacturingEvaluator_v2.0.0_Inventory.xlsx"
+
+# Indicate version of the Ecoinvent database and path to the Ecoinvent datasets #
+# Mind that the ecoinvent file must be unzipped; then path to the datasets subfolder #
+VersionEcoinvent = "ecoinvent 3.9.1_cutoff_ecoSpold02"
+path_datasetEcoinvent = r"C:\Users\Username\Filepath"
+
+# Indicate a name of the associated Brightway project #
+proj_name = "IGBT Manufacturing"
+
+# Indicate the name of the database as it appears in the manufacturing inventory Excel file (sheet 'SUMMARY_LCI', cell B1)
+db_name = "IGBT LCI dtb"
+
+simulation = "Analysis"
+
+# Indicate paths and name of the result files #
+path_result = path_ex
+filename_result = "IGBTManufacturingEvaluator_v2.0.0_Impacts.xlsx"
+```
+5. **Run the Python script**
+
+In the terminal, type the command below to run the script and generate the impact assessment results Excel file:
+
+```bash
+# run the script
+python PELCAManufacturingEvaluator.py
+```
+
+## Results file & associated graphical outputs
+
+### 1. Impact assessment results
+
+Once the [PELCAManufacturingEvaluator](PELCAManufacturingEvaluator.py) script has been ran, a results Excel file is generated, named and located based on the indications provided by the user in the Python script. 
+
+An exemplary impact assessment results Excel file is provided in the PELCA Manufacturing Evaluator subfolder: ```Impacts_IGBTManufacturingEvaluator_v.1.0.0.xlsx```
+
+The results Excel file includes different sheets:
+
+   - **Sheet '_basic_LCA_'** : environmental impacts assessed based on the PEF method;
+   - **Sheet '_norm_global_'**: assessed environmental impacts normalized with respect to global normalisation factors;
+   - **Sheet '_norm_planet_bound_'**: assessed environmental impacts normalized with respect to planetary boundaries factors;
+   - **Sheet '_weight_global_'**: assessed environmental impacts normalized & weighted with respect to global normalisation factors;
+   - **Sheet '_weight-planet_bound_'**: assessed environmental impacts normalized & weighted with respect to planetary boundaries factors.
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure14.svg" width="600"/>
+    <br> Fig. 14: View of the different sheets of the impact assessment results Excel file
+</p>
+
+The normalisation factors, weighting factors, and planetary bounds can be found in the following references: [Andreasi et al., 2023](https://doi.org/10.2760/798894), [Sala et al., 2020](https://doi.org/10.1016/j.jenvman.2020.110686), and [Sala et al., 2018](doi:10.2760/945290).
+
+Figure 15 shows a view of the first sheet of the impact assessment results Excel file, compiling the respective contribution of each activity included in the semiconductor manufacturing model with respect to the 16 environmental indicators of the PEF method:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure15.svg" width="1000"/>
+    <br> Fig. 15: View of the raw impact assessment results generated in the results Excel file (sheet 'basic_LCA')
+</p>
+
+Based on the raw impact assessment results Excel file, the user is able to generate different associated plots, such as contribution analyses, sensitivity analyses, or impacts assessment with respect to planetary limits.
+
+The results of Figure 15 and the plots and charts illustrated in the next sections have been obtained based on the following manufacturing hypotheses in the inventory Excel file : IGBT die size: 100 mm², wafer diameter: 200 mm, wafer defect density: 0.1 cm−2, manufacturing yield: 83.8%, abatement efficiency: 95%, wastewater recycling yield: 50%, throughput: 100,000 wafers/month, ISO 4 wafer fab, located in Japan.
+
+### 2. Contribution analyses
+
+Based on the results Excel file, a first bar graph can be obtained by plotting the respective contribution of the production of the raw wafer substrate (dark blue), the wafer process steps (orange) and the cleanroom facilities & infrastructures (light green) to the 16 environmental impacts assessed in the frame of the PEF method:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure16.svg" width="800"/>
+    <br> Fig. 16: Normalized bar graph showing the respective contributions of raw wafer production (in dark blue), wafer process steps (in orange), and cleanroom facilities and infrastructures (in light green) to the 16 environmental impacts of the PEF method
+</p>
+
+A second bar graph can be plotted, showing the respective contributions of the different wafer process steps to the 16 environmental impacts assessed in the frame of the PEF method:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure17.svg" width="800"/>
+    <br> Fig. 17: Normalized bar graph showing the respective contributions of the different wafer process steps to the 16 environmental impacts of the PEF method
+</p>
+
+### 3. Sensitivity analyses
+
+By fine-tuning the parameters of the 'USER INPUTS' sheet of the manufacturing inventory Excel file, additional analyses can be carried out to investigate the sensitivity of the inventory model to different input parameters such as die size, wafer diameter, wafer defect density, and wafer fab location.
+
+Figure 18 shows a sensitivity analysis focusing on the influence of die size and wafer diameter on manufacturing yield and climate change impact (GWP, kg CO2 eq./cm²) of the IGBT production process:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure18.svg" width="800"/>
+    <br> Fig. 18:  Line plot showing the influence of die size on the climate change (GWP) impact per cm² of good die and on the manufacturing yield of the IGBT production process for 150 mm (red line), 200 mm (orange line), and 300 mm diameter (blue line)wafers at a fixed defect density
+</p>
+
+In a similar manner, Figure 19 shows a sensitivity analysis focusing on the influence of wafer 'killer defect' density and wafer diameter on manufacturing yield and climate change impact (GWP, kg CO2 eq./cm²) of the IGBT production process:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure19.svg" width="800"/>
+    <br> Fig. 19:  Line plot showing the influence of wafer defect density (cm−2) on the climate change (GWP) impact per cm² of good die and on the manufacturing yield of the IGBT production process for wafers with diameter of 150 mm (red line), 200 mm (orange line), and 300 mm (blue line) at a fixed die size
+</p>
+
+Finally, it can also be interesting to evaluate the influence of the wafer fab location and of the associated electricity mix on the environmental impacts of the IGBT production process.
+
+Due to the significant share of electrical energy consumption on the environmental impacts of semiconductor fabrication, it is worth investigating the impact of the wafer fab location and of the associated local electricity mix on the impact assessment results. 
+In the ‘USER INPUTS’ sheet of the inventory Excel file, the user can choose from different wafer fab locations, including global {GLO}, Europe without Switzerland {RER}, Japan {JP}, China {CN}, United States {US}, and Switzerland {CH}. 
+The selection of one location by the user automatically parametrizes the inventory with the associated electricity mix from the ecoinvent database for all activities listed in the inventory (i.e., the electrical energy source is assumed to be the same to produce the raw silicon wafers, to carry out the wafer processing steps, and to feed the cleanroom facilities and infrastructures).
+
+Figure 20 shows a radar chart displaying the assessed environmental impacts of IGBT wafer production with a facility located in different geographical areas and impacts normalized with respect to the global {GLO} dataset, viewed here as a worldwide average electricity mix:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure20.svg" width="800"/>
+    <br> Fig. 20:  Normalized radar chart showing the influence of the wafer fab location and associated electricity mix on the 16 environmental impact categories of the PEF method
+</p>
+
+### 4. Impacts with respect to planetary bounds
+
+Based on the results provided by the IGBT manufacturing inventory model, it is also possible to investigate the relative contribution of each of the 16 impact categories assessed with respect to the planetary limits, as per defined by the International Panel on Climate Change (IPCC) and recommended by the Joint Research Center (JRC) of the European Commission. This approach establishes, for
+each of the 16 environmental impact categories of the PEF method, normalization factors and weighting factors, allowing the environmental impacts of the IGBT manufacturing process to be scaled with respect to peer-reviewed planetary bounds. Such analysis can be a complement of interest to identify the most prominent environmental impact categories of a product or a process. 
+This analysis, applied to the IGBT production process, is shown in Figure 21:
+
+<p align="center">
+    <img src="/documentations/images/PELCAManufacturingEvaluator/Figure21.svg" width="800"/>
+    <br> Fig. 21:  Chart showing the normalized relative contributions of the 16 environmental impact categories of the PEF method with respect to planetary limits
+</p>
+
+## Contribution
+We welcome all kinds of contributions! To contribute to the project, start by dowloading the files, make your proposed changes in a new branch, and create a pull request. Make sure your code is readable and well-documented. Include unit tests if possible.
+
+You can also contribute by submitting bug reports, feature requests, and following the issues.
+
+## Disclaimer
+This code is intended for use in a research environment only. We disclaim any responsibility for the results obtained and any subsequent use of them.
+
+## License
+This code is licensed under LGPL-3.0-only or LGPL-3.0-or-later, and also uses other python libraries which also have their own licenses.
+
+## Contact
+PELCA@fr.merce.mee.com

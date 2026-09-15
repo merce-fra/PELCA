@@ -1,0 +1,60 @@
+﻿@startuml PELCA - Data Flow
+
+!theme plain
+top to bottom direction
+skinparam defaultTextAlignment center
+skinparam ArrowColor #555555
+skinparam RectangleBorderColor #888888
+skinparam RectangleBackgroundColor #F5F5F5
+skinparam DatabaseBorderColor #388E3C
+skinparam DatabaseBackgroundColor #E8F5E9
+skinparam NoteBorderColor #AAAAAA
+skinparam NoteBackgroundColor #FFFDE7
+
+title PELCA - Pipeline Data Flow
+
+database  "Input .xlsm"                                          as xlsx
+database  "LCA output .xlsx\n(generated or user-provided)"       as lca_out
+
+rectangle "ExcelInputReader.from_excel()\n<i>io/reader.py</i>"   as reader   #EDE7F6
+rectangle "lca_generator()\n<i>core/lca.py</i>"                  as lca_gen  #E3F2FD
+rectangle "export_lca_result()\n<i>io/lca_io.py</i>"             as exp_lca  #F3E5F5
+rectangle "read_lca_output()\n<i>io/lca_io.py</i>"               as rd_lca   #F3E5F5
+rectangle "run_simulation()\n<i>core/simulation.py</i>"          as sim      #E3F2FD
+rectangle "PlotBuilder.run()\n<i>io/plots.py</i>"         as plotter  #F3E5F5
+rectangle "export_lcic_summary()\nexport_config()\n<i>io/export.py</i>" as exp_sum #F3E5F5
+
+rectangle "io/export.py\n<i>export_html / png / svg / numpy</i>" as export   #F3E5F5
+rectangle "gui/launch/worker.py\nRunnerThread -> Signal(dict)\n-> gui/results/" as gui    #FFF8E1
+
+database  "Results/\n(xlsx, html, png, npy...)"                  as out
+
+' -- inputs -> reader
+xlsx     --> reader
+
+' -- reader -> LCA branch
+reader   --> lca_gen  : PelcaConfig\n[run_lca=True]
+reader   --> rd_lca   : PelcaConfig\n[run_lca=False]
+
+lca_gen  --> exp_lca  : LcaResult
+exp_lca  --> lca_out  : write
+
+lca_out  --> rd_lca   : read
+rd_lca   --> sim      : LcaResult
+
+' -- LCA -> simulation
+lca_gen  --> sim      : LcaResult
+
+' -- simulation -> exports + plotting
+sim      --> exp_sum  : EnvironmentalResult\nEconomicResult
+sim      --> plotter  : EnvironmentalResult\nEconomicResult
+
+' -- plotting -> outputs
+plotter  --> export   : main_cli.py
+plotter  --> gui
+
+exp_sum  --> out
+export   --> out
+gui      --> out      : on user action
+
+@enduml
